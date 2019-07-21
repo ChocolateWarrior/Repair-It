@@ -29,6 +29,7 @@ public class MainServlet extends HttpServlet {
         commands.put("exception" , new ExceptionCommand());
         commands.put("admin" , new AdminPageCommand());
         commands.put("user" , new UserPageCommand());
+        commands.put("display", new UserDisplayCommand());
 
     }
 
@@ -49,14 +50,17 @@ public class MainServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        processRequest(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        PrintWriter pw = response.getWriter();
-        pw.println("<html>");
-        pw.println("<p>HELLO</p>");
-        pw.println("</html>");
+        processRequest(request,response);
+
+//        PrintWriter pw = response.getWriter();
+//        pw.println("<html>");
+//        pw.println("<p>HELLO</p>");
+//        pw.println("</html>");
 
     }
 

@@ -8,8 +8,8 @@ public class UserDisplayCommand implements Command {
 
     private UserRegistrationService userRegistrationService;
 
-    public UserDisplayCommand(UserRegistrationService userRegistrationService) {
-        this.userRegistrationService = userRegistrationService;
+    public UserDisplayCommand() {
+        this.userRegistrationService = new UserRegistrationService();
     }
 
     @Override

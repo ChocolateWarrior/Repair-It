@@ -8,8 +8,8 @@ public class RegistrationCommand implements Command {
 
     private UserRegistrationService userRegistrationService;
 
-    public RegistrationCommand(UserRegistrationService userRegistrationService) {
-        this.userRegistrationService = userRegistrationService;
+    public RegistrationCommand() {
+        this.userRegistrationService = new UserRegistrationService();
     }
 
     @Override
