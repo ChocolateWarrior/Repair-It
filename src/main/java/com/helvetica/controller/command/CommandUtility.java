@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
+import java.util.List;
 
 class CommandUtility {
     static void setUserRole(HttpServletRequest request,
@@ -18,15 +19,15 @@ class CommandUtility {
     }
 
     static boolean checkUserIsLogged(HttpServletRequest request, String userName){
-        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
-                .getAttribute("loggedUsers");
+        List<String> users = (List<String>) request.getSession().getServletContext()
+                .getAttribute("users");
 
-        if(loggedUsers.stream().anyMatch(userName::equals)){
+        if(users.stream().anyMatch(userName::equals)){
             return true;
         }
-        loggedUsers.add(userName);
+        users.add(userName);
         request.getSession().getServletContext()
-                .setAttribute("loggedUsers", loggedUsers);
+                .setAttribute("users", users);
         return false;
     }
 }

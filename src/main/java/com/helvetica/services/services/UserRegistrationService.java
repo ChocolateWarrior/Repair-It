@@ -1,30 +1,21 @@
-package com.helvetica.services.servlets;
-
+package com.helvetica.services.services;
 
 import com.helvetica.model.dao.UserDao;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.entity.User;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-@WebServlet(name = "AddUserServlet")
-public class AddUserServlet extends HttpServlet {
+public class UserRegistrationService {
 
     private UserDao userDao;
 
-    public void init() throws ServletException{
+    public UserRegistrationService() {
         JDBCDaoFactory jdbcDaoFactory = new JDBCDaoFactory();
         this.userDao = jdbcDaoFactory.createUserDao();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        request.setCharacterEncoding("UTF-8");
+    public void registerUser(HttpServletRequest request){
 
         final String firstName = request.getParameter("first_name");
         final String lastName = request.getParameter("last_name");
@@ -41,7 +32,4 @@ public class AddUserServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 }

@@ -19,7 +19,9 @@ public class LoginCommand implements Command {
         //System.out.println("Yes!");
 //todo: check login with DB
 
-        if(CommandUtility.checkUserIsLogged(request, name)){
+//        if()
+
+        if(CommandUtility.checkUserIsLogged(request, name)) {
             return "/WEB-INF/error.jsp";
         }
 
