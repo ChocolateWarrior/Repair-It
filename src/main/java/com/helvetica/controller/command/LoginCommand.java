@@ -8,32 +8,32 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String pass = request.getParameter("pass");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if( name == null || name.equals("") || pass == null || pass.equals("")  ){
+        if( username == null || username.equals("") || password == null || password.equals("")  ){
             //System.out.println("Not");
-            return "/login.jsp";
+            return "/WEB-INF/view/login.jsp";
         }
-        System.out.println(name + " " + pass);
+        System.out.println(username + " " + password);
         //System.out.println("Yes!");
 //todo: check login with DB
 
 //        if()
 
-        if(CommandUtility.checkUserIsLogged(request, name)) {
+        if(CommandUtility.checkUserIsLogged(request, username)) {
             return "/WEB-INF/error.jsp";
         }
 
-        if (name.equals("Admin")){
-            CommandUtility.setUserRole(request, Role.ADMIN, name);
-            return "/WEB-INF/admin_page.jsp";
-        } else if(name.equals("User")) {
-            CommandUtility.setUserRole(request, Role.USER, name);
-            return "/WEB-INF/user_page.jsp";
+        if (username.equals("Admin")){
+            CommandUtility.setUserRole(request, Role.ADMIN, username);
+            return "/WEB-INF/view/admin_page.jsp";
+        } else if(username.equals("User")) {
+            CommandUtility.setUserRole(request, Role.USER, username);
+            return "/WEB-INF/view/user_page.jsp";
         } else {
-            CommandUtility.setUserRole(request, Role.UNKNOWN, name);
-            return "/login.jsp";
+            CommandUtility.setUserRole(request, Role.UNKNOWN, username);
+            return "/WEB-INF/view/login.jsp";
         }
 
 

@@ -11,9 +11,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
+<fmt:setLocale value="${param.lang}"/>
 <fmt:setBundle basename="property/messages"/>
 
-<html lang="en">
+<html lang = "${param.lang}">
+
 <head>
     <meta charset="UTF-8">
     <title>Registration Form</title>
@@ -32,34 +34,38 @@
 
             <form style="margin-bottom: 30px" name="form" autocomplete="off">
                 <div class="form-group">
-                    <label id="firsNameInputLabel" for="firstNameExampleElement"><fmt:message key="reg.first_name">first_name</fmt:message></label>
+                    <label id="firsNameLabel" for="firstName"><fmt:message key="reg.first_name">first_name</fmt:message></label>
                     <input type="text"
+                           name="firstName"
                            class="form-control"
-                           id="firstNameExampleElement"
+                           id="firstName"
                            placeholder="<fmt:message key="reg.enter.first_name">login</fmt:message>"
                            required>
                 </div>
                 <div class="form-group">
-                    <label id="lastNameInputLabel" for="lastNameExampleElement" ><fmt:message key="reg.last_name">last_name</fmt:message></label>
+                    <label id="lastNameLabel" for="lastName" ><fmt:message key="reg.last_name">last_name</fmt:message></label>
                     <input type="text"
+                           name="lastName"
                            class="form-control"
-                           id="lastNameExampleElement"
+                           id="lastName"
                            placeholder="<fmt:message key="reg.enter.last_name">last name</fmt:message>"
                            required>
                 </div>
                 <div class="form-group">
-                    <label id="loginInputLabel" for="loginExampleElement"><fmt:message key="reg.login">login</fmt:message></label>
+                    <label id="usernameLabel" for="username"><fmt:message key="reg.login">login</fmt:message></label>
                     <input type="text"
+                           name="username"
                            class="form-control"
-                           id="loginExampleElement"
+                           id="username"
                            placeholder="<fmt:message key="reg.enter.login">login</fmt:message>"
                            required>
                 </div>
                 <div class="form-group">
-                    <label id="passwordInputLabel" for="passwordExampleElement"><fmt:message key="reg.password">password</fmt:message></label>
+                    <label id="passwordLabel" for="password"><fmt:message key="reg.password">password</fmt:message></label>
                     <input type="text"
+                           name="password"
                            class="form-control"
-                           id="passwordExampleElement"
+                           id="password"
                            placeholder="<fmt:message key="reg.enter.password">password</fmt:message>"
                            required>
                 </div>

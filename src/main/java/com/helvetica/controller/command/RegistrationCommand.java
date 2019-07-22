@@ -1,8 +1,10 @@
 package com.helvetica.controller.command;
 
+import com.helvetica.model.entity.User;
 import com.helvetica.services.services.UserRegistrationService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 public class RegistrationCommand implements Command {
 
@@ -15,7 +17,26 @@ public class RegistrationCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        userRegistrationService.registerUser(request);
-        return "user_registration.jsp";
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        if (!(Objects.nonNull(firstName) &&
+                Objects.nonNull(lastName) &&
+                Objects.nonNull(username) &&
+                Objects.nonNull(password))) {
+            return "/WEB-INF/view/user_registration.jsp";
+        }
+
+        User user = User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .username(username)
+                .password(password)
+                .build();
+
+        userRegistrationService.registerUser(user);
+        return "/WEB-INF/view/user_registration.jsp";
     }
 }

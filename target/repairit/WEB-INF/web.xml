@@ -2,7 +2,7 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
+<web-app >
   <display-name>Archetype Created Web Application</display-name>
 
   <servlet>
@@ -35,25 +35,25 @@
 <!--    <url-pattern>/logout</url-pattern>-->
 <!--  </servlet-mapping>-->
 
-  <servlet>
-    <servlet-name>RegistrationJSP</servlet-name>
-    <jsp-file>/user_registration.jsp</jsp-file>
-  </servlet>
+<!--  <servlet>-->
+<!--    <servlet-name>RegistrationJSP</servlet-name>-->
+<!--    <jsp-file>/user_registration.jsp</jsp-file>-->
+<!--  </servlet>-->
 
-  <servlet-mapping>
-    <servlet-name>RegistrationJSP</servlet-name>
-    <url-pattern>/reg</url-pattern>
-  </servlet-mapping>
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>RegistrationJSP</servlet-name>-->
+<!--    <url-pattern>/reg</url-pattern>-->
+<!--  </servlet-mapping>-->
 
-  <filter>
-    <filter-name>EncodingFilter</filter-name>
-    <filter-class>com.helvetica.services.filters.EncodingFilter</filter-class>
-  </filter>
+<!--  <filter>-->
+<!--    <filter-name>EncodingFilter</filter-name>-->
+<!--    <filter-class>com.helvetica.services.filters.EncodingFilter</filter-class>-->
+<!--  </filter>-->
 
-  <filter-mapping>
-    <filter-name>EncodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+<!--  <filter-mapping>-->
+<!--    <filter-name>EncodingFilter</filter-name>-->
+<!--    <url-pattern>/*</url-pattern>-->
+<!--  </filter-mapping>-->
 
 <!--  <filter>-->
 <!--    <filter-name>AuthFilter</filter-name>-->
@@ -65,10 +65,15 @@
 <!--    <url-pattern>/*</url-pattern>-->
 <!--  </filter-mapping>-->
 
-  <listener>
-    <listener-class>
-      com.helvetica.services.listeners.SessionListener
-    </listener-class>
-  </listener>
+<!--  <listener>-->
+<!--    <listener-class>-->
+<!--      com.helvetica.services.listeners.SessionListener-->
+<!--    </listener-class>-->
+<!--  </listener>-->
+
+<!--  <error-page>-->
+<!--    <exception-type>java.lang.Exception</exception-type>-->
+<!--    <location>/WEB-INF/error.jsp</location>-->
+<!--  </error-page>-->
 
 </web-app>

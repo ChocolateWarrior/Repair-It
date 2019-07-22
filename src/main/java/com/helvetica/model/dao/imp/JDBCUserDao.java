@@ -5,10 +5,7 @@ import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JDBCUserDao implements UserDao {
 
@@ -38,8 +35,8 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> resultList = new ArrayList<>();
+    public HashSet<User> findAll() {
+        HashSet<User> resultList = new HashSet<>();
         Map<Integer,User> users = new HashMap<>();
         try (Statement ps = connection.createStatement()){
             ResultSet rs = ps.executeQuery(
@@ -83,7 +80,7 @@ public class JDBCUserDao implements UserDao {
     public void create(User entity) {
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password, role )" +
-                    " VALUES (? ,?, ?, ? )")){
+                    " VALUES (? ,?, ?, ?, ?)")){
             ps.setString(1 , entity.getFirstName());
             ps.setString(2 , entity.getLastName());
             ps.setString(3 , entity.getUsername());

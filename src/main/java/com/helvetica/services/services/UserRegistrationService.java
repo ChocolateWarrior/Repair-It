@@ -15,18 +15,7 @@ public class UserRegistrationService {
         this.userDao = jdbcDaoFactory.createUserDao();
     }
 
-    public void registerUser(HttpServletRequest request){
-
-        final String firstName = request.getParameter("first_name");
-        final String lastName = request.getParameter("last_name");
-        final String username = request.getParameter("username");
-        final String password = request.getParameter("password");
-
-        final User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setUsername(username);
-        user.setPassword(password);
+    public void registerUser(User user){
 
         userDao.create(user);
 

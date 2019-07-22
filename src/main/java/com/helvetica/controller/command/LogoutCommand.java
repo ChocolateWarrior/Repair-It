@@ -8,6 +8,6 @@ public class LogoutCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         CommandUtility.setUserRole(request, Role.UNKNOWN, "Guest");
-        return "/index.jsp";
+        return "/WEB-INF/view/index.jsp";
     }
 }

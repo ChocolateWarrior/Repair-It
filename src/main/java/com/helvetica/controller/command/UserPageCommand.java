@@ -7,6 +7,6 @@ public class UserPageCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        return "WEB-INF/user_page.jsp";
+        return "WEB-INF/view/user_page.jsp";
     }
 }
