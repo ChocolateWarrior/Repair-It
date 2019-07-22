@@ -18,47 +18,59 @@ import java.util.concurrent.atomic.AtomicReference;
 public class AuthFilter implements Filter {
 
 
+//    @Override
+//    public void doFilter(ServletRequest req,
+//                         ServletResponse resp,
+//                         FilterChain chain) throws ServletException, IOException {
+//
+//        final HttpServletRequest request = (HttpServletRequest) req;
+//        final HttpServletResponse response = (HttpServletResponse) resp;
+//
+//        final String username = request.getParameter("username");
+//        final String password = request.getParameter("password");
+//
+//        @SuppressWarnings("unchecked")
+//        final AtomicReference<UserDao> dao=(AtomicReference<UserDao>)request.getServletContext().getAttribute("dao");
+//
+//        final HttpSession session = request.getSession();
+//
+//
+//        if(session != null &&
+//                session.getAttribute("username") != null &&
+//                session.getAttribute("password") != null){
+//            final Role role = (Role) session.getAttribute("role");
+//            moveToMain(request,response, role);
+//        } else if(dao.get().findByUsernameAndPassword(username, password) != null){
+//
+//            final Role role = dao.get().findByUsernameAndPassword(username, password).getRole();
+//
+//            request.getSession().setAttribute("password", password);
+//            request.getSession().setAttribute("username", username);
+//            request.getSession().setAttribute("role", role);
+//
+//            moveToMain(request,response,role);
+//        } else {
+//
+//            moveToMain(request, response, Role.UNKNOWN);
+//        }
+//
+//        chain.doFilter(req, resp);
+//    }
+
     @Override
-    public void doFilter(ServletRequest req,
-                         ServletResponse resp,
-                         FilterChain chain) throws ServletException, IOException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        final HttpServletRequest request = (HttpServletRequest) req;
-        final HttpServletResponse response = (HttpServletResponse) resp;
+        HttpSession session = request.getSession();
+        ServletContext context = request.getServletContext();
+//        log.info(session);
+//        log.info(session.getAttribute("user"));
+//        log.info(session.getAttribute("loggedUser"));
 
-        final String username = request.getParameter("username");
-        final String password = request.getParameter("password");
-
-        @SuppressWarnings("unchecked")
-        final AtomicReference<UserDao> dao=(AtomicReference<UserDao>)request.getServletContext().getAttribute("dao");
-
-        final HttpSession session = request.getSession();
-
-//        if(nonNull(session) &&
-//        nonNull(session.getAttribute("username")) &&
-//        nonNull(session.getAttribute("password"))) {
-
-        if(session != null &&
-                session.getAttribute("username") != null &&
-                session.getAttribute("password") != null){
-            final Role role = (Role) session.getAttribute("role");
-            moveToMain(request,response, role);
-        } else if(dao.get().findByUsernameAndPassword(username, password) != null){
-
-            final Role role = dao.get().findByUsernameAndPassword(username, password).getRole();
-
-            request.getSession().setAttribute("password", password);
-            request.getSession().setAttribute("username", username);
-            request.getSession().setAttribute("role", role);
-
-            moveToMain(request,response,role);
-        } else {
-
-            moveToMain(request, response, Role.UNKNOWN);
-        }
-
-        chain.doFilter(req, resp);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
+
 
     private void moveToMain(final HttpServletRequest request,
                             final HttpServletResponse response,

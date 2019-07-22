@@ -16,6 +16,7 @@ public class UserDisplayCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
+        userDisplayService.displayUsers(request);
         return "/WEB-INF/view/user_display.jsp";
     }
 }

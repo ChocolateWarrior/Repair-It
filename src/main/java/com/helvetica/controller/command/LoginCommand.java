@@ -1,38 +1,47 @@
 package com.helvetica.controller.command;
 
 import com.helvetica.model.entity.Role;
+import com.helvetica.model.entity.User;
+import com.helvetica.services.services.UserDisplayService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
+import java.util.Optional;
 
 public class LoginCommand implements Command {
+
+    private UserDisplayService userDisplayService;
 
     @Override
     public String execute(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if( username == null || username.equals("") || password == null || password.equals("")  ){
-            //System.out.println("Not");
+        if(Objects.isNull(username) || Objects.isNull(password)){
             return "/WEB-INF/view/login.jsp";
         }
         System.out.println(username + " " + password);
-        //System.out.println("Yes!");
-//todo: check login with DB
 
+
+        Optional<User> userOptional = Optional.ofNullable(userDisplayService.getByUsernameAndPassword(username, password));
+        if (!userOptional.isPresent()) {
+            System.out.println("No such user " + username + " in database");
+            return "/WEB-INF/view/login.jsp";
+        }
 //        if()
 
-        if(CommandUtility.checkUserIsLogged(request, username)) {
-            return "/WEB-INF/error.jsp";
-        }
+        User user = userOptional.get();
 
-        if (username.equals("Admin")){
-            CommandUtility.setUserRole(request, Role.ADMIN, username);
-            return "/WEB-INF/view/admin_page.jsp";
-        } else if(username.equals("User")) {
-            CommandUtility.setUserRole(request, Role.USER, username);
-            return "/WEB-INF/view/user_page.jsp";
+        if (user.getPassword().equals(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("role", user.getRole());
+            System.out.println("User " + username + " successfully logged in");
+            return "redirect:index";
         } else {
-            CommandUtility.setUserRole(request, Role.UNKNOWN, username);
+            System.out.println("Invalid credentials for user " + username);
             return "/WEB-INF/view/login.jsp";
         }
 
