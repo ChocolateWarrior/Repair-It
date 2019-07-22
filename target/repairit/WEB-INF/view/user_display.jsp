@@ -66,7 +66,7 @@
 <%--                                    </form>--%>
 <%--                                </td>--%>
 <%--                               </tr>--%>
-<%--                                <tr>--%>
+
                                     <c:forEach items="${requestScope.users}" var="user">
                                         <tr>
                                             <td><c:out value="${user.id}" /></td>
@@ -77,7 +77,7 @@
 
                                         </tr>
                                     </c:forEach>
-<%--                                </tr>--%>
+
 
 
                             </tbody>

@@ -39,34 +39,11 @@
                                 <th ><fmt:message key="display.last_name">last name</fmt:message></th>
                                 <th ><fmt:message key="display.login">username</fmt:message></th>
                                 <th ><fmt:message key="display.password">password</fmt:message></th>
-<%--                                <th>delete</th>--%>
-<%--                                <th>edit</th>--%>
+
                             </tr>
                             </thead>
                             <tbody >
-<%--                            <tr th:each="u : ${all_users}">--%>
-<%--                                <td th:text="${u.id}"--%>
-<%--                                    th:value="${u.id}"></td>--%>
-<%--                                <td th:text="${u.firstName}"--%>
-<%--                                    th:value="${u.firstName}"></td>--%>
-<%--                                <td th:text="${u.lastName}"--%>
-<%--                                    th:value="${u.lastName}"></td>--%>
-<%--                                <td th:text="${u.username}"--%>
-<%--                                    th:value="${u.username}"></td>--%>
-<%--                                <!--                                <td th:text="${u.password}"-->--%>
-<%--                                <!--                                    th:value="${u.password}"></td>-->--%>
-<%--                                <td>--%>
-<%--                                    <form th:action="@{/user-display/remove/{id}(id=${u.id})}" method="post">--%>
-<%--                                        <button type="submit" class="btn btn-sm btn-secondary">Remove</button>--%>
-<%--                                    </form>--%>
-<%--                                </td>--%>
-<%--                                <td>--%>
-<%--                                    <form th:action="@{/user-display/edit/{id}(id=${u.id})}" method="get">--%>
-<%--                                        <button type="submit" class="btn btn-sm btn-info">Edit</button>--%>
-<%--                                    </form>--%>
-<%--                                </td>--%>
-<%--                               </tr>--%>
-<%--                                <tr>--%>
+
                                     <c:forEach items="${requestScope.users}" var="user">
                                         <tr>
                                             <td><c:out value="${user.id}" /></td>
@@ -77,7 +54,7 @@
 
                                         </tr>
                                     </c:forEach>
-<%--                                </tr>--%>
+
 
 
                             </tbody>

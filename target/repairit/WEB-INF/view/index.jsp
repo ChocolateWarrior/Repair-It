@@ -29,29 +29,29 @@
         <h3><fmt:message key="index.greeting">greeting</fmt:message></h3>
         <ul class="nav nav-tabs nav-fill bg-light">
             <li class="nav-item">
-                <a class="nav-link disabled" href="/main"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
+                <a class="nav-link disabled" href="${pageContext.request.contextPath}/index"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
             </li>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>--%>
+<%--            </li>--%>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link" href="${pageContext.request.contextPath}/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>--%>
+<%--            </li>--%>
             <li class="nav-item">
-                <a class="nav-link" href="/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/user-display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/request-display"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/master-display" ><fmt:message key="index.nav_bar.master_display">display masters</fmt:message></a>
-            </li>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link" href="${pageContext.request.contextPath}/request-display"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>--%>
+<%--            </li>--%>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link" href="${pageContext.request.contextPath}/master-display" ><fmt:message key="index.nav_bar.master_display">display masters</fmt:message></a>--%>
+<%--            </li>--%>
         </ul>
 
     </div>

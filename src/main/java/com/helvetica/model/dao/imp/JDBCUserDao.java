@@ -63,13 +63,15 @@ public class JDBCUserDao implements UserDao {
         return users.get(user.getId());
     }
 
-    public User findByUsernameAndPassword(String username, String password){
+    public User findByUsernameAndPassword(String usernameIn, String passwordIn){
         User result = new User();
         try (Statement ps = connection.createStatement()){
             ResultSet rs = ps.executeQuery(
-                    "SELECT * FROM users WHERE 'username' =" + username +
-                            " AND 'password'=" + password + ";");
+                    "SELECT * FROM users WHERE username = \'" + usernameIn +
+                            "\' AND password=\'" + passwordIn + "\';");
+            while ( rs.next() ){
                 result = extractFromResultSet(rs);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
