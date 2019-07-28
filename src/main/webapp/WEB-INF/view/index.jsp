@@ -68,11 +68,11 @@
 
     </div>
 
-    <div class = "userInfo">
+<%--    <div class = "userInfo">--%>
 
-        Logged user: <span>Bob</span>
-        Roles: <span>[ROLE_USER, ROLE_ADMIN]</span>
-    </div>
+<%--        Logged user: <span>Bob</span>--%>
+<%--        Roles: <span>[ROLE_USER, ROLE_ADMIN]</span>--%>
+<%--    </div>--%>
 
     <div class = "footer" style="margin-top: 20px">
         <span><fmt:message key="lang.change">change</fmt:message></span>:

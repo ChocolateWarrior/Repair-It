@@ -81,19 +81,15 @@
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
             </div>
             <div class="footer_bar">
-                <a href="/main"><fmt:message key="main.return">main</fmt:message></a>
-                <span> OR </span>
-                <a href="/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>
+                <a href="${pageContext.request.contextPath}/index"><fmt:message key="main.return">main</fmt:message></a>
+<%--                <span> OR </span>--%>
+<%--                <a href="${pageContext.request.contextPath}/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>--%>
             </div>
 
         </div>
     </div>
 
 </div>
-
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-<script type="text/javascript" src="js/registrationApp.js"></script>
 
 </body>
 </html>

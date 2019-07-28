@@ -29,7 +29,7 @@ public class JDBCUserDao implements UserDao {
         result.setLastName(rs.getString("last_name"));
         result.setUsername(rs.getString("username"));
         result.setPassword(rs.getString("password"));
-        result.setRole(Role.USER);
+        result.addAuthority(Role.USER);
 
         return result;
     }

@@ -1,7 +1,7 @@
 package com.helvetica.controller.command;
 
 import com.helvetica.model.entity.User;
-import com.helvetica.services.services.UserRegistrationService;
+import com.helvetica.services.UserRegistrationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -29,13 +29,7 @@ public class RegistrationCommand implements Command {
             return "/WEB-INF/view/user_registration.jsp";
         }
 
-        User user = User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .username(username)
-                .password(password)
-                .build();
-
+        User user = new User(firstName, lastName, username, password);
         userRegistrationService.registerUser(user);
         return "/WEB-INF/view/user_registration.jsp";
     }

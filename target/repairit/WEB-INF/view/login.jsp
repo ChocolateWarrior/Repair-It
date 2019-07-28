@@ -62,7 +62,7 @@
     <div class = "navigation">
         <ul class="nav nav-tabs nav-fill bg-light">
             <li class="nav-item">
-                <a class="nav-link" href="/registration"><fmt:message key="login.reg_here">register here</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/registration"><fmt:message key="login.reg_here">register here</fmt:message></a>
             </li>
         </ul>
     </div>

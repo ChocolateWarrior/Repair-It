@@ -7,7 +7,7 @@
 
   <servlet>
     <servlet-name>MainServlet</servlet-name>
-    <servlet-class>com.helvetica.services.servlets.MainServlet</servlet-class>
+    <servlet-class>com.helvetica.controller.servlets.MainServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -17,7 +17,7 @@
 
 <!--  <servlet>-->
 <!--    <servlet-name>LoginServlet</servlet-name>-->
-<!--    <servlet-class>com.helvetica.services.servlets.LoginServlet</servlet-class>-->
+<!--    <servlet-class>com.helvetica.controller.servlets.LoginServlet</servlet-class>-->
 <!--  </servlet>-->
 
 <!--  <servlet-mapping>-->
@@ -27,7 +27,7 @@
 
 <!--  <servlet>-->
 <!--    <servlet-name>LogoutServlet</servlet-name>-->
-<!--    <servlet-class>com.helvetica.services.servlets.LogoutServlet</servlet-class>-->
+<!--    <servlet-class>com.helvetica.controller.servlets.LogoutServlet</servlet-class>-->
 <!--  </servlet>-->
 
 <!--  <servlet-mapping>-->
@@ -47,7 +47,7 @@
 
   <filter>
     <filter-name>EncodingFilter</filter-name>
-    <filter-class>com.helvetica.services.filters.EncodingFilter</filter-class>
+    <filter-class>com.helvetica.controller.filters.EncodingFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -57,7 +57,7 @@
 
   <filter>
     <filter-name>AuthFilter</filter-name>
-    <filter-class>com.helvetica.services.filters.AuthFilter</filter-class>
+    <filter-class>com.helvetica.controller.filters.AuthFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -67,7 +67,7 @@
 
   <listener>
     <listener-class>
-      com.helvetica.services.listeners.SessionListener
+      com.helvetica.controller.listeners.SessionListener
     </listener-class>
   </listener>
 

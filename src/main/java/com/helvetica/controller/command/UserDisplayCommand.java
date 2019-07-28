@@ -1,7 +1,6 @@
 package com.helvetica.controller.command;
 
-import com.helvetica.services.services.UserDisplayService;
-import com.helvetica.services.services.UserRegistrationService;
+import com.helvetica.services.UserDisplayService;
 
 import javax.servlet.http.HttpServletRequest;
 

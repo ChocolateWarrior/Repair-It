@@ -19,7 +19,7 @@
 
 
     <div class="footer">
-        <a href="/logout">logout</a>
+        <a href="${pageContext.request.contextPath}/logout">logout</a>
     </div>
 
 </body>

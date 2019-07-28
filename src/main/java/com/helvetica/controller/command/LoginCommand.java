@@ -1,14 +1,14 @@
 package com.helvetica.controller.command;
 
-import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.services.UserDisplayService;
+import com.helvetica.services.UserDisplayService;
+import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
-import java.util.Optional;
 
+@Log4j2
 public class LoginCommand implements Command {
 
     private UserDisplayService userDisplayService;
@@ -28,21 +28,20 @@ public class LoginCommand implements Command {
 
         User user = userDisplayService.getByUsernameAndPassword(username, password);
         if (user == null) {
-            System.out.println("No such user " + username + " in database");
+            log.warn("No such user " + username + " in database");
             return "/WEB-INF/view/login.jsp";
         }
 
         if (user.getPassword().equals(password)) {
             HttpSession session = request.getSession();
-            System.out.println("HERE");
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
             session.setAttribute("password", user.getPassword());
-            session.setAttribute("role", user.getRole());
-            System.out.println("User " + username + " successfully logged in");
+            session.setAttribute("role", user.getAuthorities());
+            log.info("User " + username + " successfully logged in");
             return "redirect:index";
         } else {
-            System.out.println("Invalid credentials for user " + username);
+            log.warn("Invalid credentials for user " + username);
             return "/WEB-INF/view/login.jsp";
         }
 
