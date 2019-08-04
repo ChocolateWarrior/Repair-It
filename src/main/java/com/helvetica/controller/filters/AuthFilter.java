@@ -1,6 +1,7 @@
 package com.helvetica.controller.filters;
 
 import com.helvetica.model.entity.Role;
+import com.helvetica.model.entity.User;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.*;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.*;
 
 //import static java.util.Objects.nonNull;
 
@@ -16,91 +18,66 @@ import java.io.IOException;
 @WebFilter(filterName = "AuthFilter")
 public class AuthFilter implements Filter {
 
+    private final List<String> adminPaths = Arrays.asList("/repairit_war/index",
+            "/repairit_war/logout",
+            "/repairit_war/display",
+            "/repairit_war/display/delete");
+    private final List<String> authorizedPaths = Arrays.asList("/repairit_war/index",
+            "/repairit_war/logout",
+            "/repairit_war/display",
+//            "/repairit_war/request",
+            "/repairit_war/request");
+    private final List<String> unauthorizedPaths = Arrays.asList("/repairit_war/index",
+            "/repairit_war/login",
+            "/repairit_war/registration");
+    private Map<Role, List<String>> allowedPathPatterns = new HashMap<>();
 
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        allowedPathPatterns.put(Role.USER, authorizedPaths);
+        allowedPathPatterns.put(Role.ADMIN, adminPaths);
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
-        log.info(session);
-        log.info(session.getAttribute("user"));
-        log.info(session.getAttribute("loggedUser"));
+        String uri = request.getRequestURI();
+        System.out.println(uri);
+        User user = (User) session.getAttribute("user");
+        System.out.println(user);
 
-        filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-
-    private void moveToMain(final HttpServletRequest request,
-                            final HttpServletResponse response,
-                            final Role role) throws ServletException, IOException{
-
-        switch (role){
-            case ADMIN:
-                request.getRequestDispatcher("/WEB-INF/admin_page.jsp");
-                break;
-
-            case USER:
-                request.getRequestDispatcher("/WEB-INF/user_page.jsp");
-                break;
-
-            case UNKNOWN:
-                request.getRequestDispatcher("WEB_INF/view/login.jsp");
-                break;
+        if (Objects.isNull(user)) {
+            if (unauthorizedPaths.contains(uri)) {
+                filterChain.doFilter(request, response);
+                return;
+            } else {
+                response.sendRedirect(
+                        "/repairit_war/login");
+                return;
+            }
         }
+
+        List<String> paths = allowedPathPatterns.getOrDefault(user.getAuthority(), unauthorizedPaths);
+
+        if (paths.contains(uri)) {
+            filterChain.doFilter(request, response);
+            System.out.println("HERE");
+        } else {
+            response.setStatus(403);
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+        }
+
     }
 
-
-    @Override
-    public void init(FilterConfig config) throws ServletException {
-    }
 
     @Override
     public void destroy() {
     }
-
-    //    @Override
-//    public void doFilter(ServletRequest req,
-//                         ServletResponse resp,
-//                         FilterChain chain) throws ServletException, IOException {
-//
-//        final HttpServletRequest request = (HttpServletRequest) req;
-//        final HttpServletResponse response = (HttpServletResponse) resp;
-//
-//        final String username = request.getParameter("username");
-//        final String password = request.getParameter("password");
-//
-//        @SuppressWarnings("unchecked")
-//        final AtomicReference<UserDao> dao=(AtomicReference<UserDao>)request.getServletContext().getAttribute("dao");
-//
-//        final HttpSession session = request.getSession();
-//
-//
-//        if(session != null &&
-//                session.getAttribute("username") != null &&
-//                session.getAttribute("password") != null){
-//            final Role role = (Role) session.getAttribute("role");
-//            moveToMain(request,response, role);
-//        } else if(dao.get().findByUsernameAndPassword(username, password) != null){
-//
-//            final Role role = dao.get().findByUsernameAndPassword(username, password).getRole();
-//
-//            request.getSession().setAttribute("password", password);
-//            request.getSession().setAttribute("username", username);
-//            request.getSession().setAttribute("role", role);
-//
-//            moveToMain(request,response,role);
-//        } else {
-//
-//            moveToMain(request, response, Role.UNKNOWN);
-//        }
-//
-//        chain.doFilter(req, resp);
-
-//    }
 }

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 public class LogoutCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
-//        CommandUtility.setUserRole(request, Role.UNKNOWN, "Guest");
+//        CommandUtility.setUserRole(request.jsp, Role.UNKNOWN, "Guest");
 
         HttpSession session = request.getSession();
         session.invalidate();

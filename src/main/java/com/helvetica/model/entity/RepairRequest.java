@@ -11,13 +11,13 @@ public class RepairRequest {
 
     private Set<User> masters;
 
-    private String specification;
     private String description;
     private String rejectionMessage;
     private String comment;
     private LocalDateTime requestTime;
     private LocalDateTime finishTime;
     private BigDecimal price;
+    private Specification specification;
     private RequestState state;
     public void addMaster(User master){
         masters.add(master);
@@ -26,7 +26,7 @@ public class RepairRequest {
     public RepairRequest(int id,
                          User user,
                          Set<User> masters,
-                         String specification,
+                         Specification specification,
                          String description,
                          String rejectionMessage,
                          String comment,
@@ -47,6 +47,23 @@ public class RepairRequest {
         this.state = state;
     }
 
+    public RepairRequest(User user, String description, LocalDateTime requestTime, Specification specification) {
+        this.user = user;
+        this.description = description;
+        this.requestTime = requestTime;
+        this.specification = specification;
+    }
+
+    @Override
+    public String toString() {
+        return "RepairRequest{" +
+                "user=" + user +
+                ", description='" + description + '\'' +
+                ", requestTime=" + requestTime +
+                ", specification=" + specification +
+                '}';
+    }
+
     public RepairRequest() {
     }
 
@@ -63,7 +80,7 @@ public class RepairRequest {
     }
 
     public String getSpecification() {
-        return specification;
+        return specification.name();
     }
 
     public String getDescription() {
@@ -106,7 +123,7 @@ public class RepairRequest {
         this.masters = masters;
     }
 
-    public void setSpecification(String specification) {
+    public void setSpecification(Specification specification) {
         this.specification = specification;
     }
 

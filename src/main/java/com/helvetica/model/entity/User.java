@@ -1,16 +1,9 @@
 package com.helvetica.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.Objects;
 import java.util.Set;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
 public class User {
 
     private int id;
@@ -18,7 +11,7 @@ public class User {
     private String lastName;
     private String username;
     private String password;
-    private Set<Role> authorities;
+    private Role authority;
     private Set<Specification> specifications;
     private Set<RepairRequest> userRequests;
     private Set<RepairRequest> masterRequests;
@@ -27,9 +20,6 @@ public class User {
         masterRequests.add(request);
     }
     public void addUserRequest(RepairRequest request) {userRequests.add(request);}
-    public void addAuthority(Role authority){
-        authorities.add(authority);
-    }
     public void addSpecification(Specification specification){
         specifications.add(specification);
     }
@@ -88,12 +78,12 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getAuthorities() {
-        return authorities;
+    public void setAuthority(Role authority) {
+        this.authority = authority;
     }
 
-    public void setAuthorities(Set<Role> authorities) {
-        this.authorities = authorities;
+    public Role getAuthority() {
+        return authority;
     }
 
     public Set<Specification> getSpecifications() {
@@ -119,4 +109,35 @@ public class User {
     public void setMasterRequests(Set<RepairRequest> masterRequests) {
         this.masterRequests = masterRequests;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(password, user.password) &&
+                authority == user.authority;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, firstName, lastName, password, authority);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", authority=" + authority +
+                '}';
+    }
+
+
 }

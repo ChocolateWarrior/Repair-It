@@ -17,7 +17,17 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User findById(int id) {
-        return null;
+        User result = new User();
+        try (Statement ps = connection.createStatement()){
+            ResultSet rs = ps.executeQuery(
+                    "SELECT * FROM users WHERE id = \'" + id + "\';");
+            while ( rs.next() ){
+                result = extractFromResultSet(rs);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     private static User extractFromResultSet(ResultSet rs)
@@ -29,7 +39,7 @@ public class JDBCUserDao implements UserDao {
         result.setLastName(rs.getString("last_name"));
         result.setUsername(rs.getString("username"));
         result.setPassword(rs.getString("password"));
-        result.addAuthority(Role.USER);
+        result.setAuthority(Role.USER);
 
         return result;
     }
@@ -81,7 +91,7 @@ public class JDBCUserDao implements UserDao {
     @Override
     public void create(User entity) {
         try(PreparedStatement ps = connection.prepareStatement
-                ("INSERT INTO users (first_name, last_name, username, password, role )" +
+                ("INSERT INTO users (first_name, last_name, username, password, authority )" +
                     " VALUES (? ,?, ?, ?, ?)")){
             ps.setString(1 , entity.getFirstName());
             ps.setString(2 , entity.getLastName());

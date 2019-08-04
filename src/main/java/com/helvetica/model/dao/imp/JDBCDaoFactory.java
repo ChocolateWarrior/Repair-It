@@ -1,6 +1,7 @@
 package com.helvetica.model.dao.imp;
 
 import com.helvetica.model.dao.DaoFactory;
+import com.helvetica.model.dao.RequestDao;
 import com.helvetica.model.dao.UserDao;
 
 import javax.sql.DataSource;
@@ -14,6 +15,11 @@ public class JDBCDaoFactory extends DaoFactory {
     @Override
     public UserDao createUserDao() {
         return new JDBCUserDao(getConnection());
+    }
+
+    @Override
+    public RequestDao createRequestDao() {
+        return new JDBCRequestDao(getConnection());
     }
 
     private Connection getConnection(){

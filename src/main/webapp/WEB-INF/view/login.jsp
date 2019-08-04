@@ -28,7 +28,7 @@
         <div class="card-header"><fmt:message key="login.logging_in">login</fmt:message></div>
         <div class="card-body">
 
-            <form action="${pageContext.request.contextPath}/login"  method="post">
+            <form action="${pageContext.request.contextPath}/login" method="post">
 
                 <div class="form-group">
                     <label id="usernameLabel" for="username" ><fmt:message key="login.login">login</fmt:message></label>

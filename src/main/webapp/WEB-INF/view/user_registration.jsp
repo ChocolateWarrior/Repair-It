@@ -83,7 +83,7 @@
             <div class="footer_bar">
                 <a href="${pageContext.request.contextPath}/index"><fmt:message key="main.return">main</fmt:message></a>
 <%--                <span> OR </span>--%>
-<%--                <a href="${pageContext.request.contextPath}/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>--%>
+<%--                <a href="${pageContext.request.jsp.contextPath}/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>--%>
             </div>
 
         </div>

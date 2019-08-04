@@ -27,7 +27,7 @@ public class LoginCommand implements Command {
         }
 
         User user = userDisplayService.getByUsernameAndPassword(username, password);
-        if (user == null) {
+        if (Objects.isNull(user)) {
             log.warn("No such user " + username + " in database");
             return "/WEB-INF/view/login.jsp";
         }
@@ -37,7 +37,7 @@ public class LoginCommand implements Command {
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
             session.setAttribute("password", user.getPassword());
-            session.setAttribute("role", user.getAuthorities());
+            session.setAttribute("role", user.getAuthority());
             log.info("User " + username + " successfully logged in");
             return "redirect:index";
         } else {
