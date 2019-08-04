@@ -31,6 +31,6 @@ public class RegistrationCommand implements Command {
 
         User user = new User(firstName, lastName, username, password);
         userRegistrationService.registerUser(user);
-        return "/WEB-INF/view/user_registration.jsp";
+        return "redirect:/repairit_war/login";
     }
 }

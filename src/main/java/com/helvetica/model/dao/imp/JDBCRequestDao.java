@@ -27,9 +27,6 @@ public class JDBCRequestDao implements RequestDao{
     @Override
     public void create(RepairRequest entity) {
 
-        System.out.println("OK(1)");
-        System.out.println(entity);
-
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO requests (specification, description, user_id, request_time)" +
                         " VALUES (? ,?, ?, ?)")){
@@ -85,13 +82,8 @@ public class JDBCRequestDao implements RequestDao{
     }
 
     @Override
-    public RepairRequest findByUsernameAndPassword(String username, String password) {
-        return null;
-    }
-
-    @Override
     public HashSet<RepairRequest> findAll() {
-        HashSet<RepairRequest> resultList = new HashSet<>();
+        HashSet<RepairRequest> resultSet = new HashSet<>();
         Map<Integer,RepairRequest> requests = new HashMap<>();
         try (Statement ps = connection.createStatement()){
             ResultSet rs = ps.executeQuery(
@@ -99,12 +91,30 @@ public class JDBCRequestDao implements RequestDao{
             while ( rs.next() ){
                 RepairRequest request = extractFromResultSet(rs);
                 request = makeUniqueRequest( requests, request);
-                resultList.add(request);
+                resultSet.add(request);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return resultList;
+        return resultSet;
+    }
+
+    public HashSet<RepairRequest> findByUser(int id) {
+        HashSet<RepairRequest> resultSet = new HashSet<>();
+        Map<Integer,RepairRequest> requests = new HashMap<>();
+        try (Statement ps = connection.createStatement()){
+            ResultSet rs = ps.executeQuery(
+                    "SELECT * FROM requests WHERE user_id = \'" + id + "\';");
+            while ( rs.next() ){
+                RepairRequest request = extractFromResultSet(rs);
+                request = makeUniqueRequest( requests, request);
+                resultSet.add(request);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return resultSet;
     }
 
     private RepairRequest makeUniqueRequest(Map<Integer, RepairRequest> requests,  RepairRequest request) {
@@ -116,6 +126,11 @@ public class JDBCRequestDao implements RequestDao{
 //        }
 
         return requests.get(request.getId());
+    }
+
+    @Override
+    public RepairRequest findByUsernameAndPassword(String username, String password) {
+        return null;
     }
 
     @Override

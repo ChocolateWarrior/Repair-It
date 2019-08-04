@@ -25,9 +25,13 @@ public class AuthFilter implements Filter {
     private final List<String> authorizedPaths = Arrays.asList("/repairit_war/index",
             "/repairit_war/logout",
             "/repairit_war/display",
+            "/repairit_war/registration",
+            "/repairit_war/login",
+            "/repairit_war/display/delete",
 //            "/repairit_war/request",
             "/repairit_war/request");
-    private final List<String> unauthorizedPaths = Arrays.asList("/repairit_war/index",
+    private final List<String> unauthorizedPaths = Arrays.asList(
+//            "/repairit_war/index",
             "/repairit_war/login",
             "/repairit_war/registration");
     private Map<Role, List<String>> allowedPathPatterns = new HashMap<>();
@@ -43,15 +47,12 @@ public class AuthFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession();
         String uri = request.getRequestURI();
-        System.out.println(uri);
         User user = (User) session.getAttribute("user");
-        System.out.println(user);
 
         if (Objects.isNull(user)) {
             if (unauthorizedPaths.contains(uri)) {
@@ -68,7 +69,6 @@ public class AuthFilter implements Filter {
 
         if (paths.contains(uri)) {
             filterChain.doFilter(request, response);
-            System.out.println("HERE");
         } else {
             response.setStatus(403);
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);

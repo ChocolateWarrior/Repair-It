@@ -31,6 +31,9 @@ public class MainServlet extends HttpServlet {
         commands.put("user" , new UserPageCommand());
         commands.put("registration" , new RegistrationCommand());
         commands.put("display", new UserDisplayCommand());
+        commands.put("index", new IndexCommand());
+        commands.put("display/delete", new UserDeleteCommand());
+
 
     }
 
@@ -53,18 +56,11 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         processRequest(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         processRequest(request,response);
-
-//        PrintWriter pw = response.getWriter();
-//        pw.println("<html>");
-//        pw.println("<p>HELLO</p>");
-//        pw.println("</html>");
 
     }
 

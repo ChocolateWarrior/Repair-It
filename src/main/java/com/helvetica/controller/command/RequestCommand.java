@@ -3,7 +3,6 @@ package com.helvetica.controller.command;
 import com.helvetica.services.RequestService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 public class RequestCommand implements Command {
 
@@ -15,9 +14,7 @@ public class RequestCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        System.out.println("OK(2)");
 
         return requestService.addRequest(request);
-//        return "/WEB-INF/view/request.jsp";
     }
 }

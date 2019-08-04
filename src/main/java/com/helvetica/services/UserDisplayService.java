@@ -24,4 +24,8 @@ public class UserDisplayService {
         return userDao.findByUsernameAndPassword(username, password);
     }
 
+    public void deleteUser(int id) {
+        System.out.println("HERE!");
+        userDao.delete(id);
+    }
 }

@@ -39,6 +39,8 @@
                                 <th ><fmt:message key="display.last_name">last name</fmt:message></th>
                                 <th ><fmt:message key="display.login">username</fmt:message></th>
                                 <th ><fmt:message key="display.password">password</fmt:message></th>
+                                <th ><fmt:message key="display.edit">edit</fmt:message></th>
+                                <th ><fmt:message key="display.remove">remove</fmt:message></th>
 
                             </tr>
                             </thead>
@@ -51,6 +53,16 @@
                                             <td><c:out value="${user.lastName}" /></td>
                                             <td><c:out value="${user.username}" /></td>
                                             <td><c:out value="${user.password}" /></td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/display/edit?id=${user.id}" class="btn btn-primary">
+                                                    <span><fmt:message key="display.edit"/></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/display/delete?id=${user.id}" class="btn btn-primary">
+                                                    <span><fmt:message key="display.remove"/></span>
+                                                </a>
+                                            </td>
 
                                         </tr>
                                     </c:forEach>

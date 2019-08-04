@@ -113,7 +113,13 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void delete(int id) {
-
+        try (PreparedStatement ps = connection.prepareStatement
+                ("DELETE FROM users WHERE id = ?")){
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

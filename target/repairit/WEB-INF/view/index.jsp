@@ -37,12 +37,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
             </li>
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link" href="${pageContext.request.jsp.contextPath}/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>--%>
-<%--            </li>--%>
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link" href="${pageContext.request.jsp.contextPath}/request.jsp"><fmt:message key="index.nav_bar.request.jsp">leave request.jsp</fmt:message></a>--%>
-<%--            </li>--%>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/request"><fmt:message key="index.nav_bar.request">leave request.jsp</fmt:message></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
             </li>
@@ -57,7 +57,71 @@
     </div>
 
     <div class="jumbotron">
-        <h3><fmt:message key="index.my_requests"/></h3>
+<%--        <h3><fmt:message key="index.my_requests"/></h3>--%>
+
+        <div class="user_requests">
+            <h3>
+                <fmt:message key="index.my_requests">
+                    My requests
+                </fmt:message>
+            </h3>
+
+            <form action="${pageContext.request.contextPath}/index" method="get">
+            <div class="UserRequestsInfo">
+
+                <c:forEach items="${requestScope.user_requests}" var="request">
+                    <div>
+                        <span><fmt:message key="index.type"/><c:out value="${request.specification}" /></span>
+                        <span><fmt:message key="index.description"/><c:out value="${request.description}" /></span>
+                        <span><fmt:message key="index.price"/><c:out value="${request.price}" /></span>
+                        <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
+                        <span>
+<%--                            <fmt:message key="index.masters"/>--%>
+                            <c:forEach items="${request.masters}" var="master">
+                                <p><c:out value="${master.username}" /></p>
+                                <br>
+                            </c:forEach>
+                        </span>
+
+                            <%--                    <form action="@{/main/payment}" method="post" th:field="${paid}" >--%>
+                            <%--                        <label>--%>
+                            <%--                            <input name="requestPrice" th:value="${request.jsp.price}" hidden/>--%>
+                            <%--                            <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
+                            <%--                        </label>--%>
+                            <%--                        <div th:if="${balance &gt; request.jsp.price}" th:unless="${request.jsp.state == paid || request.jsp.state == completed}">--%>
+                            <%--                            <button type="submit" class="btn btn-primary" th:text="#{global.pay}">--%>
+                            <%--                                Pay--%>
+                            <%--                            </button>--%>
+                            <%--                        </div>--%>
+                            <%--                    </form>--%>
+
+                            <%--                    <form action="#" th:action="@{/main/comment}" method="post" th:field="${completed}">--%>
+                            <%--                        <div th:if="${request.jsp.state == completed}" style="margin-top: 30px">--%>
+                            <%--                            <h5 th:text="#{index.comment}"></h5>--%>
+                            <%--                            <label>--%>
+                            <%--                                <input name="comment"--%>
+                            <%--                                       th:placeholder="#{index.leave.comment}"/>--%>
+                            <%--                                <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
+                            <%--                            </label>--%>
+                            <%--                            <button type="submit" class="btn btn-primary" th:text="#{global.submit}">--%>
+                            <%--                                leave--%>
+                            <%--                            </button>--%>
+                            <%--                        </div>--%>
+                            <%--                    </form>--%>
+
+                    </div>
+
+                </c:forEach>
+
+
+                <%--            <div th:if="${ #lists.isEmpty(user_requests)}">--%>
+                <%--                <span th:text="#{index.no_requests}">No requests yet. Leave request.jsp</span>--%>
+                <%--                <a href="/request" th:text="#{index.here}">here.</a>--%>
+                <%--            </div>--%>
+            </div>
+            </form>
+
+        </div>
     </div>
 
     <div class = "footer" style="margin-top: 20px">
@@ -75,62 +139,7 @@
 <%--        <a href="/balance" th:text="#{index.here}">here.</a>--%>
 <%--    </div>--%>
 
-<%--    <div class="user_requests">--%>
-<%--        <h3 th:text="#{index.my_requests}">My requests</h3>--%>
 
-<%--        <div class="UserRequestsInfo" th:field="${user_requests}">--%>
-<%--            <div th:each="request.jsp: ${user_requests}">--%>
-<%--                <ul>--%>
-<%--                    <li>--%>
-<%--                        <span th:text="#{index.type}">Type:</span>--%>
-<%--                        <span th:text="${request.jsp.specification}" th:value="${request.jsp.specification}"></span>--%>
-<%--                        <br>--%>
-<%--                        <span th:text="#{index.description}">Description: </span>--%>
-<%--                        <span th:text="${request.jsp.description}" th:value="${request.jsp.description}"></span>--%>
-<%--                        <br>--%>
-<%--                        <span th:text="#{index.price}">Price: </span>--%>
-<%--                        <span th:text="${request.jsp.price}" th:value="${request.jsp.price}"></span>--%>
-<%--                        <br>--%>
-<%--                        <span th:text="#{index.status}">Status: </span>--%>
-<%--                        <span th:text="${request.jsp.state}" th:value="${request.jsp.state}">dd</span>--%>
-
-<%--                        <form action="#" th:action="@{/main/payment}" method="post" th:field="${paid}" >--%>
-<%--                            <label>--%>
-<%--                                <input name="requestPrice" th:value="${request.jsp.price}" hidden/>--%>
-<%--                                <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
-<%--                            </label>--%>
-<%--                            <div th:if="${balance &gt; request.jsp.price}" th:unless="${request.jsp.state == paid || request.jsp.state == completed}">--%>
-<%--                                <button type="submit" class="btn btn-primary" th:text="#{global.pay}">--%>
-<%--                                    Pay--%>
-<%--                                </button>--%>
-<%--                            </div>--%>
-<%--                        </form>--%>
-
-<%--                        <form action="#" th:action="@{/main/comment}" method="post" th:field="${completed}">--%>
-<%--                            <div th:if="${request.jsp.state == completed}" style="margin-top: 30px">--%>
-<%--                                <h5 th:text="#{index.comment}"></h5>--%>
-<%--                                <label>--%>
-<%--                                    <input name="comment"--%>
-<%--                                           th:placeholder="#{index.leave.comment}"/>--%>
-<%--                                    <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
-<%--                                </label>--%>
-<%--                                <button type="submit" class="btn btn-primary" th:text="#{global.submit}">--%>
-<%--                                    leave--%>
-<%--                                </button>--%>
-<%--                            </div>--%>
-<%--                        </form>--%>
-
-<%--                    </li>--%>
-<%--                </ul>--%>
-<%--            </div>--%>
-
-<%--            <div th:if="${ #lists.isEmpty(user_requests)}">--%>
-<%--                <span th:text="#{index.no_requests}">No requests yet. Leave request.jsp</span>--%>
-<%--                <a href="/request.jsp" th:text="#{index.here}">here.</a>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--    </div>--%>
 
 <%--    <div class = "master_request" sec:authorize="hasAuthority('MASTER')" style="margin-top: 30px" th:field="${master_requests}">--%>
 <%--        <h3 th:text="#{index.my_requests.master}"> My request.jsp (Master) </h3>--%>
