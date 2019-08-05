@@ -46,12 +46,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
             </li>
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link" href="${pageContext.request.jsp.contextPath}/request.jsp-display"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>--%>
-<%--            </li>--%>
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link" href="${pageContext.request.jsp.contextPath}/master-display" ><fmt:message key="index.nav_bar.master_display">display masters</fmt:message></a>--%>
-<%--            </li>--%>
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
+            </li>
         </ul>
 
     </div>

@@ -31,9 +31,9 @@
             <div class = "panel panel-default">
                 <div class = "panel-heading"><fmt:message key="req.display.heading">requests</fmt:message></div>
                 <div class = "panel-body">
-                    <form action="#" th:action="@{/request-display}" method="get">
+                    <form action="${pageContext.request.contextPath}/display-request" method="get">
 
-                        <table class = "table table-bordered table-hover table-responsive" th:field="${all_requests}" style="text-align: center">
+                        <table class = "table table-bordered table-hover table-responsive" style="text-align: center">
                             <thead class ="thead-dark">
                             <tr>
                                 <th>
@@ -62,6 +62,11 @@
                                     </fmt:message>
                                 </th>
                                 <th>
+                                    <fmt:message key="req.display.status">
+                                        status
+                                    </fmt:message>
+                                </th>
+                                <th>
                                     <fmt:message key="req.display.master_id">
                                         master_id
                                     </fmt:message>
@@ -76,11 +81,7 @@
                                         price
                                     </fmt:message>
                                 </th>
-                                <th>
-                                    <fmt:message key="req.display.status">
-                                        status
-                                    </fmt:message>
-                                </th>
+
                                 <th>
                                     <fmt:message key="display.rejection">
                                         rejection
@@ -103,6 +104,7 @@
                                     <td><c:out value="${request.description}" /></td>
                                     <td><c:out value="${request.requestTime}" /></td>
                                     <td><c:out value="${request.user.id}" /></td>
+                                    <td><c:out value="${request.state}" /></td>
                                     <td>
                                         <c:forEach items="${request.masters}" var="master">
                                             <p><c:out value="${master.username}" /></p>
@@ -111,27 +113,34 @@
                                     </td>
                                     <td><c:out value="${request.finishTime}" /></td>
                                     <td><c:out value="${request.price}" /></td>
-                                    <td><c:out value="${request.state}" /></td>
                                     <td>
-                                        <form th:action="@{/request-display/reject/{id}(id=${r.id})}" method="post">
-                                            <!--                                    <label for="rejectionMessageElement"></label>-->
-                                            <input type="text" id="rejectionMessageElement"
-                                                   name="rejectionMessage"
-                                                   style="margin-bottom: 10px"
-                                                   th:placeholder="#{display.rejection_type}">
-                                            <button style="margin-top: 10px" type="submit"
-                                                    class="btn btn-sm btn-secondary"
-                                                    th:text="#{display.reject}">Reject</button>
-                                        </form>
+
+
+<%--                                        <form action="${pageContext.request.contextPath}/display-request/reject?id=${request.id}"--%>
+<%--                                              method="post">--%>
+
+<%--                                            <input type="text"--%>
+<%--                                                   id="rejectionMessageElement"--%>
+<%--&lt;%&ndash;                                                   name="rejectionMessage"&ndash;%&gt;--%>
+<%--                                                   value="${request.rejectionMessage}"--%>
+<%--                                                   style="margin-bottom: 10px"--%>
+<%--                                                   placeholder=<fmt:message key="display.rejection"/>>--%>
+
+<%--                                            <button class ="btn btn-danger">--%>
+<%--                                                <span><fmt:message key="display.reject"/></span>--%>
+<%--                                            </button>--%>
+<%--                                        </form>--%>
+
+                                        <a href="${pageContext.request.contextPath}/display-request/reject?id=${request.id}" class="btn btn-primary">
+                                            <span><fmt:message key="display.reject"/></span>
+                                        </a>
+
                                     </td>
                                     <td>
-                                        <form th:action="@{/request-display/edit/{id}(id=${r.id})}" method="get">
-                                            <button type="submit" class="btn btn-sm btn-info">
-                                                <fmt:message key="display.edit">
-                                                    edit
-                                                </fmt:message>
-                                            </button>
-                                        </form>
+                                        <a href="${pageContext.request.contextPath}/display-request/edit?id=${request.id}"
+                                           class="btn btn-primary">
+                                            <span><fmt:message key="req.display.add_master"/></span>
+                                        </a>
                                     </td>
 
                                 </tr>

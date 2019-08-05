@@ -37,7 +37,7 @@
                         <option value="clothes"><fmt:message key="spec.clothes">clothes</fmt:message></option>
                         <option value="electronics"><fmt:message key="spec.electronics">electronics</fmt:message></option>
                         <option value="furniture"><fmt:message key="spec.furniture">furniture</fmt:message></option>
-                        <option value="sanitary engineering"><fmt:message key="spec.sanitary">sanitary engineering</fmt:message></option>
+                        <option value="sanitary_engineering"><fmt:message key="spec.sanitary">sanitary engineering</fmt:message></option>
                         <option value="mechanics"><fmt:message key="spec.mechanics">mechanics</fmt:message></option>
                     </select>
                 </div>

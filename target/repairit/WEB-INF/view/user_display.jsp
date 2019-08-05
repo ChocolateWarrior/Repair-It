@@ -16,7 +16,7 @@
 <html lang = "${param.lang}">
 <head>
     <meta charset="UTF-8">
-    <title>Registration Form</title>
+    <title>User Display</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -30,7 +30,6 @@
                 <div class = "panel-heading"><fmt:message key="display.users">Users</fmt:message></div>
                 <div class = "panel-body">
                     <form action="#" method="get">
-
                         <table class = "table table-striped" >
                             <thead class ="thead-dark">
                             <tr>
@@ -68,17 +67,20 @@
                                     </c:forEach>
 
                             </tbody>
-
                         </table>
-
                     </form>
-
-
                 </div>
-
             </div>
         </div>
     </div>
+
+    <div class = "footer" style="margin-top: 20px">
+        <span><fmt:message key="lang.change">change</fmt:message></span>:
+        <a href="?lang=en" ><fmt:message key="lang.en">english</fmt:message></a>
+        /
+        <a href="?lang=uk"><fmt:message key="lang.uk">ukrainian</fmt:message></a>
+    </div>
+
 </div>
 </body>
 </html>

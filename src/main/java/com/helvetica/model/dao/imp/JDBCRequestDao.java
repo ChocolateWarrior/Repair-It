@@ -2,6 +2,7 @@ package com.helvetica.model.dao.imp;
 
 import com.helvetica.model.dao.RequestDao;
 import com.helvetica.model.entity.RepairRequest;
+import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 
@@ -11,6 +12,7 @@ import java.lang.Integer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 
@@ -49,6 +51,16 @@ public class JDBCRequestDao implements RequestDao{
         result.setDescription(rs.getString("description"));
         result.setUser(getUser(parseInt(rs.getString("user_id"))));
         result.setRequestTime(convertTime(rs.getDate("request_time")));
+            result.setState(RequestState.valueOf(rs.getString("state")));
+        if(Objects.nonNull(rs.getDate("finish_time")))
+            result.setFinishTime(convertTime(rs.getDate("finish_time")));
+        if(Objects.nonNull(rs.getBigDecimal("price")))
+            result.setPrice(rs.getBigDecimal("price"));
+        if(Objects.nonNull(rs.getString("rejection_message")))
+            result.setRejectionMessage(rs.getString("rejection_message"));
+        if(Objects.nonNull(rs.getString("comment")))
+            result.setComment(rs.getString("comment"));
+
 
         return result;
     }
@@ -93,6 +105,8 @@ public class JDBCRequestDao implements RequestDao{
                 request = makeUniqueRequest( requests, request);
                 resultSet.add(request);
             }
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -117,13 +131,24 @@ public class JDBCRequestDao implements RequestDao{
         return resultSet;
     }
 
-    private RepairRequest makeUniqueRequest(Map<Integer, RepairRequest> requests,  RepairRequest request) {
+    public void rejectRequest(int id, String message){
+        try (PreparedStatement ps =
+                     connection.prepareStatement("UPDATE requests SET" +
+                             " state = ?," +
+                             " rejection_message = ?" +
+                             " where id = ?")) {
+            ps.setString(1, RequestState.REJECTED.name());
+            ps.setString(2, message);
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private RepairRequest makeUniqueRequest(Map<Integer, RepairRequest> requests,
+                                            RepairRequest request) {
         requests.putIfAbsent(request.getId(), request);
-
-//        if(!requests.containsKey(request.jsp.getId())){
-//            requests.put(request.jsp.getId(), request.jsp);
-//        }
 
         return requests.get(request.getId());
     }

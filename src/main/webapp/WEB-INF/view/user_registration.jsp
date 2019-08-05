@@ -34,7 +34,11 @@
 
             <form style="margin-bottom: 30px" name="form" autocomplete="off">
                 <div class="form-group">
-                    <label id="firsNameLabel" for="firstName"><fmt:message key="reg.first_name">first_name</fmt:message></label>
+                    <label id="firsNameLabel" for="firstName">
+                        <fmt:message key="reg.first_name">
+                            first_name
+                        </fmt:message>
+                    </label>
                     <input type="text"
                            name="firstName"
                            class="form-control"
@@ -43,7 +47,11 @@
                            required>
                 </div>
                 <div class="form-group">
-                    <label id="lastNameLabel" for="lastName" ><fmt:message key="reg.last_name">last_name</fmt:message></label>
+                    <label id="lastNameLabel" for="lastName" >
+                        <fmt:message key="reg.last_name">
+                            last_name
+                        </fmt:message>
+                    </label>
                     <input type="text"
                            name="lastName"
                            class="form-control"
@@ -52,7 +60,11 @@
                            required>
                 </div>
                 <div class="form-group">
-                    <label id="usernameLabel" for="username"><fmt:message key="reg.login">login</fmt:message></label>
+                    <label id="usernameLabel" for="username">
+                        <fmt:message key="reg.login">
+                            login
+                        </fmt:message>
+                    </label>
                     <input type="text"
                            name="username"
                            class="form-control"
@@ -61,7 +73,11 @@
                            required>
                 </div>
                 <div class="form-group">
-                    <label id="passwordLabel" for="password"><fmt:message key="reg.password">password</fmt:message></label>
+                    <label id="passwordLabel" for="password">
+                        <fmt:message key="reg.password">
+                            password
+                        </fmt:message>
+                    </label>
                     <input type="text"
                            name="password"
                            class="form-control"
@@ -81,9 +97,11 @@
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
             </div>
             <div class="footer_bar">
-                <a href="${pageContext.request.contextPath}/index"><fmt:message key="main.return">main</fmt:message></a>
-<%--                <span> OR </span>--%>
-<%--                <a href="${pageContext.request.jsp.contextPath}/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>--%>
+                <a href="${pageContext.request.contextPath}/index">
+                    <fmt:message key="main.return">
+                        main
+                    </fmt:message>
+                </a>
             </div>
 
         </div>
