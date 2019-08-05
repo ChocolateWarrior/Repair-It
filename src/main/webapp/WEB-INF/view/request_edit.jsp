@@ -23,7 +23,7 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="page-header"><fmt:message key="req.edit">Request Edit</fmt:message></h2>
 
-            <form action="@{/request-display/edit/{id}(id=${requestId})}" method="post">
+            <form action="${pageContext.request.contextPath}/display-request/edit?id=${request.id}" method="post">
 
                 <div class="form-group">
                     <label id="masterLabel" for="masterElement" >

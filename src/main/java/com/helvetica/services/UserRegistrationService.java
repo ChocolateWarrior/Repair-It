@@ -1,14 +1,13 @@
 package com.helvetica.services;
 
-import com.helvetica.model.dao.UserDao;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
+import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.User;
 
-import javax.servlet.http.HttpServletRequest;
 
 public class UserRegistrationService {
 
-    private UserDao userDao;
+    private JDBCUserDao userDao;
 
     public UserRegistrationService() {
         JDBCDaoFactory jdbcDaoFactory = new JDBCDaoFactory();
@@ -16,9 +15,11 @@ public class UserRegistrationService {
     }
 
     public void registerUser(User user){
-
         userDao.create(user);
+    }
 
+    public void registerMaster(User user){
+        userDao.createMaster(user);
     }
 
 }

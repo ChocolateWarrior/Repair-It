@@ -88,6 +88,21 @@ public class JDBCUserDao implements UserDao {
         return result;
     }
 
+    public User findByUsername(String username){
+        User result = new User();
+        try (Statement ps = connection.createStatement()){
+            ResultSet rs = ps.executeQuery(
+                    "SELECT * FROM users WHERE username = \'" + username + "\';");
+            while ( rs.next() ){
+                result = extractFromResultSet(rs);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+
+    }
+
     @Override
     public void create(User entity) {
         try(PreparedStatement ps = connection.prepareStatement
@@ -105,6 +120,33 @@ public class JDBCUserDao implements UserDao {
 
     }
 
+    public void createMaster(User entity) {
+        try(PreparedStatement ps = connection.prepareStatement
+                ("INSERT INTO users (first_name, last_name, username, password, authority )" +
+                        " VALUES (? ,?, ?, ?, ?)")){
+            ps.setString(1 , entity.getFirstName());
+            ps.setString(2 , entity.getLastName());
+            ps.setString(3 , entity.getUsername());
+            ps.setString(4 , entity.getPassword());
+            ps.setString(5, String.valueOf(Role.MASTER));
+            ps.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+        entity.getSpecifications().forEach(element -> {
+                    try (PreparedStatement ps = connection.prepareStatement(
+                            "INSERT INTO master_specifications (user_id, specifications) " +
+                                    "VALUES(?, ?)")) {
+                        ps.setInt(1, entity.getId());
+                        ps.setString(2, element.name());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+
+    }
 
     @Override
     public void update(User entity) {

@@ -136,7 +136,7 @@ public class JDBCRequestDao implements RequestDao{
                      connection.prepareStatement("UPDATE requests SET" +
                              " state = ?," +
                              " rejection_message = ?" +
-                             " where id = ?")) {
+                             " WHERE id = ?")) {
             ps.setString(1, RequestState.REJECTED.name());
             ps.setString(2, message);
             ps.setInt(3, id);
@@ -151,6 +151,18 @@ public class JDBCRequestDao implements RequestDao{
         requests.putIfAbsent(request.getId(), request);
 
         return requests.get(request.getId());
+    }
+
+    public void addRequestMaster(RepairRequest request, User master){
+        try(PreparedStatement ps =
+                connection.prepareStatement("INSERT INTO masters_requests(master_id, request_id) VALUES" +
+                        "(?, ?)")) {
+            ps.setInt(1, master.getId());
+            ps.setInt(2, request.getId());
+
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

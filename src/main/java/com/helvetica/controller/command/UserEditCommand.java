@@ -14,8 +14,6 @@ public class UserEditCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest request) {
-        System.out.println("HERE!!");
-//        int id = Integer.parseInt(request.getParameter("id"));
         userDisplayService.editUser(request);
         return "/WEB-INF/view/user_edit.jsp";
     }

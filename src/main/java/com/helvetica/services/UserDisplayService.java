@@ -36,21 +36,15 @@ public class UserDisplayService {
         User userToEdit = userDao.findById(id);
         request.setAttribute("user", userToEdit);
 
-        System.out.println("REQUEST PARAMETER: " + request.getParameter("firstNameEdit"));
-
         Optional<String> firstName = Optional.ofNullable(request.getParameter("firstNameEdit"));
         Optional<String> lastName = Optional.ofNullable(request.getParameter("lastNameEdit"));
         Optional<String> username = Optional.ofNullable(request.getParameter("loginEdit"));
         Optional<String> password = Optional.ofNullable(request.getParameter("passwordEdit"));
 
-        System.out.println("Fn:" + firstName + " Ln: " + lastName + " Un: " + username + " P:"  + password);
-
         userToEdit.setFirstName(firstName.orElse(userToEdit.getFirstName()));
         userToEdit.setLastName(lastName.orElse(userToEdit.getLastName()));
         userToEdit.setUsername(username.orElse(userToEdit.getUsername()));
         userToEdit.setPassword(password.orElse(userToEdit.getPassword()));
-
-        System.out.println("USER:" + userToEdit);
 
         userDao.update(userToEdit);
 
