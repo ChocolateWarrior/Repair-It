@@ -96,7 +96,9 @@
                     </label>
                     <select multiple class="form-control" id="specification" name="specifications">
                         <c:forEach items="${requestScope.all_specifications}" var="specification">
-                            <option value=<c:out value="${specification}"/>></option>
+                            <option value=<c:out value="${specification}"/>>
+                                <c:out value="${specification}"/>
+                            </option>
                         </c:forEach>
                     </select>
                 </div>

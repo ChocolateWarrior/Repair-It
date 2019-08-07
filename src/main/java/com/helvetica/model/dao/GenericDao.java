@@ -2,12 +2,12 @@ package com.helvetica.model.dao;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 public interface GenericDao<T> extends AutoCloseable {
 
     void create(T entity);
-    T findById(int id);
-    T findByUsernameAndPassword(String username, String password);
+    Optional<T> findById(int id);
     HashSet<T> findAll();
     void update(T entity);
     void delete(int id);

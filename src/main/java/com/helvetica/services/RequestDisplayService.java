@@ -6,6 +6,7 @@ import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.RepairRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class RequestDisplayService {
 
@@ -31,9 +32,11 @@ public class RequestDisplayService {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        RepairRequest requestToEdit = requestDao.findById(id);
+        RepairRequest requestToEdit = requestDao.findById(id).get();
         String masterUsername = request.getParameter("master");
-        requestDao.addRequestMaster(requestToEdit, userDao.findByUsername(masterUsername));
+        userDao.findByUsername(masterUsername).ifPresent(e -> {
+            requestDao.addRequestMaster(requestToEdit,e);
+        });
 
     }
 

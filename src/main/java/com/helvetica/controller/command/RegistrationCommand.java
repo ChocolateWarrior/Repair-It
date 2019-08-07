@@ -5,8 +5,10 @@ import com.helvetica.model.entity.User;
 import com.helvetica.services.UserRegistrationService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+ import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class RegistrationCommand implements Command {
 
@@ -19,8 +21,10 @@ public class RegistrationCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        session.setAttribute("all_specifications", Specification.values());
+
+        List<String> names = new ArrayList<>();
+        Stream.of(Specification.values()).forEach(e -> names.add(e.name()));
+        request.setAttribute("all_specifications", Specification.values());
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -35,14 +39,21 @@ public class RegistrationCommand implements Command {
             return "/WEB-INF/view/user_registration.jsp";
         }
 
-        User user = new User(firstName, lastName, username, password);
+        List<String> userSpec;
+        List<Specification> specList = new ArrayList<>();
+        userSpec = List.of(specifications);
+        userSpec.forEach(e -> specList.add(Specification.valueOf(e)));
 
-        if(Objects.nonNull(specifications)){
+
+        if(!userSpec.isEmpty()){
+            User user = new User(firstName, lastName, username, password, specList);
             userRegistrationService.registerMaster(user);
             return "redirect:/repairit_war/login";
+        }else {
+            User user = new User(firstName, lastName, username, password);
+            userRegistrationService.registerUser(user);
         }
 
-        userRegistrationService.registerUser(user);
         return "redirect:/repairit_war/login";
     }
 }

@@ -1,8 +1,13 @@
 package com.helvetica.model.dao.imp;
 
 import com.helvetica.model.dao.UserDao;
+import com.helvetica.model.dao.mapper.MasterMapper;
+import com.helvetica.model.dao.mapper.RequestMapper;
+import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.*;
@@ -10,96 +15,73 @@ import java.util.*;
 public class JDBCUserDao implements UserDao {
 
     private Connection connection;
+    public static final Logger log = LogManager.getLogger();
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 
     public JDBCUserDao(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public User findById(int id) {
-        User result = new User();
-        try (Statement ps = connection.createStatement()){
-            ResultSet rs = ps.executeQuery(
-                    "SELECT * FROM users WHERE id = \'" + id + "\';");
-            while ( rs.next() ){
-                result = extractFromResultSet(rs);
-            }
+    public Optional<User> findById(int id) {
+
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE id = ?")){
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            Map<Integer, User> users = extractFromResultSet(rs);
+            return Optional.ofNullable(users.get(id));
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return result;
-    }
-
-    private static User extractFromResultSet(ResultSet rs)
-            throws SQLException {
-        User result = new User();
-
-        result.setId(rs.getInt("id"));
-        result.setFirstName(rs.getString("first_name"));
-        result.setLastName(rs.getString("last_name"));
-        result.setUsername(rs.getString("username"));
-        result.setPassword(rs.getString("password"));
-        result.setAuthority(Role.USER);
-
-        return result;
     }
 
     @Override
     public HashSet<User> findAll() {
-        HashSet<User> resultList = new HashSet<>();
-        Map<Integer,User> users = new HashMap<>();
-        try (Statement ps = connection.createStatement()){
-            ResultSet rs = ps.executeQuery(
-                    "SELECT * FROM users;");
-            while ( rs.next() ){
-                User user = extractFromResultSet(rs);
-                user = makeUniqueUser( users, user);
-                resultList.add(user);
-            }
+        HashSet<User> resultSet;
+
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM users;")){
+
+            ResultSet rs = ps.executeQuery();
+            Map<Integer, User> users = extractFromResultSet(rs);
+            resultSet = new HashSet<>(users.values());
+
+            return resultSet;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return resultList;
     }
 
-    private User makeUniqueUser(Map<Integer, User> users,  User user) {
 
-//        users.putIfAbsent(user.getId(), user);
+    public Optional<User> findByUsernameAndPassword(String username, String password){
 
-        if(!users.containsKey(user.getId())){
-            users.put(user.getId(), user);
-        }
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM users WHERE username =? AND password=?")){
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
 
-        return users.get(user.getId());
-    }
+            Map<Integer, User> users = extractFromResultSet(rs);
+            return users.values().stream().findFirst();
 
-    public User findByUsernameAndPassword(String usernameIn, String passwordIn){
-        User result = new User();
-        try (Statement ps = connection.createStatement()){
-            ResultSet rs = ps.executeQuery(
-                    "SELECT * FROM users WHERE username = \'" + usernameIn +
-                            "\' AND password=\'" + passwordIn + "\';");
-            while ( rs.next() ){
-                result = extractFromResultSet(rs);
-            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return result;
     }
 
-    public User findByUsername(String username){
-        User result = new User();
-        try (Statement ps = connection.createStatement()){
-            ResultSet rs = ps.executeQuery(
-                    "SELECT * FROM users WHERE username = \'" + username + "\';");
-            while ( rs.next() ){
-                result = extractFromResultSet(rs);
-            }
+    public Optional<User> findByUsername(String username){
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM users WHERE username =?")){
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            Map<Integer, User> users = extractFromResultSet(rs);
+            return users.values().stream().findFirst();
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return result;
 
     }
 
@@ -107,13 +89,19 @@ public class JDBCUserDao implements UserDao {
     public void create(User entity) {
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password, authority )" +
-                    " VALUES (? ,?, ?, ?, ?)")){
+                    " VALUES (? ,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
             ps.setString(1 , entity.getFirstName());
             ps.setString(2 , entity.getLastName());
             ps.setString(3 , entity.getUsername());
             ps.setString(4 , entity.getPassword());
             ps.setString(5, String.valueOf(Role.USER));
             ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                entity.setId(id);
+            }
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -121,31 +109,45 @@ public class JDBCUserDao implements UserDao {
     }
 
     public void createMaster(User entity) {
+
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password, authority )" +
-                        " VALUES (? ,?, ?, ?, ?)")){
+                        " VALUES (? ,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
             ps.setString(1 , entity.getFirstName());
             ps.setString(2 , entity.getLastName());
             ps.setString(3 , entity.getUsername());
             ps.setString(4 , entity.getPassword());
             ps.setString(5, String.valueOf(Role.MASTER));
             ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                entity.setId(id);
+                createMasterSpecifications(entity, id);
+            }
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
 
+
+    }
+
+    private void createMasterSpecifications(User entity, int id){
+
         entity.getSpecifications().forEach(element -> {
-                    try (PreparedStatement ps = connection.prepareStatement(
+                    try (PreparedStatement ms = connection.prepareStatement(
                             "INSERT INTO master_specifications (user_id, specifications) " +
                                     "VALUES(?, ?)")) {
-                        ps.setInt(1, entity.getId());
-                        ps.setString(2, element.name());
+
+                        ms.setInt(1, id);
+                        ms.setString(2, element.name());
+                        ms.executeUpdate();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
         );
-
     }
 
     @Override
@@ -183,4 +185,29 @@ public class JDBCUserDao implements UserDao {
     public void close() throws Exception {
 
     }
+
+    private Map<Integer, User> extractFromResultSet(ResultSet rs) throws SQLException {
+
+        MasterMapper masterMapper = new MasterMapper();
+        RequestMapper requestMapper = new RequestMapper();
+
+        Map<Integer, User> masters = new HashMap<>();
+        Map<Integer, RepairRequest> requests = new HashMap<>();
+
+
+        while (rs.next()) {
+            User master = masterMapper.extractFromResultSet(rs);
+//            RepairRequest request = requestMapper.extractFromResultSet(rs);
+//            Role authority = Role.USER;
+//            System.out.println(request);
+            master = masterMapper.makeUnique(masters, master);
+//            request = requestMapper.makeUnique(requests, request);
+//            System.out.println(request);
+
+//            master.addMasterRequest(request);
+//            master.getAuthority().add(authority);
+        }
+        return masters;
+    }
+
 }

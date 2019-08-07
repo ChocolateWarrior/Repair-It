@@ -5,14 +5,14 @@ import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.lang.Integer;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -20,6 +20,8 @@ public class JDBCRequestDao implements RequestDao{
 
     private Connection connection;
     private JDBCUserDao jdbcUserDao;
+    public static final Logger log = LogManager.getLogger();
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 
     public JDBCRequestDao(Connection connection) {
         this.connection = connection;
@@ -49,7 +51,7 @@ public class JDBCRequestDao implements RequestDao{
         result.setId(rs.getInt("id"));
         result.setSpecification(Specification.valueOf(rs.getString("specification")));
         result.setDescription(rs.getString("description"));
-        result.setUser(getUser(parseInt(rs.getString("user_id"))));
+        result.setUser(getUser(parseInt(rs.getString("user_id"))).get());
         result.setRequestTime(convertTime(rs.getDate("request_time")));
             result.setState(RequestState.valueOf(rs.getString("state")));
         if(Objects.nonNull(rs.getDate("finish_time")))
@@ -65,7 +67,7 @@ public class JDBCRequestDao implements RequestDao{
         return result;
     }
 
-    public User getUser(int id){
+    public Optional<User> getUser(int id){
         return jdbcUserDao.findById(id);
     }
 
@@ -79,7 +81,7 @@ public class JDBCRequestDao implements RequestDao{
     }
 
     @Override
-    public RepairRequest findById(int id) {
+    public Optional<RepairRequest> findById(int id) {
         RepairRequest result = new RepairRequest();
         try (Statement ps = connection.createStatement()){
             ResultSet rs = ps.executeQuery(
@@ -90,7 +92,7 @@ public class JDBCRequestDao implements RequestDao{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return result;
+        return Optional.ofNullable(result);
     }
 
     @Override
@@ -165,10 +167,6 @@ public class JDBCRequestDao implements RequestDao{
         }
     }
 
-    @Override
-    public RepairRequest findByUsernameAndPassword(String username, String password) {
-        return null;
-    }
 
     @Override
     public void update(RepairRequest entity) {

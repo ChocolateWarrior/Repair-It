@@ -1,6 +1,8 @@
 package com.helvetica.model.entity;
 
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,6 +17,15 @@ public class User {
     private Set<Specification> specifications;
     private Set<RepairRequest> userRequests;
     private Set<RepairRequest> masterRequests;
+
+    public User(String firstName, String lastName, String username, String password, List<Specification> specifications) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.specifications = new HashSet<>(specifications);
+    }
+
 
     public void addMasterRequest(RepairRequest request){
         masterRequests.add(request);

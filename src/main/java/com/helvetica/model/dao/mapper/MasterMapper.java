@@ -1,5 +1,6 @@
 package com.helvetica.model.dao.mapper;
 
+import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
 
 import java.sql.ResultSet;
@@ -9,28 +10,37 @@ import java.util.Map;
 public class MasterMapper implements ObjectMapper<User> {
     @Override
     public User extractFromResultSet(ResultSet rs) throws SQLException {
-        return null;
+
+        User result = new User();
+
+        result.setId(rs.getInt("id"));
+        result.setFirstName(rs.getString("first_name"));
+        result.setLastName(rs.getString("last_name"));
+        result.setUsername(rs.getString("username"));
+        result.setPassword(rs.getString("password"));
+        result.setAuthority(Role.USER);
+        return result;
+
     }
 
     @Override
     public User makeUnique(Map<Integer, User> cache, User entity) {
-        return null;
+
+        cache.putIfAbsent(entity.getId(), entity);
+        return cache.get(entity.getId());
     }
 
-//    @Override
-//    public Student extractFromResultSet(ResultSet rs) throws SQLException {
-//        Student student = new Student();
-//        student.setId(rs.getInt("idstuden"));
-//        student.setName(rs.getString("studen.name"));
-//        student.setGroupe(rs.getInt("group"));
-//        return student;
-//    }
 //
-//    @Override
-//    public Student makeUnique(Map<Integer, Student> cache,
-//                              Student student) {
-//        cache.putIfAbsent(student.getId(), student);
-//        return cache.get(student.getId());
+//    public User extractFromResultSet(ResultSet rs) throws SQLException {
+//        User user = new User();
+//        user.setId(rs.getLong("users.id"));
+//        user.setFirstName(rs.getString("users.first_name"));
+//        user.setLastName(rs.getString("users.last_name"));
+//        user.setPassword(rs.getString("users.password"));
+//        user.setUsername(rs.getString("users.username"));
+//        return user;
 //    }
+
+
 
 }

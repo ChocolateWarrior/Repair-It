@@ -14,6 +14,7 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
 
     @Override
     public RepairRequest makeUnique(Map<Integer, RepairRequest> cache, RepairRequest entity) {
-        return null;
+        cache.putIfAbsent(entity.getId(), entity);
+        return cache.get(entity.getId());
     }
 }

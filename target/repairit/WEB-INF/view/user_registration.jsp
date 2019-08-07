@@ -85,6 +85,24 @@
                            placeholder="<fmt:message key="reg.enter.password">password</fmt:message>"
                            required>
                 </div>
+
+                <div class="form-group">
+
+                    <label id="SecondTypeLabel" for="specification"
+                           class="col-form-label">
+                        <fmt:message key="reg.select.specification">
+                            Select specification
+                        </fmt:message>
+                    </label>
+                    <select multiple class="form-control" id="specification" name="specifications">
+                        <c:forEach items="${requestScope.all_specifications}" var="specification">
+                            <option value=<c:out value="${specification}"/>>
+                                <c:out value="${specification}"/>
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-success" style="margin-top:30px">
                     <fmt:message key="reg.register">register</fmt:message>
                 </button>
