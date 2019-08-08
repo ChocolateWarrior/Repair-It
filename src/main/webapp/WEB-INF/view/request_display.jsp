@@ -31,7 +31,7 @@
             <div class = "panel panel-default">
                 <div class = "panel-heading"><fmt:message key="req.display.heading">requests</fmt:message></div>
                 <div class = "panel-body">
-                    <form action="${pageContext.request.contextPath}/display-request" method="get">
+                    <form action="${pageContext.request.contextPath}/app/display-request" method="get">
 
                         <table class = "table table-bordered table-hover table-responsive" style="text-align: center">
                             <thead class ="thead-dark">
@@ -131,13 +131,13 @@
 <%--                                            </button>--%>
 <%--                                        </form>--%>
 
-                                        <a href="${pageContext.request.contextPath}/display-request/reject?id=${request.id}" class="btn btn-primary">
+                                        <a href="${pageContext.request.contextPath}/app/display-request/reject?id=${request.id}" class="btn btn-primary">
                                             <span><fmt:message key="display.reject"/></span>
                                         </a>
 
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/display-request/edit?id=${request.id}"
+                                        <a href="${pageContext.request.contextPath}/app/display-request/edit?id=${request.id}"
                                            class="btn btn-primary">
                                             <span><fmt:message key="req.display.add_master"/></span>
                                         </a>
@@ -159,7 +159,7 @@
         <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
     </div>
     <div class="footer_bar">
-        <a href="${pageContext.request.contextPath}/index">
+        <a href="${pageContext.request.contextPath}/app/index">
             <fmt:message key="main.return">main</fmt:message>
         </a>
     </div>

@@ -17,9 +17,7 @@ public class UserDisplayService {
     }
 
     public void displayUsers(HttpServletRequest request){
-        System.out.println("HERE");
         request.setAttribute("users", userDao.findAll());
-        System.out.println("HERE");
         request.getRequestDispatcher("/WEB-INF/user_display.jsp");
     }
 
@@ -43,10 +41,11 @@ public class UserDisplayService {
         Optional<String> username = Optional.ofNullable(request.getParameter("loginEdit"));
         Optional<String> password = Optional.ofNullable(request.getParameter("passwordEdit"));
 
-        userToEdit.setFirstName(firstName.orElse(userToEdit.getFirstName()));
-        userToEdit.setLastName(lastName.orElse(userToEdit.getLastName()));
-        userToEdit.setUsername(username.orElse(userToEdit.getUsername()));
-        userToEdit.setPassword(password.orElse(userToEdit.getPassword()));
+
+        firstName.ifPresent(s -> userToEdit.setFirstName(s.isEmpty() ? userToEdit.getFirstName() : s));
+        lastName.ifPresent(s -> userToEdit.setLastName(s.isEmpty() ? userToEdit.getLastName() : s));
+        username.ifPresent(s -> userToEdit.setUsername(s.isEmpty() ? userToEdit.getUsername() : s));
+        password.ifPresent(s -> userToEdit.setPassword(s.isEmpty() ? userToEdit.getPassword() : s));
 
         userDao.update(userToEdit);
 

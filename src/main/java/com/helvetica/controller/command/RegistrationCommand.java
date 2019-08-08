@@ -3,16 +3,18 @@ package com.helvetica.controller.command;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserRegistrationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
  import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class RegistrationCommand implements Command {
 
     private UserRegistrationService userRegistrationService;
+    public static final Logger log = LogManager.getLogger();
 
     public RegistrationCommand() {
         this.userRegistrationService = new UserRegistrationService();
@@ -22,8 +24,6 @@ public class RegistrationCommand implements Command {
     public String execute(HttpServletRequest request) {
 
 
-        List<String> names = new ArrayList<>();
-        Stream.of(Specification.values()).forEach(e -> names.add(e.name()));
         request.setAttribute("all_specifications", Specification.values());
 
         String firstName = request.getParameter("firstName");
@@ -39,21 +39,26 @@ public class RegistrationCommand implements Command {
             return "/WEB-INF/view/user_registration.jsp";
         }
 
-        List<String> userSpec;
+        List<String> userSpec = new ArrayList<>();
         List<Specification> specList = new ArrayList<>();
-        userSpec = List.of(specifications);
-        userSpec.forEach(e -> specList.add(Specification.valueOf(e)));
+
+        if(Objects.nonNull(specifications)) {
+            log.info("found specifications");
+            userSpec = List.of(specifications);
+            userSpec.forEach(e -> specList.add(Specification.valueOf(e)));
+        }
 
 
         if(!userSpec.isEmpty()){
             User user = new User(firstName, lastName, username, password, specList);
+            log.info("executing master registration...");
             userRegistrationService.registerMaster(user);
-            return "redirect:/repairit_war/login";
         }else {
             User user = new User(firstName, lastName, username, password);
+            log.info("executing user registration...");
             userRegistrationService.registerUser(user);
         }
 
-        return "redirect:/repairit_war/login";
+        return "redirect:/login";
     }
 }

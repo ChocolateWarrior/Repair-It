@@ -15,6 +15,6 @@ public class RequestEditCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         requestDisplayService.editRequest(request);
-        return "/WEB-INF/view/user_edit.jsp";
+        return "/WEB-INF/view/request_edit.jsp";
     }
 }

@@ -5,6 +5,7 @@ import com.helvetica.model.dao.mapper.MasterMapper;
 import com.helvetica.model.dao.mapper.RequestMapper;
 import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.Role;
+import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,15 +40,15 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public HashSet<User> findAll() {
-        HashSet<User> resultSet;
+        HashSet<User> result;
 
         try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM users;")){
 
             ResultSet rs = ps.executeQuery();
             Map<Integer, User> users = extractFromResultSet(rs);
-            resultSet = new HashSet<>(users.values());
+            result = new HashSet<>(users.values());
 
-            return resultSet;
+            return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -85,8 +86,27 @@ public class JDBCUserDao implements UserDao {
 
     }
 
+    public HashSet<User> findMastersBySpecification(Specification specification){
+        HashSet<User> result;
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM users WHERE id IN (SELECT user_id FROM master_specifications WHERE specifications=?)")){
+            ps.setString(1, specification.name());
+            ResultSet rs = ps.executeQuery();
+            Map<Integer, User> users = extractFromResultSet(rs);
+            result = new HashSet<>(users.values());
+
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @Override
     public void create(User entity) {
+
+        log.info("executing user creation...");
+
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password, authority )" +
                     " VALUES (? ,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
@@ -109,6 +129,8 @@ public class JDBCUserDao implements UserDao {
     }
 
     public void createMaster(User entity) {
+
+        log.info("executing master creation...");
 
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password, authority )" +
@@ -189,7 +211,7 @@ public class JDBCUserDao implements UserDao {
     private Map<Integer, User> extractFromResultSet(ResultSet rs) throws SQLException {
 
         MasterMapper masterMapper = new MasterMapper();
-        RequestMapper requestMapper = new RequestMapper();
+        RequestMapper requestMapper = new RequestMapper(connection);
 
         Map<Integer, User> masters = new HashMap<>();
         Map<Integer, RepairRequest> requests = new HashMap<>();

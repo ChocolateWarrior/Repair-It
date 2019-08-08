@@ -28,7 +28,7 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="page-header"><fmt:message key="user.edit">User Edit</fmt:message></h2>
 
-            <form action="${pageContext.request.contextPath}/display/edit?id=${user.id}" method="post">
+            <form action="${pageContext.request.contextPath}/app/display/edit?id=${user.id}" method="post">
                 <div class="form-group">
                     <label id="firstNameLabel" for="firstNameElement">
                         <fmt:message key="reg.first_name">

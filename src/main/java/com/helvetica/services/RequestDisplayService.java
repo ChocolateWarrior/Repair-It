@@ -4,14 +4,21 @@ import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.RepairRequest;
+import com.helvetica.model.entity.Specification;
+import com.helvetica.model.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import java.util.HashSet;
+
 
 public class RequestDisplayService {
 
     private JDBCRequestDao requestDao;
     private JDBCUserDao userDao;
+    public static final Logger log = LogManager.getLogger();
+
 
     public RequestDisplayService() {
         JDBCDaoFactory jdbcDaoFactory = new JDBCDaoFactory();
@@ -33,12 +40,15 @@ public class RequestDisplayService {
         int id = Integer.parseInt(request.getParameter("id"));
 
         RepairRequest requestToEdit = requestDao.findById(id).get();
-        String masterUsername = request.getParameter("master");
-        userDao.findByUsername(masterUsername).ifPresent(e -> {
-            requestDao.addRequestMaster(requestToEdit,e);
-        });
+        HashSet<User> masters = userDao.findMastersBySpecification(Specification.valueOf(requestToEdit.getSpecification()));
+        request.setAttribute("request", requestToEdit);
+        request.setAttribute("all_masters", masters);
+
+        String masterUsername = request.getParameter("masters");
+        log.info("Masters username: " + masterUsername);
+        userDao.findByUsername(masterUsername).ifPresent(e ->
+            requestDao.addRequestMaster(requestToEdit, e));
 
     }
-
 
 }

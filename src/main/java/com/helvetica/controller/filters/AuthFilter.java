@@ -18,34 +18,35 @@ import java.util.*;
 @WebFilter(filterName = "AuthFilter")
 public class AuthFilter implements Filter {
 
-    private final List<String> adminPaths = Arrays.asList("/repairit_war/index",
-            "/repairit_war/logout",
-            "/repairit_war/display",
+    private final List<String> adminPaths = Arrays.asList("/index",
+            "/logout",
+            "/display",
 
-            "/repairit_war/display/delete");
-    private final List<String> authorizedPaths = Arrays.asList("/repairit_war/index",
-            "/repairit_war/logout",
-            "/repairit_war/display",
-            "/repairit_war/display-request",
-            "/repairit_war/display-request/reject",
-            "/repairit_war/registration",
-            "/repairit_war/login",
-            "/repairit_war/display/delete",
-            "/repairit_war/display/edit",
-//            "/repairit_war/request",
-            "/repairit_war/request");
+            "display/delete");
+    private final List<String> authorizedPaths = Arrays.asList("/index",
+            "/index/edit",
+            "/logout",
+            "/display",
+            "/display-request",
+            "/display-request/reject",
+            "/display-request/edit",
+            "/registration",
+            "/login",
+            "/display/delete",
+            "/display/edit",
+            "/request");
     private final List<String> unauthorizedPaths = Arrays.asList(
-//            "/repairit_war/index",
-            "/repairit_war/login",
-            "/repairit_war/logout",
-            "/repairit_war/display",
-            "/repairit_war/display-request",
-            "/repairit_war/display-request/reject",
-            "/repairit_war/registration",
-            "/repairit_war/login",
-            "/repairit_war/display/delete",
-            "/repairit_war/display/edit",
-            "/repairit_war/registration");
+            "/login",
+            "/logout",
+            "/display",
+            "/display-request",
+            "/display-request/reject",
+            "/display-request/edit",
+            "/registration",
+            "/login",
+            "/display/delete",
+            "/display/edit",
+            "/registration");
     private Map<Role, List<String>> allowedPathPatterns = new HashMap<>();
 
     @Override
@@ -63,7 +64,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession();
-        String uri = request.getRequestURI();
+        String uri = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");;
         User user = (User) session.getAttribute("user");
 
         if (Objects.isNull(user)) {
@@ -71,8 +72,9 @@ public class AuthFilter implements Filter {
                 filterChain.doFilter(request, response);
                 return;
             } else {
-                response.sendRedirect(
-                        "/repairit_war/login");
+                response.sendRedirect(request.getContextPath() +
+                        request.getServletPath() +
+                        "/login");
                 return;
             }
         }
@@ -83,7 +85,7 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(request, response);
         } else {
             response.setStatus(403);
-            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
         }
 
     }

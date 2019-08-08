@@ -30,17 +30,4 @@ public class MasterMapper implements ObjectMapper<User> {
         return cache.get(entity.getId());
     }
 
-//
-//    public User extractFromResultSet(ResultSet rs) throws SQLException {
-//        User user = new User();
-//        user.setId(rs.getLong("users.id"));
-//        user.setFirstName(rs.getString("users.first_name"));
-//        user.setLastName(rs.getString("users.last_name"));
-//        user.setPassword(rs.getString("users.password"));
-//        user.setUsername(rs.getString("users.username"));
-//        return user;
-//    }
-
-
-
 }

@@ -4,7 +4,6 @@ import com.helvetica.controller.command.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-@WebServlet(name = "MainServlet")
+
 public class MainServlet extends HttpServlet {
 
     private Map<String, Command> commands = new HashMap<>();
@@ -23,23 +22,26 @@ public class MainServlet extends HttpServlet {
         servletConfig.getServletContext()
                 .setAttribute("users", new HashSet<String>());
 
-        commands.put("logout", new LogoutCommand());
-        commands.put("login", new LoginCommand());
-        commands.put("exception" , new ExceptionCommand());
-        commands.put("request", new RequestCommand());
-        commands.put("registration" , new RegistrationCommand());
-        commands.put("display", new UserDisplayCommand());
-        commands.put("index", new IndexCommand());
-        commands.put("display/delete", new UserDeleteCommand());
-        commands.put("display/edit", new UserEditCommand());
-        commands.put("display-request", new RequestDisplayCommand());
-        commands.put("display-request/reject", new RequestRejectCommand());
+        commands.put("/logout", new LogoutCommand());
+        commands.put("/login", new LoginCommand());
+        commands.put("/exception" , new ExceptionCommand());
+        commands.put("/request", new RequestCommand());
+        commands.put("/registration" , new RegistrationCommand());
+        commands.put("/display", new UserDisplayCommand());
+        commands.put("/index", new IndexCommand());
+        commands.put("/index/edit", new MasterIndexCommand());
+        commands.put("/display/delete", new UserDeleteCommand());
+        commands.put("/display/edit", new UserEditCommand());
+        commands.put("/display-request", new RequestDisplayCommand());
+        commands.put("/display-request/reject", new RequestRejectCommand());
+        commands.put("/display-request/edit", new RequestEditCommand());
+
 
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI().replaceAll(".*/repairit_war/" , "");
+        String path = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");
         Command command = commands.getOrDefault(path ,
                 (r)->"/WEB-INF/view/index.jsp");
 
@@ -48,8 +50,8 @@ public class MainServlet extends HttpServlet {
 
         String page = command.execute(request);
 
-        if(page.contains("redirect")){
-            response.sendRedirect(page.replace("redirect:", ""));
+        if(page.contains("redirect")) {
+            response.sendRedirect(request.getContextPath() + request.getServletPath() + page.replace("redirect:", ""));
         }else {
             request.getRequestDispatcher(page).forward(request, response);
         }

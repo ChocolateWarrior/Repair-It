@@ -28,7 +28,7 @@
             <h2 class="page-header"><fmt:message key="req.header">Reg Form</fmt:message></h2>
 
 <%--            <h5 class="text-success" th:text="${message}"></h5>--%>
-            <form style="margin-bottom: 30px" name="form" autocomplete="off" action="${pageContext.request.contextPath}/request" method="post">
+            <form style="margin-bottom: 30px" name="form" autocomplete="off" action="${pageContext.request.contextPath}/app/request" method="post">
                 <div class="form-group">
                     <label id="TypeLabel" for="TypeElement"><fmt:message key="req.select.type">select type</fmt:message></label>
                     <select class="form-control"
@@ -64,7 +64,7 @@
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
             </div>
             <div class="footer_bar">
-                <a href="${pageContext.request.contextPath}/index"><fmt:message key="main.return">main</fmt:message></a>
+                <a href="${pageContext.request.contextPath}/app/index"><fmt:message key="main.return">main</fmt:message></a>
                 <%--                <span> OR </span>--%>
                 <%--                <a href="${pageContext.request.jsp.contextPath}/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>--%>
             </div>

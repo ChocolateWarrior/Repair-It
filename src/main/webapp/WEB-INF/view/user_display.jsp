@@ -53,12 +53,12 @@
                                             <td><c:out value="${user.username}" /></td>
                                             <td><c:out value="${user.password}" /></td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/display/edit?id=${user.id}" class="btn btn-primary">
+                                                <a href="${pageContext.request.contextPath}/app/display/edit?id=${user.id}" class="btn btn-primary">
                                                     <span><fmt:message key="display.edit"/></span>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/display/delete?id=${user.id}" class="btn btn-primary">
+                                                <a href="${pageContext.request.contextPath}/app/display/delete?id=${user.id}" class="btn btn-primary">
                                                     <span><fmt:message key="display.remove"/></span>
                                                 </a>
                                             </td>

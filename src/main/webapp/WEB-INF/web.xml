@@ -12,7 +12,7 @@
 
   <servlet-mapping>
     <servlet-name>MainServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/app/*</url-pattern>
   </servlet-mapping>
 
 <!--  <servlet>-->
@@ -62,7 +62,7 @@
 
   <filter-mapping>
     <filter-name>AuthFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/app/*</url-pattern>
   </filter-mapping>
 
   <listener>

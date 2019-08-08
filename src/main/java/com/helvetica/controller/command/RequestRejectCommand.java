@@ -22,7 +22,7 @@ public class RequestRejectCommand implements Command {
         String message = "FUCK YOU!";
 
         requestDisplayService.rejectRequest(id, message);
-        return "redirect:/repairit_war/display-request";
+        return "redirect:/display-request";
 
     }
 }

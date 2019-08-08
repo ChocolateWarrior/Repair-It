@@ -29,25 +29,25 @@
         <h3><fmt:message key="index.greeting">greeting</fmt:message></h3>
         <ul class="nav nav-tabs nav-fill bg-light">
             <li class="nav-item">
-                <a class="nav-link disabled" href="${pageContext.request.contextPath}/index"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
+                <a class="nav-link disabled" href="${pageContext.request.contextPath}/app/index"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/request"><fmt:message key="index.nav_bar.request">leave request.jsp</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request.jsp</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
             </li>
         </ul>
 
@@ -63,17 +63,21 @@
                 </fmt:message>
             </h3>
 
-            <form action="${pageContext.request.contextPath}/index" method="get">
+            <form action="${pageContext.request.contextPath}/app/index" method="get">
             <div class="UserRequestsInfo">
 
                 <c:forEach items="${requestScope.user_requests}" var="request">
                     <div>
                         <span><fmt:message key="index.type"/><c:out value="${request.specification}" /></span>
+                        <br>
                         <span><fmt:message key="index.description"/><c:out value="${request.description}" /></span>
+                        <br>
                         <span><fmt:message key="index.price"/><c:out value="${request.price}" /></span>
+                        <br>
                         <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
+                        <br>
                         <span>
-<%--                            <fmt:message key="index.masters"/>--%>
+                            <fmt:message key="index.masters"/>
                             <c:forEach items="${request.masters}" var="master">
                                 <p><c:out value="${master.username}" /></p>
                                 <br>
@@ -118,6 +122,89 @@
             </div>
             </form>
 
+                <div class = "MasterRequestInfo">
+                    <div class = "master_request"
+                         style="margin-top: 30px">
+                        <h3><fmt:message key="index.my_requests.master">My requests (Master)</fmt:message></h3>
+                        <div style="margin-top: 20px">
+                            <div class="master_request_heading">
+                                <ul class="list-group">
+                                    <c:forEach items="${requestScope.master_requests}" var="master_request">
+                                    <li class="list-group-item ">
+                                        <span>
+                                            <fmt:message key="index.description"/>
+                                            <c:out value="${master_request.description}"/>
+                                        </span>
+                                        <form action="${pageContext.request.contextPath}/app/index/edit" method="post"
+                                              style="margin-top: 30px">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="master_request_id" value="${master_request.id}" hidden/>
+                                                    </label>
+                                                    <span class="form-heading">
+                                                        <fmt:message key="req.display.price">
+                                                            price
+                                                        </fmt:message>
+                                                    </span>
+                                                    <div class="form-group">
+                                                        <label id="priceLabel" for="priceElement"></label>
+                                                        <input type="number"
+                                                               min="0"
+                                                               class="form-control"
+                                                               id="priceElement"
+                                                               name="master_request_price"
+                                                               placeholder=<fmt:message key="req.display.price"/>>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <span class="form-heading" >
+                                                        <fmt:message key="index.select_state">
+                                                            Select state
+                                                        </fmt:message>
+                                                    </span>
+                                                    <div class="form-group">
+                                                        <label id="SecondTypeLabel" for="state" class="col-form-label"></label>
+                                                        <select class="form-control" id="state" name="master_request_state" required>
+                                                            <option value="ACCEPTED">
+                                                                <fmt:message key="state.accepted">
+                                                                    Accepted
+                                                                </fmt:message>
+                                                            </option>
+                                                            <option value="COMPLETED">
+                                                                <fmt:message key="state.completed">
+                                                                    Completed
+                                                                </fmt:message>
+                                                            </option>
+                                                            <option value="REJECTED" >
+                                                                <fmt:message key="state.rejected">
+                                                                    Rejected
+                                                                </fmt:message>
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <button type="submit" class="btn btn-success">
+                                                        <fmt:message key="global.submit">
+                                                            Submit
+                                                        </fmt:message>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </form>
+                                    </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<%--            </form>--%>
+
         </div>
     </div>
 
@@ -138,56 +225,7 @@
 
 
 
-<%--    <div class = "master_request" sec:authorize="hasAuthority('MASTER')" style="margin-top: 30px" th:field="${master_requests}">--%>
-<%--        <h3 th:text="#{index.my_requests.master}"> My request.jsp (Master) </h3>--%>
-<%--        <div th:each="request.jsp: ${master_requests}" style="margin-top: 20px">--%>
-<%--            <div class="master_request_heading">--%>
-<%--                <ul class="list-group">--%>
-<%--                    <li class="list-group-item "--%>
-<%--                        th:text="${request.jsp.description}"--%>
-<%--                        th:value="${request.jsp.description}">--%>
-<%--                    </li>--%>
-<%--                </ul>--%>
-<%--            </div>--%>
 
-<%--            <form action="#" th:action="@{/main/edit}" method="post" style="margin-top: 30px">--%>
-<%--                <div class="row">--%>
-<%--                    <div class="col-sm-6">--%>
-<%--                        <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
-<%--                        <span class="form-heading" th:text="#{req.display.price}">price</span>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label id="priceLabel" for="priceElement"></label>--%>
-<%--                            <input type="number"--%>
-<%--                                   min="0"--%>
-<%--                                   class="form-control"--%>
-<%--                                   id="priceElement"--%>
-<%--                                   name="price"--%>
-<%--                                   th:placeholder="#{index.set_price}">--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="col-sm-6">--%>
-<%--                        <span class="form-heading" th:text="#{index.select_state}">Select state</span>--%>
-<%--                        <div class="form-group">--%>
-<%--                            <label id="SecondTypeLabel" for="state" class="col-form-label"></label>--%>
-<%--                            <select class="form-control" id="state" name="state" required>--%>
-<%--                                <option value="ACCEPTED" th:text="#{state.accepted}">Accepted</option>--%>
-<%--                                <option value="COMPLETED" th:text="#{state.completed}">Completed</option>--%>
-<%--                                <option value="REJECTED" th:text="#{state.rejected}">Rejected</option>--%>
-<%--                            </select>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="col-sm-6">--%>
-<%--                        <button type="submit" class="btn btn-success" th:text="#{global.submit}">--%>
-<%--                            Submit--%>
-<%--                        </button>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--                <hr>--%>
-<%--            </form>--%>
-<%--        </div>--%>
-<%--    </div>--%>
 
 </div>
 

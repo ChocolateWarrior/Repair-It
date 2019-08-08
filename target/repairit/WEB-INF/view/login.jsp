@@ -28,7 +28,7 @@
         <div class="card-header"><fmt:message key="login.logging_in">login</fmt:message></div>
         <div class="card-body">
 
-            <form action="${pageContext.request.contextPath}/login" method="post">
+            <form action="${pageContext.request.contextPath}/app/login" method="post">
 
                 <div class="form-group">
                     <label id="usernameLabel" for="username" ><fmt:message key="login.login">login</fmt:message></label>
@@ -62,7 +62,7 @@
     <div class = "navigation">
         <ul class="nav nav-tabs nav-fill bg-light">
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/registration"><fmt:message key="login.reg_here">register here</fmt:message></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/app/registration"><fmt:message key="login.reg_here">register here</fmt:message></a>
             </li>
         </ul>
     </div>

@@ -39,7 +39,7 @@ public class LoginCommand implements Command {
             session.setAttribute("password", user.getPassword());
             session.setAttribute("role", user.getAuthority());
             log.info("User " + username + " successfully logged in");
-            return "redirect:index";
+            return "redirect:/index";
         } else {
             log.warn("Invalid credentials for user " + username);
             return "/WEB-INF/view/login.jsp";

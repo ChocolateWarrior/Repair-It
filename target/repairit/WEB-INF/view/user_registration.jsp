@@ -115,7 +115,7 @@
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
             </div>
             <div class="footer_bar">
-                <a href="${pageContext.request.contextPath}/index">
+                <a href="${pageContext.request.contextPath}/app/index">
                     <fmt:message key="main.return">
                         main
                     </fmt:message>

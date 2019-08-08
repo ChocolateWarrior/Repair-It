@@ -15,6 +15,6 @@ public class UserDeleteCommand implements Command {
     public String execute(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         userDisplayService.deleteUser(id);
-        return "redirect:/repairit_war/display";
+        return "redirect:/display";
     }
 }
