@@ -25,7 +25,9 @@ public class AuthFilter implements Filter {
             "display/delete");
     private final List<String> authorizedPaths = Arrays.asList("/index",
             "/index/edit",
+            "/index/payment",
             "/logout",
+            "/index/comment",
             "/display",
             "/display-request",
             "/display-request/reject",

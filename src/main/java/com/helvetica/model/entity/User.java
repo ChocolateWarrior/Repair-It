@@ -1,6 +1,7 @@
 package com.helvetica.model.entity;
 
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -13,19 +14,11 @@ public class User {
     private String lastName;
     private String username;
     private String password;
+    private BigDecimal balance;
     private Role authority;
     private Set<Specification> specifications;
     private Set<RepairRequest> userRequests;
     private Set<RepairRequest> masterRequests;
-
-    public User(String firstName, String lastName, String username, String password, List<Specification> specifications) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.specifications = new HashSet<>(specifications);
-    }
-
 
     public void addMasterRequest(RepairRequest request){
         masterRequests.add(request);
@@ -47,6 +40,14 @@ public class User {
         this.username = username;
         this.password = password;
 
+    }
+
+    public User(String firstName, String lastName, String username, String password, List<Specification> specifications) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.specifications = new HashSet<>(specifications);
     }
 
     public int getId() {
@@ -120,6 +121,15 @@ public class User {
     public void setMasterRequests(Set<RepairRequest> masterRequests) {
         this.masterRequests = masterRequests;
     }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
 
     @Override
     public boolean equals(Object o) {

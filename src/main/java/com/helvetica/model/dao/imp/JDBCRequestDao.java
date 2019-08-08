@@ -148,8 +148,6 @@ public class JDBCRequestDao implements RequestDao{
 
     public void addRequestMaster(RepairRequest request, User master){
 
-        System.out.println("request: " + request.getId() + " master: " + master.getId());
-
         try(PreparedStatement ps =
                 connection.prepareStatement("INSERT INTO masters_requests(master_id, request_id) VALUES" +
                         "(?, ?)")) {
@@ -158,6 +156,32 @@ public class JDBCRequestDao implements RequestDao{
 
             ps.executeUpdate();
         } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setRequestComment(int id, String comment){
+        try (PreparedStatement ps =
+                     connection.prepareStatement("UPDATE requests SET" +
+                             " comment = ?" +
+                             " where id = ?")) {
+            ps.setString(1, comment);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updatePayment(int id){
+        try (PreparedStatement ps =
+                     connection.prepareStatement("UPDATE requests SET" +
+                             " state" +
+                             " where id = ?")) {
+            ps.setString(1, RequestState.PAID.name());
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

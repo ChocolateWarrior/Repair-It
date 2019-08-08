@@ -10,6 +10,7 @@ import com.helvetica.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 
@@ -151,8 +152,6 @@ public class JDBCUserDao implements UserDao {
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
-
-
     }
 
     private void createMasterSpecifications(User entity, int id){
@@ -186,6 +185,32 @@ public class JDBCUserDao implements UserDao {
             ps.setString(3, entity.getUsername());
             ps.setString(4, entity.getPassword());
             ps.setInt(5, entity.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void replenishBalance(int id, BigDecimal sum){
+        try (PreparedStatement ps =
+                     connection.prepareStatement("UPDATE users SET" +
+                             " balance = balance + ?" +
+                             " where id = ?")) {
+            ps.setBigDecimal(1, sum);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void subtractBalance(int id, BigDecimal price){
+        try (PreparedStatement ps =
+                     connection.prepareStatement("UPDATE users SET" +
+                             " balance = balance - ?" +
+                             " where id = ?")) {
+            ps.setBigDecimal(1, price);
+            ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
