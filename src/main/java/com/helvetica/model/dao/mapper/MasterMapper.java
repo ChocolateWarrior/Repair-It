@@ -18,6 +18,7 @@ public class MasterMapper implements ObjectMapper<User> {
         result.setLastName(rs.getString("last_name"));
         result.setUsername(rs.getString("username"));
         result.setPassword(rs.getString("password"));
+        result.setBalance(rs.getBigDecimal("balance"));
         result.setAuthority(Role.USER);
         return result;
 

@@ -21,11 +21,11 @@ public class AuthFilter implements Filter {
     private final List<String> adminPaths = Arrays.asList("/index",
             "/logout",
             "/display",
-
             "display/delete");
     private final List<String> authorizedPaths = Arrays.asList("/index",
             "/index/edit",
             "/index/payment",
+            "/balance",
             "/logout",
             "/index/comment",
             "/display",

@@ -37,6 +37,7 @@ public class LoginCommand implements Command {
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
             session.setAttribute("password", user.getPassword());
+            session.setAttribute("balance", user.getBalance());
             session.setAttribute("role", user.getAuthority());
             log.info("User " + username + " successfully logged in");
             return "redirect:/index";

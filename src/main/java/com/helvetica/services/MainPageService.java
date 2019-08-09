@@ -28,6 +28,7 @@ public class MainPageService {
         User user = (User)session.getAttribute("user");
         request.setAttribute("user_requests", requestDao.findByUser(user.getId()));
         request.setAttribute("master_requests", requestDao.findByMaster(user.getId()));
+        request.setAttribute("user", user);
 
         return "/WEB-INF/view/index.jsp";
     }
@@ -35,11 +36,16 @@ public class MainPageService {
     public void updateMasterRequest(HttpServletRequest request){
 
         int id = Integer.parseInt(request.getParameter("master_request_id"));
+        requestDao.completeRequest(id);
+
+    }
+
+    public void completeRequest(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("master_request_id"));
         String state = request.getParameter("master_request_state");
         BigDecimal price = new BigDecimal(request.getParameter("master_request_price"));
 
         requestDao.updateStateAndPrice(id, RequestState.valueOf(state), price);
-
     }
 
     public void payForRequest(HttpServletRequest request){
@@ -50,8 +56,10 @@ public class MainPageService {
         request.setAttribute("paid", RequestState.PAID.name());
         request.setAttribute("completed", RequestState.COMPLETED.name());
 
-        int id = Integer.parseInt(request.getParameter("request_id"));
-        BigDecimal price = new BigDecimal(request.getParameter("request_price"));
+        int id = Integer.parseInt(request.getParameter("request_payment_id"));
+        BigDecimal price = new BigDecimal(request.getParameter("request_payment_price"));
+
+        System.out.println(id + " " + price);
 
         requestDao.updatePayment(id);
         userDao.subtractBalance(user.getId(), price);
@@ -67,5 +75,7 @@ public class MainPageService {
         requestDao.setRequestComment(id, comment);
 
     }
+
+
 
 }

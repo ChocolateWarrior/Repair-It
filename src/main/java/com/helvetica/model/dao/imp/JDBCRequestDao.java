@@ -146,6 +146,21 @@ public class JDBCRequestDao implements RequestDao{
         }
     }
 
+    public void completeRequest(int id){
+        try (PreparedStatement ps =
+                     connection.prepareStatement("UPDATE requests SET" +
+                             " state = ?," +
+                             " finish_time = ?" +
+                             " where id = ?")) {
+            ps.setString(1, RequestState.COMPLETED.name());
+            ps.setTimestamp(2, convertToTimestamp(LocalDateTime.now()));
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void addRequestMaster(RepairRequest request, User master){
 
         try(PreparedStatement ps =
@@ -176,11 +191,12 @@ public class JDBCRequestDao implements RequestDao{
     public void updatePayment(int id){
         try (PreparedStatement ps =
                      connection.prepareStatement("UPDATE requests SET" +
-                             " state" +
+                             " state = ?" +
                              " where id = ?")) {
             ps.setString(1, RequestState.PAID.name());
             ps.setInt(2, id);
             ps.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

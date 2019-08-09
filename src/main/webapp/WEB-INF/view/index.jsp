@@ -41,7 +41,7 @@
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request.jsp</fmt:message></a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
@@ -55,6 +55,32 @@
         <div class="jumbotron">
 <%--        <h3><fmt:message key="index.my_requests"/></h3>--%>
 
+            <div class="user_balance">
+
+                <span><fmt:message key="balance.user">BALANCE: </fmt:message></span>
+<%--                <c:choose>--%>
+<%--                    <c:when test="${user.balance > 0}">--%>
+                        <span>${user.balance}</span>
+                        <br />
+<%--                    </c:when>--%>
+<%--                    <c:otherwise>--%>
+<%--                    <span>--%>
+<%--                        <fmt:message key="balance.empty"/>--%>
+<%--                    </span>--%>
+<%--                        <br />--%>
+<%--                    </c:otherwise>--%>
+<%--                </c:choose>--%>
+                <br>
+                <span>
+                    <fmt:message key="index.replenish">
+                        Replenish
+                    </fmt:message>
+                </span>
+                <a href="${pageContext.request.contextPath}/app/balance?id=${user.id}" class="btn btn-primary">
+                    <fmt:message key="index.here">here.</fmt:message>
+                </a>
+            </div>
+
             <div class="user_requests">
                 <h3>
                     <fmt:message key="index.my_requests">
@@ -62,9 +88,13 @@
                     </fmt:message>
                 </h3>
 
+                <ul class="list-group">
+
                 <c:forEach items="${requestScope.user_requests}" var="request">
 
-                <form action="${pageContext.request.contextPath}/app/index" method="get">
+                    <li class="list-group-item ">
+
+                    <form action="${pageContext.request.contextPath}/app/index" method="get">
                     <div class="UserRequestsInfo">
 
                         <div>
@@ -87,15 +117,15 @@
                         </div>
 
                 <%--            <div th:if="${ #lists.isEmpty(user_requests)}">--%>
-                <%--                <span th:text="#{index.no_requests}">No requests yet. Leave request.jsp</span>--%>
+                <%--                <span th:text="#{index.no_requests}">No requests yet. Leave request</span>--%>
                 <%--                <a href="/request" th:text="#{index.here}">here.</a>--%>
                 <%--            </div>--%>
                     </div>
 
-                </form>
+                    </form>
 
                     <form action="${pageContext.request.contextPath}/app/index/comment" method="post">
-                        <c:if test="${request.state == completed}">
+<%--                        <c:if test="${request.state.name.equals(completed)}">--%>
 
                         <div style="margin-top: 30px">
                             <h5>
@@ -113,15 +143,15 @@
                                 </fmt:message>
                             </button>
                         </div>
-                        </c:if>
+<%--                        </c:if>--%>
                     </form>
 
                     <form action="${pageContext.request.contextPath}/app/index/payment" method="post">
                         <label>
-                            <input name="request_price" value="${request.jsp.price}" hidden/>
-                            <input name="request_id" value="${request.id}" hidden/>
+                            <input name="request_payment_price" value="${request.price}" hidden/>
+                            <input name="request_payment_id" value="${request.id}" hidden/>
                         </label>
-                        <c:if test="${balance > request.price && request.state != paid && request.state != completed}">
+<%--                        <c:if test="${balance > request.price && request.state != paid && request.state != completed}">--%>
                             <div>
                                 <button type="submit" class="btn btn-primary">
                                     <fmt:message key="global.pay">
@@ -129,10 +159,12 @@
                                     </fmt:message>
                                 </button>
                             </div>
-                        </c:if>
+<%--                        </c:if>--%>
                     </form>
-
+                    </li>
                 </c:forEach>
+
+                </ul>
 
 
                 <div class = "MasterRequestInfo">
@@ -227,13 +259,7 @@
         <a href="?lang=uk"><fmt:message key="lang.uk">ukrainian</fmt:message></a>
     </div>
 
-<%--    <div class="user_balance" th:field="${balance}">--%>
-<%--        <span th:text="#{balance.user}">BALANCE: </span>--%>
-<%--        <span th:text="${balance != null} ? ${balance} : '0'">some balance</span>--%>
-<%--        <br>--%>
-<%--        <span th:text="#{index.replenish}">Replenish</span>--%>
-<%--        <a href="/balance" th:text="#{index.here}">here.</a>--%>
-<%--    </div>--%>
+
 
 
 

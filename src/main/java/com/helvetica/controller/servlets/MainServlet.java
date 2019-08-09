@@ -31,6 +31,8 @@ public class MainServlet extends HttpServlet {
         commands.put("/index", new IndexCommand());
         commands.put("/index/edit", new MasterIndexCommand());
         commands.put("/index/comment", new IndexCommentCommand());
+        commands.put("/index/payment", new IndexPaymentCommand());
+        commands.put("/balance", new BalanceCommand());
         commands.put("/display/delete", new UserDeleteCommand());
         commands.put("/display/edit", new UserEditCommand());
         commands.put("/display-request", new RequestDisplayCommand());

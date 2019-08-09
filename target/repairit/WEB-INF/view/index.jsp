@@ -22,105 +22,150 @@
 
 </head>
 <body>
-<div class="container" style="margin-top: 50px">
+    <div class="container" style="margin-top: 50px">
 
-    <div class = "navigation">
-        <h2 class="h2">Repair It</h2>
-        <h3><fmt:message key="index.greeting">greeting</fmt:message></h3>
-        <ul class="nav nav-tabs nav-fill bg-light">
-            <li class="nav-item">
-                <a class="nav-link disabled" href="${pageContext.request.contextPath}/app/index"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request.jsp</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
-            </li>
-        </ul>
+        <div class = "navigation">
+            <h2 class="h2">Repair It</h2>
+            <h3><fmt:message key="index.greeting">greeting</fmt:message></h3>
+            <ul class="nav nav-tabs nav-fill bg-light">
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="${pageContext.request.contextPath}/app/index"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
+                </li>
+            </ul>
+        </div>
 
-    </div>
-
-    <div class="jumbotron">
+        <div class="jumbotron">
 <%--        <h3><fmt:message key="index.my_requests"/></h3>--%>
 
-        <div class="user_requests">
-            <h3>
-                <fmt:message key="index.my_requests">
-                    My requests
-                </fmt:message>
-            </h3>
+            <div class="user_balance">
 
-            <form action="${pageContext.request.contextPath}/app/index" method="get">
-            <div class="UserRequestsInfo">
+                <span><fmt:message key="balance.user">BALANCE: </fmt:message></span>
+<%--                <c:choose>--%>
+<%--                    <c:when test="${user.balance > 0}">--%>
+                        <span>${user.balance}</span>
+                        <br />
+<%--                    </c:when>--%>
+<%--                    <c:otherwise>--%>
+<%--                    <span>--%>
+<%--                        <fmt:message key="balance.empty"/>--%>
+<%--                    </span>--%>
+<%--                        <br />--%>
+<%--                    </c:otherwise>--%>
+<%--                </c:choose>--%>
+                <br>
+                <span>
+                    <fmt:message key="index.replenish">
+                        Replenish
+                    </fmt:message>
+                </span>
+                <a href="${pageContext.request.contextPath}/app/balance?id=${user.id}" class="btn btn-primary">
+                    <fmt:message key="index.here">here.</fmt:message>
+                </a>
+            </div>
+
+            <div class="user_requests">
+                <h3>
+                    <fmt:message key="index.my_requests">
+                        My requests
+                    </fmt:message>
+                </h3>
+
+                <ul class="list-group">
 
                 <c:forEach items="${requestScope.user_requests}" var="request">
-                    <div>
-                        <span><fmt:message key="index.type"/><c:out value="${request.specification}" /></span>
-                        <br>
-                        <span><fmt:message key="index.description"/><c:out value="${request.description}" /></span>
-                        <br>
-                        <span><fmt:message key="index.price"/><c:out value="${request.price}" /></span>
-                        <br>
-                        <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
-                        <br>
-                        <span>
-                            <fmt:message key="index.masters"/>
-                            <c:forEach items="${request.masters}" var="master">
-                                <p><c:out value="${master.username}" /></p>
-                                <br>
-                            </c:forEach>
-                        </span>
 
-                            <%--                    <form action="@{/main/payment}" method="post" th:field="${paid}" >--%>
-                            <%--                        <label>--%>
-                            <%--                            <input name="requestPrice" th:value="${request.jsp.price}" hidden/>--%>
-                            <%--                            <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
-                            <%--                        </label>--%>
-                            <%--                        <div th:if="${balance &gt; request.jsp.price}" th:unless="${request.jsp.state == paid || request.jsp.state == completed}">--%>
-                            <%--                            <button type="submit" class="btn btn-primary" th:text="#{global.pay}">--%>
-                            <%--                                Pay--%>
-                            <%--                            </button>--%>
-                            <%--                        </div>--%>
-                            <%--                    </form>--%>
+                    <li class="list-group-item ">
 
-                            <%--                    <form action="#" th:action="@{/main/comment}" method="post" th:field="${completed}">--%>
-                            <%--                        <div th:if="${request.jsp.state == completed}" style="margin-top: 30px">--%>
-                            <%--                            <h5 th:text="#{index.comment}"></h5>--%>
-                            <%--                            <label>--%>
-                            <%--                                <input name="comment"--%>
-                            <%--                                       th:placeholder="#{index.leave.comment}"/>--%>
-                            <%--                                <input name="requestId" th:value="${request.jsp.id}" hidden/>--%>
-                            <%--                            </label>--%>
-                            <%--                            <button type="submit" class="btn btn-primary" th:text="#{global.submit}">--%>
-                            <%--                                leave--%>
-                            <%--                            </button>--%>
-                            <%--                        </div>--%>
-                            <%--                    </form>--%>
+                    <form action="${pageContext.request.contextPath}/app/index" method="get">
+                    <div class="UserRequestsInfo">
 
-                    </div>
+                        <div>
+                            <span><fmt:message key="index.type"/><c:out value="${request.specification}" /></span>
+                            <br>
+                            <span><fmt:message key="index.description"/><c:out value="${request.description}" /></span>
+                            <br>
+                            <span><fmt:message key="index.price"/><c:out value="${request.price}" /></span>
+                            <br>
+                            <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
+                            <br>
+                            <span>
+                                <fmt:message key="index.masters"/>
+                                <c:forEach items="${request.masters}" var="master">
+                                    <p><c:out value="${master.username}" /></p>
+                                    <br>
+                                </c:forEach>
+                            </span>
 
-                </c:forEach>
-
+                        </div>
 
                 <%--            <div th:if="${ #lists.isEmpty(user_requests)}">--%>
-                <%--                <span th:text="#{index.no_requests}">No requests yet. Leave request.jsp</span>--%>
+                <%--                <span th:text="#{index.no_requests}">No requests yet. Leave request</span>--%>
                 <%--                <a href="/request" th:text="#{index.here}">here.</a>--%>
                 <%--            </div>--%>
-            </div>
-            </form>
+                    </div>
+
+                    </form>
+
+                    <form action="${pageContext.request.contextPath}/app/index/comment" method="post">
+<%--                        <c:if test="${request.state.name.equals(completed)}">--%>
+
+                        <div style="margin-top: 30px">
+                            <h5>
+                                <fmt:message key="index.comment">
+                                    comment
+                                </fmt:message>
+                            </h5>
+                            <label>
+                                <input name="comment" placeholder=<fmt:message key="index.leave.comment"/>>
+                                <input name="request_comment_id" value="${request.id}" hidden/>
+                            </label>
+                            <button type="submit" class="btn btn-primary">
+                                <fmt:message key="global.submit">
+                                    leave
+                                </fmt:message>
+                            </button>
+                        </div>
+<%--                        </c:if>--%>
+                    </form>
+
+                    <form action="${pageContext.request.contextPath}/app/index/payment" method="post">
+                        <label>
+                            <input name="request_payment_price" value="${request.price}" hidden/>
+                            <input name="request_payment_id" value="${request.id}" hidden/>
+                        </label>
+<%--                        <c:if test="${balance > request.price && request.state != paid && request.state != completed}">--%>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <fmt:message key="global.pay">
+                                        Pay
+                                    </fmt:message>
+                                </button>
+                            </div>
+<%--                        </c:if>--%>
+                    </form>
+                    </li>
+                </c:forEach>
+
+                </ul>
+
 
                 <div class = "MasterRequestInfo">
                     <div class = "master_request"
@@ -203,7 +248,6 @@
                         </div>
                     </div>
                 </div>
-<%--            </form>--%>
 
         </div>
     </div>
@@ -215,13 +259,7 @@
         <a href="?lang=uk"><fmt:message key="lang.uk">ukrainian</fmt:message></a>
     </div>
 
-<%--    <div class="user_balance" th:field="${balance}">--%>
-<%--        <span th:text="#{balance.user}">BALANCE: </span>--%>
-<%--        <span th:text="${balance != null} ? ${balance} : '0'">some balance</span>--%>
-<%--        <br>--%>
-<%--        <span th:text="#{index.replenish}">Replenish</span>--%>
-<%--        <a href="/balance" th:text="#{index.here}">here.</a>--%>
-<%--    </div>--%>
+
 
 
 
