@@ -10,10 +10,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="${param.lang}"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="property/messages"/>
 
-<html lang = "${param.lang}">
+<html lang = "en">
+
 <head>
     <meta charset="UTF-8">
     <title>Repair It</title>
@@ -21,6 +22,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
+
 <body>
     <div class="container" style="margin-top: 50px">
 

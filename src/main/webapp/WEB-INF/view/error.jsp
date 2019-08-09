@@ -3,9 +3,10 @@
 <%@ page language="java" isErrorPage="true"  contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.text.*" %>
 
-
+<fmt:setLocale value="${sessionScope.lang}"/>
 
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Error Page</title>
@@ -14,7 +15,8 @@
 <%--    <link rel="stylesheet" href="@{/css/style.css}" >--%>
     <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
 </head>
-    <body>
+
+<body>
         <div class="container" style="margin-top: 50px;">
             <div class="error-body">
                 <h1>Something went wrong! </h1>
@@ -23,14 +25,15 @@
                     <i>Error <%= exception %></i>
                 </h2>
                 <br>
-                <a href="${pageContext.request.contextPath}/WEB-INF/view/index.jsp">Index</a>
+                <a href="${pageContext.request.contextPath}/WEB-INF/view/index.jsp">
+                    <fmt:message key="global.return_home"/>
+                </a>
                 <h2>Our Engineers are working on it</h2>
-                <a href="/main" style="margin-top: 20px">Home</a>
             </div>
         </div>
 
 
 
 
-    </body>
+</body>
 </html>

@@ -11,10 +11,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="${param.lang}"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="property/messages"/>
 
-<html lang = "${param.lang}">
+<html lang = "en">
 
 <head>
     <meta charset="UTF-8">

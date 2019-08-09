@@ -47,10 +47,6 @@ public class MainServlet extends HttpServlet {
         String path = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");
         Command command = commands.getOrDefault(path ,
                 (r)->"/WEB-INF/view/index.jsp");
-
-//        Command command = commands.get(path);
-        System.out.println(command.getClass().getName());
-
         String page = command.execute(request);
 
         if(page.contains("redirect")) {
