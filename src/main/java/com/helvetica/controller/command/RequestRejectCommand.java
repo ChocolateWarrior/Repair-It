@@ -15,11 +15,8 @@ public class RequestRejectCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        System.out.println(id);
-//        String message = request.getParameter("rejectionMessage");
-//        System.out.println(message);
-        String message = "FUCK YOU!";
+        int id = Integer.parseInt(request.getParameter("rejection_id"));
+        String message = request.getParameter("rejection_message");
 
         requestDisplayService.rejectRequest(id, message);
         return "redirect:/display-request";

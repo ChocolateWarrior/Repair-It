@@ -26,7 +26,7 @@ public class LoginCommand implements Command {
             return "/WEB-INF/view/login.jsp";
         }
 
-        User user = userDisplayService.getByUsernameAndPassword(username, password).get();
+        User user = userDisplayService.getByUsernameAndPassword(username, password);
         if (Objects.isNull(user)) {
             log.warn("No such user " + username + " in database");
             return "/WEB-INF/view/login.jsp";

@@ -14,6 +14,7 @@ public class RequestDisplayCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        return requestDisplayService.displayRequests(request);
+        request.setAttribute("requests", requestDisplayService.displayRequests());
+        return "/WEB-INF/view/request_display.jsp";
     }
 }

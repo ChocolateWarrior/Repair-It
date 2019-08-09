@@ -3,12 +3,14 @@ package com.helvetica.services;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
+import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.HashSet;
 
 public class MainPageService {
 
@@ -22,60 +24,33 @@ public class MainPageService {
 
     }
 
-    public String getMainPage(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-        User user = (User)session.getAttribute("user");
-        request.setAttribute("user_requests", requestDao.findByUser(user.getId()));
-        request.setAttribute("master_requests", requestDao.findByMaster(user.getId()));
-        request.setAttribute("user", user);
-
-        return "/WEB-INF/view/index.jsp";
+    public HashSet<RepairRequest> findByUser(int id){
+        return requestDao.findByUser(id);
     }
 
-    public void updateMasterRequest(HttpServletRequest request){
+    public HashSet<RepairRequest> findByMaster(int id){
+        return requestDao.findByMaster(id);
+    }
+
+
+    public void completeRequest(HttpServletRequest request){
 
         int id = Integer.parseInt(request.getParameter("master_request_id"));
         requestDao.completeRequest(id);
 
     }
 
-    public void completeRequest(HttpServletRequest request){
-        int id = Integer.parseInt(request.getParameter("master_request_id"));
-        String state = request.getParameter("master_request_state");
-        BigDecimal price = new BigDecimal(request.getParameter("master_request_price"));
-
+    public void updateMasterRequest(int id, String state, BigDecimal price){
         requestDao.updateStateAndPrice(id, RequestState.valueOf(state), price);
     }
 
-    public void payForRequest(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-        User user = (User)session.getAttribute("user");
-        request.setAttribute("balance", user.getBalance());
-        request.setAttribute("paid", RequestState.PAID.name());
-        request.setAttribute("completed", RequestState.COMPLETED.name());
-
-        int id = Integer.parseInt(request.getParameter("request_payment_id"));
-        BigDecimal price = new BigDecimal(request.getParameter("request_payment_price"));
-
-        System.out.println(id + " " + price);
-
-        requestDao.updatePayment(id);
-        userDao.subtractBalance(user.getId(), price);
-
+    public void payForRequest(int user_id, int request_id, BigDecimal price){
+        requestDao.updatePayment(request_id);
+        userDao.subtractBalance(user_id, price);
     }
 
-    public void leaveComment(HttpServletRequest request){
-
-        request.setAttribute("completed", RequestState.COMPLETED.name());
-        int id = Integer.parseInt(request.getParameter("request_comment_id"));
-        String comment = request.getParameter("comment");
-
+    public void leaveComment(int id, String comment){
         requestDao.setRequestComment(id, comment);
-
     }
-
-
 
 }

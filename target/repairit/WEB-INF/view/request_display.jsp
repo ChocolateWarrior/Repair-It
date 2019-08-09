@@ -25,145 +25,150 @@
 </head>
 
 <body>
-<div class = "container" style="margin-top: 60px">
-    <div class = "row">
-        <div class = "col-md-12">
-            <div class = "panel panel-default">
-                <div class = "panel-heading"><fmt:message key="req.display.heading">requests</fmt:message></div>
-                <div class = "panel-body">
-                    <form action="${pageContext.request.contextPath}/app/display-request" method="get">
-
-                        <table class = "table table-bordered table-hover table-responsive" style="text-align: center">
-                            <thead class ="thead-dark">
-                            <tr>
-                                <th>
-                                    <fmt:message key="req.display.id">
-                                        id
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.type">
-                                        type
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.description">
-                                        desc
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.req_time">
-                                        time
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.user_id">
-                                        user_id
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.status">
-                                        status
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.master_id">
-                                        master_id
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.finish_time">
-                                        finish
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.price">
-                                        price
-                                    </fmt:message>
-                                </th>
-
-                                <th>
-                                    <fmt:message key="display.rejection">
-                                        rejection
-                                    </fmt:message>
-                                </th>
-                                <th>
-                                    <fmt:message key="req.display.add_master">
-                                        add_master
-                                    </fmt:message>
-                                </th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-
+    <div class = "container" style="margin-top: 60px">
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-default">
+                    <div class = "panel-heading"><fmt:message key="req.display.heading">requests</fmt:message></div>
+                    <div class = "panel-body">
+                        <ul class="list-group">
                             <c:forEach items="${requestScope.requests}" var="request">
-                                <tr>
-                                    <td><c:out value="${request.id}" /></td>
-                                    <td><c:out value="${request.specification}" /></td>
-                                    <td><c:out value="${request.description}" /></td>
-                                    <td><c:out value="${request.requestTime}" /></td>
-                                    <td><c:out value="${request.user.id}" /></td>
-                                    <td><c:out value="${request.state}" /></td>
-                                    <td>
-                                        <c:forEach items="${request.masters}" var="master">
-                                            <p><c:out value="${master.username}" /></p>
-                                            <br>
-                                        </c:forEach>
-                                    </td>
-                                    <td><c:out value="${request.finishTime}" /></td>
-                                    <td><c:out value="${request.price}" /></td>
-                                    <td>
 
+                                <li class="list-group-item ">
+                                    <form action="${pageContext.request.contextPath}/app/display-request" method="get">
 
-<%--                                        <form action="${pageContext.request.contextPath}/display-request/reject?id=${request.id}"--%>
-<%--                                              method="post">--%>
+                                        <span>
+                                            <fmt:message key="req.display.id">
+                                                id
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.id}" /></span>
+                                        <br>
 
-<%--                                            <input type="text"--%>
-<%--                                                   id="rejectionMessageElement"--%>
-<%--&lt;%&ndash;                                                   name="rejectionMessage"&ndash;%&gt;--%>
-<%--                                                   value="${request.rejectionMessage}"--%>
-<%--                                                   style="margin-bottom: 10px"--%>
-<%--                                                   placeholder=<fmt:message key="display.rejection"/>>--%>
+                                        <span>
+                                            <fmt:message key="req.display.type">
+                                                type
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.specification}" /></span>
+                                        <br>
 
-<%--                                            <button class ="btn btn-danger">--%>
-<%--                                                <span><fmt:message key="display.reject"/></span>--%>
-<%--                                            </button>--%>
-<%--                                        </form>--%>
+                                        <span>
+                                            <fmt:message key="req.display.description">
+                                                desc
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.description}" /></span>
+                                        <br>
 
-                                        <a href="${pageContext.request.contextPath}/app/display-request/reject?id=${request.id}" class="btn btn-primary">
-                                            <span><fmt:message key="display.reject"/></span>
-                                        </a>
+                                        <span>
+                                            <fmt:message key="req.display.req_time">
+                                                time
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.requestTime}" /></span>
+                                        <br>
 
-                                    </td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/app/display-request/edit?id=${request.id}"
-                                           class="btn btn-primary">
-                                            <span><fmt:message key="req.display.add_master"/></span>
-                                        </a>
-                                    </td>
+                                        <span>
+                                            <fmt:message key="req.display.user_id">
+                                                user_id
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.user.id}" /></span>
+                                        <br>
 
-                                </tr>
+                                        <span>
+                                            <fmt:message key="req.display.status">
+                                                status
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.state}" /></span>
+                                        <br>
+
+                                        <span>
+                                            <fmt:message key="req.display.master_id">
+                                                master_id
+                                            </fmt:message>
+                                        </span>
+                                        <span>
+                                            <c:forEach items="${request.masters}" var="master">
+                                                <p><c:out value="${master.username}" /></p>
+                                                <br>
+                                            </c:forEach>
+                                        </span>
+                                        <br>
+
+                                        <span>
+                                            <fmt:message key="req.display.finish_time">
+                                                finish
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.finishTime}" /></span>
+                                        <br>
+
+                                        <span>
+                                            <fmt:message key="req.display.price">
+                                                price
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.price}" /></span>
+                                        <br>
+
+                                        <span>
+                                            <fmt:message key="req.display.add_master">
+                                                add_master
+                                            </fmt:message>
+                                        </span>
+                                        <span>
+                                            <a href="${pageContext.request.contextPath}/app/display-request/edit?id=${request.id}"
+                                               class="btn btn-primary">
+                                                <span><fmt:message key="req.display.add_master"/></span>
+                                            </a>
+                                        </span>
+                                        <br>
+
+                                    </form>
+
+                                    <form action="${pageContext.request.contextPath}/app/display-request/reject?rejection_id=${request.id}"
+                                          method="post">
+
+                                        <span>
+                                            <fmt:message key="display.rejection">
+                                                rejection
+                                            </fmt:message>
+                                        </span>
+
+                                        <input type="text"
+                                               id="rejectionMessageElement"
+                                               name="rejection_message"
+                                               style="margin-bottom: 10px"
+                                               placeholder=<fmt:message key="display.rejection"/>>
+
+                                        <button class ="btn btn-danger">
+                                            <span>
+                                                <fmt:message key="display.reject"/>
+                                            </span>
+                                        </button>
+                                    </form>
+                                </li>
                             </c:forEach>
-                            </tbody>
-                        </table>
-                    </form>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="aboutLanguage">
+            <span><fmt:message key="lang.change">change language</fmt:message></span>:
+            <a href="?lang=en"><fmt:message key="lang.en">english</fmt:message></a>
+            /
+            <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
+        </div>
+        <div class="footer_bar">
+            <a href="${pageContext.request.contextPath}/app/index">
+                <fmt:message key="main.return">main</fmt:message>
+            </a>
+        </div>
     </div>
-    <div class="aboutLanguage">
-        <span><fmt:message key="lang.change">change language</fmt:message></span>:
-        <a href="?lang=en"><fmt:message key="lang.en">english</fmt:message></a>
-        /
-        <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
-    </div>
-    <div class="footer_bar">
-        <a href="${pageContext.request.contextPath}/app/index">
-            <fmt:message key="main.return">main</fmt:message>
-        </a>
-    </div>
-</div>
 
 </body>
 </html>

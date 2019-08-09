@@ -4,7 +4,7 @@ import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.User;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.Optional;
 
 public class UserDisplayService {
@@ -16,39 +16,24 @@ public class UserDisplayService {
         this.userDao = jdbcDaoFactory.createUserDao();
     }
 
-    public void displayUsers(HttpServletRequest request){
-        request.setAttribute("users", userDao.findAll());
-        request.getRequestDispatcher("/WEB-INF/user_display.jsp");
+    public HashSet<User> findAll(){
+        return userDao.findAll();
     }
 
-    public Optional<User> getByUsernameAndPassword(String username, String password){
-        return userDao.findByUsernameAndPassword(username, password);
+    public User findById(int id){
+        return userDao.findById(id).get();
+    }
+
+    public User getByUsernameAndPassword(String username, String password){
+        return userDao.findByUsernameAndPassword(username, password).get();
     }
 
     public void deleteUser(int id) {
         userDao.delete(id);
     }
 
-    public void editUser(HttpServletRequest request){
-
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        User userToEdit = userDao.findById(id).get();
-        request.setAttribute("user", userToEdit);
-
-        Optional<String> firstName = Optional.ofNullable(request.getParameter("firstNameEdit"));
-        Optional<String> lastName = Optional.ofNullable(request.getParameter("lastNameEdit"));
-        Optional<String> username = Optional.ofNullable(request.getParameter("loginEdit"));
-        Optional<String> password = Optional.ofNullable(request.getParameter("passwordEdit"));
-
-
-        firstName.ifPresent(s -> userToEdit.setFirstName(s.isEmpty() ? userToEdit.getFirstName() : s));
-        lastName.ifPresent(s -> userToEdit.setLastName(s.isEmpty() ? userToEdit.getLastName() : s));
-        username.ifPresent(s -> userToEdit.setUsername(s.isEmpty() ? userToEdit.getUsername() : s));
-        password.ifPresent(s -> userToEdit.setPassword(s.isEmpty() ? userToEdit.getPassword() : s));
-
+    public void editUser(User userToEdit){
         userDao.update(userToEdit);
-
     }
 
 }

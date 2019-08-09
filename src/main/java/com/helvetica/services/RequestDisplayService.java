@@ -26,25 +26,24 @@ public class RequestDisplayService {
         this.userDao=jdbcDaoFactory.createUserDao();
     }
 
-    public String displayRequests(HttpServletRequest request){
-        request.setAttribute("requests", requestDao.findAll());
-        return "/WEB-INF/view/request_display.jsp";
+    public HashSet<RepairRequest> displayRequests(){
+        return requestDao.findAll();
+    }
+
+    public RepairRequest findById(int id){
+        return requestDao.findById(id).get();
+    }
+
+    public HashSet<User> findMastersBySpecification(String specification){
+        return userDao.findMastersBySpecification(Specification.valueOf(specification));
     }
 
     public void rejectRequest(int id, String message){
         requestDao.rejectRequest(id, message);
     }
 
-    public void editRequest(HttpServletRequest request){
+    public void editRequest(String masterUsername, RepairRequest requestToEdit){
 
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        RepairRequest requestToEdit = requestDao.findById(id).get();
-        HashSet<User> masters = userDao.findMastersBySpecification(Specification.valueOf(requestToEdit.getSpecification()));
-        request.setAttribute("request", requestToEdit);
-        request.setAttribute("all_masters", masters);
-
-        String masterUsername = request.getParameter("masters");
         log.info("Masters username: " + masterUsername);
         userDao.findByUsername(masterUsername).ifPresent(e ->
             requestDao.addRequestMaster(requestToEdit, e));
