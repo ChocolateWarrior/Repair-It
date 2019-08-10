@@ -17,8 +17,12 @@ public class IndexCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
+
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
+
+        user.getAuthorities().forEach(System.out::println);
+
         request.setAttribute("user_requests", mainPageService.findByUser(user.getId()));
         request.setAttribute("master_requests", mainPageService.findByMaster(user.getId()));
         request.setAttribute("user", user);

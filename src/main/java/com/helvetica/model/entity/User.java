@@ -15,10 +15,10 @@ public class User {
     private String username;
     private String password;
     private BigDecimal balance;
-    private Role authority;
-    private Set<Specification> specifications;
-    private Set<RepairRequest> userRequests;
-    private Set<RepairRequest> masterRequests;
+    private Set<Role> authorities = new HashSet<>();
+    private Set<Specification> specifications = new HashSet<>();
+    private Set<RepairRequest> userRequests = new HashSet<>();
+    private Set<RepairRequest> masterRequests = new HashSet<>();
 
     public void addMasterRequest(RepairRequest request){
         masterRequests.add(request);
@@ -26,6 +26,9 @@ public class User {
     public void addUserRequest(RepairRequest request) {userRequests.add(request);}
     public void addSpecification(Specification specification){
         specifications.add(specification);
+    }
+    public void addAuthority(Role authority){
+        authorities.add(authority);
     }
 
     public User() {
@@ -90,12 +93,12 @@ public class User {
         this.password = password;
     }
 
-    public void setAuthority(Role authority) {
-        this.authority = authority;
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
     }
 
-    public Role getAuthority() {
-        return authority;
+    public Set<Role> getAuthorities() {
+        return authorities;
     }
 
     public Set<Specification> getSpecifications() {
@@ -130,23 +133,30 @@ public class User {
         this.balance = balance;
     }
 
+    public boolean hasAuthority(Role authority){
+        return authorities.contains(authority);
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(password, user.password) &&
-                authority == user.authority;
+                firstName.equals(user.firstName) &&
+                lastName.equals(user.lastName) &&
+                username.equals(user.username) &&
+                password.equals(user.password) &&
+                Objects.equals(balance, user.balance) &&
+                Objects.equals(authorities, user.authorities) &&
+                Objects.equals(specifications, user.specifications) &&
+                Objects.equals(userRequests, user.userRequests) &&
+                Objects.equals(masterRequests, user.masterRequests);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstName, lastName, password, authority);
+        return Objects.hash(id, username, firstName, lastName, password, authorities);
     }
 
     @Override
@@ -158,7 +168,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", balance='" + balance + '\'' +
-                ", authority=" + authority +
+                ", authorities=" + authorities +
                 '}';
     }
 

@@ -5,7 +5,6 @@ import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.User;
 
 import java.util.HashSet;
-import java.util.Optional;
 
 public class UserDisplayService {
 

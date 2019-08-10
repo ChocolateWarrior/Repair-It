@@ -17,7 +17,7 @@ import java.util.*;
 public class JDBCUserDao implements UserDao {
 
     private Connection connection;
-    public static final Logger log = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 
     public JDBCUserDao(Connection connection) {
@@ -90,7 +90,8 @@ public class JDBCUserDao implements UserDao {
     public HashSet<User> findMastersBySpecification(Specification specification){
         HashSet<User> result;
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM users WHERE id IN (SELECT user_id FROM master_specifications WHERE specifications=?)")){
+                "SELECT * FROM users LEFT JOIN master_specifications ON users.id=master_specifications.user_id WHERE specifications=?")){
+
             ps.setString(1, specification.name());
             ResultSet rs = ps.executeQuery();
             Map<Integer, User> users = extractFromResultSet(rs);
@@ -109,13 +110,12 @@ public class JDBCUserDao implements UserDao {
         log.info("executing user creation...");
 
         try(PreparedStatement ps = connection.prepareStatement
-                ("INSERT INTO users (first_name, last_name, username, password, authority )" +
-                    " VALUES (? ,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
+                ("INSERT INTO users (first_name, last_name, username, password)" +
+                    " VALUES (? ,?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
             ps.setString(1 , entity.getFirstName());
             ps.setString(2 , entity.getLastName());
             ps.setString(3 , entity.getUsername());
             ps.setString(4 , entity.getPassword());
-            ps.setString(5, String.valueOf(Role.USER));
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
 
@@ -123,6 +123,14 @@ public class JDBCUserDao implements UserDao {
                 int id = rs.getInt(1);
                 entity.setId(id);
             }
+
+            try (PreparedStatement aps = connection.prepareStatement(
+                    "INSERT INTO user_authorities (user_id, authorities) VALUES (?, ?)")) {
+                aps.setInt(1, entity.getId());
+                aps.setString(2, Role.USER.name());
+                aps.executeUpdate();
+            }
+
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -134,13 +142,12 @@ public class JDBCUserDao implements UserDao {
         log.info("executing master creation...");
 
         try(PreparedStatement ps = connection.prepareStatement
-                ("INSERT INTO users (first_name, last_name, username, password, authority )" +
-                        " VALUES (? ,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
+                ("INSERT INTO users (first_name, last_name, username, password)" +
+                        " VALUES (? ,?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)){
             ps.setString(1 , entity.getFirstName());
             ps.setString(2 , entity.getLastName());
             ps.setString(3 , entity.getUsername());
             ps.setString(4 , entity.getPassword());
-            ps.setString(5, String.valueOf(Role.MASTER));
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
 
@@ -149,6 +156,16 @@ public class JDBCUserDao implements UserDao {
                 entity.setId(id);
                 createMasterSpecifications(entity, id);
             }
+
+            try (PreparedStatement aps = connection.prepareStatement(
+                    "INSERT INTO user_authorities (user_id, authorities) VALUES (?, ?),(?, ?)")) {
+                aps.setInt(1, entity.getId());
+                aps.setString(2, Role.MASTER.name());
+                aps.setInt(3,entity.getId());
+                aps.setString(4, Role.USER.name());
+                aps.executeUpdate();
+            }
+
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -179,13 +196,28 @@ public class JDBCUserDao implements UserDao {
                              " last_name = ?," +
                              " username = ?," +
                              " password = ?" +
-                             " where id = ?")) {
+                             " WHERE id = ?")) {
             ps.setString(1, entity.getFirstName());
             ps.setString(2, entity.getLastName());
             ps.setString(3, entity.getUsername());
             ps.setString(4, entity.getPassword());
             ps.setInt(5, entity.getId());
             ps.executeUpdate();
+
+            try (PreparedStatement authorityDeletePS = connection.prepareStatement(
+                    "DELETE FROM user_authorities WHERE user_id = ?")) {
+                authorityDeletePS.setInt(1, entity.getId());
+                authorityDeletePS.executeUpdate();
+            }
+            try (PreparedStatement authorityInsertPS = connection.prepareStatement(
+                    "INSERT INTO user_authorities VALUES (?, ?)")) {
+                for (Role authority : entity.getAuthorities()) {
+                    authorityInsertPS.setInt(1, entity.getId());
+                    authorityInsertPS.setString(2, authority.name());
+                    authorityInsertPS.executeUpdate();
+                }
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -195,7 +227,7 @@ public class JDBCUserDao implements UserDao {
         try (PreparedStatement ps =
                      connection.prepareStatement("UPDATE users SET" +
                              " balance = balance + ?" +
-                             " where id = ?")) {
+                             " WHERE id = ?")) {
             ps.setBigDecimal(1, sum);
             ps.setInt(2, id);
             ps.executeUpdate();
@@ -208,7 +240,7 @@ public class JDBCUserDao implements UserDao {
         try (PreparedStatement ps =
                      connection.prepareStatement("UPDATE users SET" +
                              " balance = balance - ?" +
-                             " where id = ?")) {
+                             " WHERE id = ?")) {
             ps.setBigDecimal(1, price);
             ps.setInt(2, id);
             ps.executeUpdate();
@@ -233,28 +265,84 @@ public class JDBCUserDao implements UserDao {
 
     }
 
+    private void joinAuthorities(User entity){
+
+        try(PreparedStatement ps = connection.prepareStatement(
+                "SELECT" +
+                        " users.id AS \"users.id\"," +
+                        " user_authorities.user_id AS \"user_authorities.user_id\"," +
+                        " user_authorities.authorities AS \"user_authorities.authorities\"" +
+                        " FROM users LEFT JOIN user_authorities" +
+                        " ON users.id=user_authorities.user_id" +
+                        " WHERE users.id=?"
+        )) {
+
+            ps.setInt(1, entity.getId());
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                String authority = rs.getString("user_authorities.authorities");
+                entity.addAuthority(Role.valueOf(authority));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void joinUserRequests(User entity, RequestMapper requestMapper, Map<Integer, RepairRequest> requests){
+
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT" +
+                        " users.id AS \"users.id\"," +
+                        " requests.user_id AS \"requests.user_id\"," +
+                        " requests.id AS \"requests.id\"," +
+                        " requests.specification AS \"requests.specification\"," +
+                        " requests.description AS \"requests.description\"," +
+                        " requests.request_time AS \"requests.request_time\"," +
+                        " requests.finish_time AS \"requests.finish_time\"," +
+                        " requests.comment AS \"requests.comment\"," +
+                        " requests.rejection_message AS \"requests.rejection_message\"," +
+                        " requests.price AS \"requests.price\"," +
+                        " requests.state AS \"requests.state\"" +
+                        " FROM users" +
+                        " LEFT JOIN requests ON requests.user_id = users.id" +
+                        " WHERE users.id = ?")) {
+            ps.setInt(1, entity.getId());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RepairRequest request = requestMapper.extractFromResultSet(rs);
+                request = requestMapper.makeUnique(requests, request);
+
+                if (Objects.nonNull(request) && !entity.getUserRequests().contains(request)) {
+                    entity.addUserRequest(request);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Map<Integer, User> extractFromResultSet(ResultSet rs) throws SQLException {
 
-        MasterMapper masterMapper = new MasterMapper();
+        MasterMapper userMapper = new MasterMapper();
         RequestMapper requestMapper = new RequestMapper(connection);
 
-        Map<Integer, User> masters = new HashMap<>();
+        Map<Integer, User> users = new HashMap<>();
         Map<Integer, RepairRequest> requests = new HashMap<>();
 
-
         while (rs.next()) {
-            User master = masterMapper.extractFromResultSet(rs);
-//            RepairRequest request = requestMapper.extractFromResultSet(rs);
-//            Role authority = Role.USER;
-//            System.out.println(request);
-            master = masterMapper.makeUnique(masters, master);
-//            request = requestMapper.makeUnique(requests, request);
-//            System.out.println(request);
-
-//            master.addMasterRequest(request);
-//            master.getAuthority().add(authority);
+            User user = userMapper.extractFromResultSet(rs);
+            user = userMapper.makeUnique(users, user);
         }
-        return masters;
+
+        users.values().forEach( e -> {
+            joinAuthorities(e);
+//            joinUserRequests(e, requestMapper, requests);
+        });
+
+        return users;
     }
 
 }

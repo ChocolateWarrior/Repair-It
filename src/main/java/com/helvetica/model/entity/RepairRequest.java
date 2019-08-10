@@ -2,6 +2,7 @@ package com.helvetica.model.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 public class RepairRequest {
@@ -9,7 +10,7 @@ public class RepairRequest {
     private int id;
     private User user;
 
-    private Set<User> masters;
+    private Set<User> masters = new HashSet<>();
 
     private String description;
     private String rejectionMessage;

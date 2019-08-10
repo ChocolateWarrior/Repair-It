@@ -3,6 +3,7 @@ package com.helvetica.model.dao.mapper;
 import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -19,7 +20,9 @@ public class MasterMapper implements ObjectMapper<User> {
         result.setUsername(rs.getString("username"));
         result.setPassword(rs.getString("password"));
         result.setBalance(rs.getBigDecimal("balance"));
-        result.setAuthority(Role.USER);
+        if(!result.hasAuthority(Role.USER))
+            result.addAuthority(Role.USER);
+
         return result;
 
     }

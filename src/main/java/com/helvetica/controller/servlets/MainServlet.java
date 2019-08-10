@@ -1,6 +1,8 @@
 package com.helvetica.controller.servlets;
 
 import com.helvetica.controller.command.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,11 +18,12 @@ import java.util.Map;
 public class MainServlet extends HttpServlet {
 
     private Map<String, Command> commands = new HashMap<>();
+    private static final Logger log = LogManager.getLogger();
 
     public void init(ServletConfig servletConfig){
 
-        servletConfig.getServletContext()
-                .setAttribute("users", new HashSet<String>());
+//        servletConfig.getServletContext()
+//                .setAttribute("users", new HashSet<String>());
 
         commands.put("/logout", new LogoutCommand());
         commands.put("/login", new LoginCommand());
@@ -47,6 +50,8 @@ public class MainServlet extends HttpServlet {
         String path = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");
         Command command = commands.getOrDefault(path ,
                 (r)->"/WEB-INF/view/index.jsp");
+
+        log.info("Current command: " + command.getClass().getSimpleName());
         String page = command.execute(request);
 
         if(page.contains("redirect")) {

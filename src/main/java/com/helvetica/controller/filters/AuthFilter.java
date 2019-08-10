@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
-
-//import static java.util.Objects.nonNull;
+import java.util.stream.Collectors;
 
 @Log4j2
 @WebFilter(filterName = "AuthFilter")
@@ -21,7 +20,7 @@ public class AuthFilter implements Filter {
     private final List<String> adminPaths = Arrays.asList("/index",
             "/logout",
             "/display",
-            "display/delete");
+            "/display/delete");
     private final List<String> authorizedPaths = Arrays.asList("/index",
             "/index/edit",
             "/index/payment",
@@ -39,15 +38,6 @@ public class AuthFilter implements Filter {
             "/request");
     private final List<String> unauthorizedPaths = Arrays.asList(
             "/login",
-            "/logout",
-            "/display",
-            "/display-request",
-            "/display-request/reject",
-            "/display-request/edit",
-            "/registration",
-            "/login",
-            "/display/delete",
-            "/display/edit",
             "/registration");
     private Map<Role, List<String>> allowedPathPatterns = new HashMap<>();
 
@@ -62,15 +52,21 @@ public class AuthFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession();
-        String uri = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");;
+
+        String uri = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");
+
         User user = (User) session.getAttribute("user");
+        System.out.println("HERE: authfilter 6 user:" + user);
+
 
         if (Objects.isNull(user)) {
             if (unauthorizedPaths.contains(uri)) {
+                System.out.println("HERE: authfilter chain");
                 filterChain.doFilter(request, response);
                 return;
             } else {
@@ -81,7 +77,16 @@ public class AuthFilter implements Filter {
             }
         }
 
-        List<String> paths = allowedPathPatterns.getOrDefault(user.getAuthority(), unauthorizedPaths);
+        System.out.println("HERE: authfilter 1");
+
+
+        List<String> paths = user.getAuthorities().stream()
+                .flatMap(authority -> allowedPathPatterns.get(authority).stream())
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println("HERE: authfilter 2");
+
 
         if (paths.contains(uri)) {
             filterChain.doFilter(request, response);

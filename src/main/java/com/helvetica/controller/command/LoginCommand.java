@@ -19,6 +19,7 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -38,7 +39,7 @@ public class LoginCommand implements Command {
             session.setAttribute("username", user.getUsername());
             session.setAttribute("password", user.getPassword());
             session.setAttribute("balance", user.getBalance());
-            session.setAttribute("role", user.getAuthority());
+            session.setAttribute("roles", user.getAuthorities());
             log.info("User " + username + " successfully logged in");
             return "redirect:/index";
         } else {
