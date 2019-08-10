@@ -236,6 +236,26 @@
                                             </div>
                                             <hr>
                                         </form>
+
+                                        <form action="${pageContext.request.contextPath}/app/index/complete}" method="post">
+<%--                                            <c:if test="${master_request.getState()=='COMPLETED'}">--%>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="master_request_id" value="${master_request.id}" hidden/>
+                                                    </label>
+                                                </div>
+                                                <button type="submit" class="btn btn-success">
+                                                    <fmt:message key="index.complete">
+                                                        Complete
+                                                    </fmt:message>
+                                                </button>
+                                            </div>
+<%--                                            </c:if>--%>
+
+
+                                        </form>
+
                                     </li>
                                     </c:forEach>
                                 </ul>

@@ -27,6 +27,7 @@ public class AuthFilter implements Filter {
             "/balance",
             "/logout",
             "/index/comment",
+            "/index/complete",
             "/display",
             "/display-request",
             "/display-request/reject",

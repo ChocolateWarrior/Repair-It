@@ -33,11 +33,8 @@ public class MainPageService {
     }
 
 
-    public void completeRequest(HttpServletRequest request){
-
-        int id = Integer.parseInt(request.getParameter("master_request_id"));
+    public void completeRequest(int id){
         requestDao.completeRequest(id);
-
     }
 
     public void updateMasterRequest(int id, String state, BigDecimal price){
