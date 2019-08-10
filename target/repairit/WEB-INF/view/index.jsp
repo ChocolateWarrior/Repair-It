@@ -45,14 +45,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>
                 </li>
-                <c:if test="${requestScope.user.hasAuthority('ADMIN')}">
+<%--                <c:if test="${requestScope.user.hasAuthority('ADMIN')}">--%>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
                 </li>
-                </c:if>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
                 </li>
+<%--                </c:if>--%>
             </ul>
         </div>
 
@@ -62,18 +62,9 @@
             <div class="user_balance">
 
                 <span><fmt:message key="balance.user">BALANCE: </fmt:message></span>
-<%--                <c:choose>--%>
-<%--                    <c:when test="${user.balance > 0}">--%>
                         <span>${user.balance}</span>
                         <br />
-<%--                    </c:when>--%>
-<%--                    <c:otherwise>--%>
-<%--                    <span>--%>
-<%--                        <fmt:message key="balance.empty"/>--%>
-<%--                    </span>--%>
-<%--                        <br />--%>
-<%--                    </c:otherwise>--%>
-<%--                </c:choose>--%>
+
                 <br>
                 <span>
                     <fmt:message key="index.replenish">
@@ -170,7 +161,7 @@
 
                 </ul>
 
-
+                <c:if test="${requestScope.user.hasAuthority('MASTER')}">
                 <div class = "MasterRequestInfo">
                     <div class = "master_request"
                          style="margin-top: 30px">
@@ -252,7 +243,7 @@
                         </div>
                     </div>
                 </div>
-
+                </c:if>
         </div>
     </div>
 

@@ -43,9 +43,15 @@
                            name="firstName"
                            class="form-control"
                            id="firstName"
+                           value="${requestScope.first_name}"
                            placeholder="<fmt:message key="reg.enter.first_name">login</fmt:message>"
                            required>
                 </div>
+
+                <c:if test="${requestScope.error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.error}"/></p>
+                </c:if>
+
                 <div class="form-group">
                     <label id="lastNameLabel" for="lastName" >
                         <fmt:message key="reg.last_name">
@@ -56,6 +62,7 @@
                            name="lastName"
                            class="form-control"
                            id="lastName"
+                           value="${requestScope.last_name}"
                            placeholder="<fmt:message key="reg.enter.last_name">last name</fmt:message>"
                            required>
                 </div>
@@ -69,6 +76,7 @@
                            name="username"
                            class="form-control"
                            id="username"
+                           value="${requestScope.username}"
                            placeholder="<fmt:message key="reg.enter.login">login</fmt:message>"
                            required>
                 </div>
@@ -82,6 +90,7 @@
                            name="password"
                            class="form-control"
                            id="password"
+                           value="${requestScope.password}"
                            placeholder="<fmt:message key="reg.enter.password">password</fmt:message>"
                            required>
                 </div>

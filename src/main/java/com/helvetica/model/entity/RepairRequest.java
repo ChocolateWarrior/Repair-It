@@ -3,6 +3,7 @@ package com.helvetica.model.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class RepairRequest {
@@ -66,6 +67,29 @@ public class RepairRequest {
     }
 
     public RepairRequest() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RepairRequest request = (RepairRequest) o;
+        return id == request.id &&
+                user.equals(request.user) &&
+                Objects.equals(masters, request.masters) &&
+                description.equals(request.description) &&
+                Objects.equals(rejectionMessage, request.rejectionMessage) &&
+                Objects.equals(comment, request.comment) &&
+                requestTime.equals(request.requestTime) &&
+                Objects.equals(finishTime, request.finishTime) &&
+                Objects.equals(price, request.price) &&
+                specification == request.specification &&
+                state == request.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, masters, description, rejectionMessage, comment, requestTime, finishTime, price, specification, state);
     }
 
     public int getId() {

@@ -9,8 +9,8 @@ import com.helvetica.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class RequestDisplayService {
@@ -26,7 +26,7 @@ public class RequestDisplayService {
         this.userDao=jdbcDaoFactory.createUserDao();
     }
 
-    public HashSet<RepairRequest> displayRequests(){
+    public Set<RepairRequest> displayRequests(){
         return requestDao.findAll();
     }
 

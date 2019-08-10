@@ -1,5 +1,8 @@
 package com.helvetica.controller.command;
 
+import com.helvetica.controller.validators.NotBlankValidator;
+import com.helvetica.controller.validators.RangeLengthValidator;
+import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserRegistrationService;
@@ -23,6 +26,8 @@ public class RegistrationCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30);
+        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator);
 
         request.setAttribute("all_specifications", Specification.values());
 
@@ -48,6 +53,16 @@ public class RegistrationCommand implements Command {
             userSpec.forEach(e -> specList.add(Specification.valueOf(e)));
         }
 
+        Result result = notBlankValidator.validate(firstName);
+
+        if(!result.isOk()){
+            request.setAttribute("error", result.getMessage());
+            request.setAttribute("first_name", firstName);
+            request.setAttribute("last_name", lastName);
+            request.setAttribute("username", username);
+            request.setAttribute("password", password);
+            return "/WEB-INF/view/user_registration.jsp";
+        }
 
         if(!userSpec.isEmpty()){
             User user = new User(firstName, lastName, username, password, specList);

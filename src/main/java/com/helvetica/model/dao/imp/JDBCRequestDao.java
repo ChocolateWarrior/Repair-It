@@ -41,9 +41,6 @@ public class JDBCRequestDao implements RequestDao{
         }
     }
 
-    private Timestamp convertToTimestamp(LocalDateTime time){
-        return Timestamp.valueOf(time);
-    }
 
     @Override
     public Optional<RepairRequest> findById(int id) {
@@ -60,7 +57,7 @@ public class JDBCRequestDao implements RequestDao{
     }
 
     @Override
-    public HashSet<RepairRequest> findAll() {
+    public Set<RepairRequest> findAll() {
         HashSet<RepairRequest> resultSet;
         try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM requests;")){
             ResultSet rs = ps.executeQuery();
@@ -75,7 +72,7 @@ public class JDBCRequestDao implements RequestDao{
         }
     }
 
-    public HashSet<RepairRequest> findByUser(int id) {
+    public Set<RepairRequest> findByUser(int id) {
 
         log.info("trying to find by user with id: " + id);
         HashSet<RepairRequest> resultSet;
@@ -94,7 +91,7 @@ public class JDBCRequestDao implements RequestDao{
 
     }
 
-    public HashSet<RepairRequest> findByMaster(int id) {
+    public Set<RepairRequest> findByMaster(int id) {
 
         log.info("trying to find by master with id: " + id);
         HashSet<RepairRequest> resultSet;
@@ -202,6 +199,27 @@ public class JDBCRequestDao implements RequestDao{
         }
     }
 
+
+
+    @Override
+    public void update(RepairRequest entity) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
+
+    private Timestamp convertToTimestamp(LocalDateTime time){
+        return Timestamp.valueOf(time);
+    }
+
     private Map<Integer, RepairRequest> extractFromResultSet(ResultSet rs) throws SQLException {
         Map<Integer, RepairRequest> requests = new HashMap<>();
         Map<Integer, User> masters = new HashMap<>();
@@ -227,18 +245,4 @@ public class JDBCRequestDao implements RequestDao{
         return requests;
     }
 
-    @Override
-    public void update(RepairRequest entity) {
-
-    }
-
-    @Override
-    public void delete(int id) {
-
-    }
-
-    @Override
-    public void close() throws Exception {
-
-    }
 }

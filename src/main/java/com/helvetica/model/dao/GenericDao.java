@@ -1,14 +1,13 @@
 package com.helvetica.model.dao;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface GenericDao<T> extends AutoCloseable {
 
     void create(T entity);
     Optional<T> findById(int id);
-    HashSet<T> findAll();
+    Set<T> findAll();
     void update(T entity);
     void delete(int id);
 }

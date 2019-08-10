@@ -8,7 +8,9 @@ import com.helvetica.model.entity.RequestState;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.HashSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Set;
 
 public class MainPageService {
 
@@ -22,11 +24,11 @@ public class MainPageService {
 
     }
 
-    public HashSet<RepairRequest> findByUser(int id){
+    public Set<RepairRequest> findByUser(int id){
         return requestDao.findByUser(id);
     }
 
-    public HashSet<RepairRequest> findByMaster(int id){
+    public Set<RepairRequest> findByMaster(int id){
         return requestDao.findByMaster(id);
     }
 
@@ -43,8 +45,30 @@ public class MainPageService {
     }
 
     public void payForRequest(int user_id, int request_id, BigDecimal price){
-        requestDao.updatePayment(request_id);
-        userDao.subtractBalance(user_id, price);
+
+        Connection connection = userDao.getConnection();
+        try {
+            connection.setAutoCommit(false);
+
+            requestDao.updatePayment(request_id);
+            userDao.subtractBalance(user_id, price);
+
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void leaveComment(int id, String comment){

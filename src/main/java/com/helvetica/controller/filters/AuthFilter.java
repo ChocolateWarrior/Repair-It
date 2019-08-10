@@ -44,6 +44,7 @@ public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         allowedPathPatterns.put(Role.USER, authorizedPaths);
+        allowedPathPatterns.put(Role.MASTER, authorizedPaths);
         allowedPathPatterns.put(Role.ADMIN, adminPaths);
     }
 

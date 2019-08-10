@@ -24,6 +24,10 @@ public class JDBCUserDao implements UserDao {
         this.connection = connection;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     @Override
     public Optional<User> findById(int id) {
 
@@ -171,22 +175,7 @@ public class JDBCUserDao implements UserDao {
         }
     }
 
-    private void createMasterSpecifications(User entity, int id){
 
-        entity.getSpecifications().forEach(element -> {
-                    try (PreparedStatement ms = connection.prepareStatement(
-                            "INSERT INTO master_specifications (user_id, specifications) " +
-                                    "VALUES(?, ?)")) {
-
-                        ms.setInt(1, id);
-                        ms.setString(2, element.name());
-                        ms.executeUpdate();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
-    }
 
     @Override
     public void update(User entity) {
@@ -224,6 +213,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     public void replenishBalance(int id, BigDecimal sum){
+
         try (PreparedStatement ps =
                      connection.prepareStatement("UPDATE users SET" +
                              " balance = balance + ?" +
@@ -343,6 +333,23 @@ public class JDBCUserDao implements UserDao {
         });
 
         return users;
+    }
+
+    private void createMasterSpecifications(User entity, int id){
+
+        entity.getSpecifications().forEach(element -> {
+                    try (PreparedStatement ms = connection.prepareStatement(
+                            "INSERT INTO master_specifications (user_id, specifications) " +
+                                    "VALUES(?, ?)")) {
+
+                        ms.setInt(1, id);
+                        ms.setString(2, element.name());
+                        ms.executeUpdate();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
     }
 
 }
