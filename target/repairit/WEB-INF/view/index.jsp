@@ -45,9 +45,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>
                 </li>
+                <c:if test="${requestScope.user.hasAuthority('ADMIN')}">
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
                 </li>
+                </c:if>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
                 </li>
