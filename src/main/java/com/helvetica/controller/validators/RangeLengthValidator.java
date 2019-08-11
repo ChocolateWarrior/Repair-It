@@ -1,9 +1,11 @@
 package com.helvetica.controller.validators;
 
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class RangeLengthValidator  extends Validator<String>{
     private final SimpleResult FAILED;
+//    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
     private Integer minLength;
     private Integer maxLength;
@@ -18,14 +20,18 @@ public class RangeLengthValidator  extends Validator<String>{
     public RangeLengthValidator(Integer min, Integer max) {
         this.minLength = min;
         this.maxLength = max;
-        FAILED = new SimpleResult("This field must be in range: [" + minLength + ";" + maxLength + "]!",false);
+        FAILED = new SimpleResult(
+//                resourceBundle.getString("valid.in_range") +
+                " [" + minLength + ";" + maxLength + "]!",false);
     }
 
     public RangeLengthValidator(Integer min, Integer max, Validator<String> next) {
         super(next);
         this.minLength = min;
         this.maxLength = max;
-        FAILED = new SimpleResult("This field must be in range: [" + minLength + ";" + maxLength + "]!",false);
+        FAILED = new SimpleResult(
+//                resourceBundle.getString("valid.in_range") +
+                " [" + minLength + ";" + maxLength + "]!",false);
     }
 
     @Override

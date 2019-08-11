@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 
@@ -22,9 +21,6 @@ public class MainServlet extends HttpServlet {
 
     public void init(ServletConfig servletConfig){
 
-//        servletConfig.getServletContext()
-//                .setAttribute("users", new HashSet<String>());
-
         commands.put("/logout", new LogoutCommand());
         commands.put("/login", new LoginCommand());
         commands.put("/exception" , new ExceptionCommand());
@@ -32,7 +28,6 @@ public class MainServlet extends HttpServlet {
         commands.put("/registration" , new RegistrationCommand());
         commands.put("/display", new UserDisplayCommand());
         commands.put("/index", new IndexCommand());
-        commands.put("/index/edit", new MasterIndexCommand());
         commands.put("/index/comment", new IndexCommentCommand());
         commands.put("/index/payment", new IndexPaymentCommand());
         commands.put("/balance", new BalanceCommand());
@@ -42,8 +37,6 @@ public class MainServlet extends HttpServlet {
         commands.put("/display-request/reject", new RequestRejectCommand());
         commands.put("/display-request/edit", new RequestEditCommand());
         commands.put("/index/complete", new IndexCompleteCommand());
-
-
 
     }
 

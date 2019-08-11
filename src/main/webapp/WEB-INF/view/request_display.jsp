@@ -19,9 +19,8 @@
     <title>Requests</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-<%--    <link rel="stylesheet" th:href="@{/css/style.css}" >--%>
     <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/style.css" >
 
 </head>
 
@@ -143,7 +142,7 @@
                                                id="rejectionMessageElement"
                                                name="rejection_message"
                                                style="margin-bottom: 10px"
-                                               placeholder=<fmt:message key="display.rejection"/>>
+                                               placeholder=<fmt:message key="display.rejection_type"/>>
 
                                         <button class ="btn btn-danger">
                                             <span>
@@ -151,6 +150,29 @@
                                             </span>
                                         </button>
                                     </form>
+
+<%--                                    <form action="${pageContext.request.contextPath}/app/display-request/accept?accept_id=${request.id}"--%>
+<%--                                          method="post">--%>
+
+<%--                                        <span>--%>
+<%--                                            <fmt:message key="display.acceptance">--%>
+<%--                                                acceptance--%>
+<%--                                            </fmt:message>--%>
+<%--                                        </span>--%>
+
+<%--                                        <input type="text"--%>
+<%--                                               id="acceptanceMethod"--%>
+<%--                                               name="rejection_message"--%>
+<%--                                               style="margin-bottom: 10px"--%>
+<%--                                               placeholder=<fmt:message key="display.rejection_type"/>>--%>
+
+<%--                                        <button class ="btn btn-danger">--%>
+<%--                                            <span>--%>
+<%--                                                <fmt:message key="display.reject"/>--%>
+<%--                                            </span>--%>
+<%--                                        </button>--%>
+<%--                                    </form>--%>
+
                                 </li>
                             </c:forEach>
                         </ul>

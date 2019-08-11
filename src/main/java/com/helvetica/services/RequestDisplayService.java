@@ -4,11 +4,13 @@ import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.RepairRequest;
+import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +50,10 @@ public class RequestDisplayService {
         userDao.findByUsername(masterUsername).ifPresent(e ->
             requestDao.addRequestMaster(requestToEdit, e));
 
+    }
+
+    public void updateMasterRequest(int id, String state, BigDecimal price){
+        requestDao.updateStateAndPrice(id, RequestState.valueOf(state), price);
     }
 
 }

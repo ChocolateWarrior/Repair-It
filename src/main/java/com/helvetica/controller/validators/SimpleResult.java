@@ -5,7 +5,7 @@ public class SimpleResult implements Result {
     private String message;
     private boolean ok;
 
-    SimpleResult(String message, boolean ok) {
+    public SimpleResult(String message, boolean ok) {
         this.message = message;
         this.ok = ok;
     }

@@ -1,5 +1,9 @@
 package com.helvetica.controller.command;
 
+import com.helvetica.controller.validators.NotBlankValidator;
+import com.helvetica.controller.validators.RangeLengthValidator;
+import com.helvetica.controller.validators.Result;
+import com.helvetica.controller.validators.SimpleResult;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserDisplayService;
 
@@ -17,6 +21,8 @@ public class UserEditCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
 
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30);
+
         int id = Integer.parseInt(request.getParameter("id"));
 
         User userToEdit = userDisplayService.findById(id);
@@ -27,6 +33,35 @@ public class UserEditCommand implements Command{
         Optional<String> username = Optional.ofNullable(request.getParameter("loginEdit"));
         Optional<String> password = Optional.ofNullable(request.getParameter("passwordEdit"));
 
+        Result result;
+
+        if(firstName.isPresent()){
+            result = rangeLengthValidator.validate(firstName.get());
+            if (!result.isOk())
+                return handleValidationError(request, result, firstName.get(),
+                        lastName.get(), username.get(), password.get());
+        }
+
+        if(lastName.isPresent()) {
+            result = rangeLengthValidator.validate(lastName.get());
+            if (!result.isOk())
+                return handleValidationError(request, result, firstName.get(),
+                        lastName.get(), username.get(), password.get());
+        }
+
+        if(username.isPresent()) {
+            result = rangeLengthValidator.validate(username.get());
+            if (!result.isOk())
+                return handleValidationError(request, result, firstName.get(),
+                        lastName.get(), username.get(), password.get());
+        }
+
+        if(password.isPresent()){
+            result = rangeLengthValidator.validate(firstName.get());
+            if(!result.isOk())
+                return handleValidationError(request, result, firstName.get(),
+                        lastName.get(), username.get(), password.get());
+        }
 
         firstName.ifPresent(s -> userToEdit.setFirstName(s.isEmpty() ? userToEdit.getFirstName() : s));
         lastName.ifPresent(s -> userToEdit.setLastName(s.isEmpty() ? userToEdit.getLastName() : s));
@@ -35,6 +70,17 @@ public class UserEditCommand implements Command{
 
         userDisplayService.editUser(userToEdit);
         return "/WEB-INF/view/user_edit.jsp";
+    }
+
+    private String handleValidationError(HttpServletRequest request, Result result,
+                                         String firstName, String lastName,
+                                         String username, String password){
+        request.setAttribute("error", result.getMessage());
+        request.setAttribute("firstNameEdit", firstName);
+        request.setAttribute("lastNameEdit", lastName);
+        request.setAttribute("loginEdit", username);
+        request.setAttribute("passwordEdit", password);
+        return "/WEB-INF/view/user_registration.jsp";
     }
 
 }

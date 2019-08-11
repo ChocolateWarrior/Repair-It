@@ -20,9 +20,8 @@
     <title>Request Edit</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <%--    <link rel="stylesheet" th:href="@{/css/style.css}" >--%>
     <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/style.css" >
 </head>
 
 <body>
@@ -46,13 +45,38 @@
                             </option>
                         </c:forEach>
                     </select>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>
+                                <input name="master_request_id" value="${request.id}" hidden/>
+                            </label>
+                            <span class="form-heading">
+                                <fmt:message key="req.display.price">
+                                    price
+                                </fmt:message>
+                            </span>
+                            <div class="form-group">
+                                <label id="priceLabel" for="priceElement"></label>
+                                <input type="number"
+                                       min="0"
+                                       max="1000000"
+                                       class="form-control"
+                                       id="priceElement"
+                                       name="master_request_price"
+                                       value="${requestScope.master_request_price}"
+                                       placeholder=<fmt:message key="req.display.price"/>>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <button type="submit" class="btn btn-success" style="margin-top:30px">
                     <fmt:message key="req.send">send</fmt:message>
                 </button>
             </form>
-
 
             <div class="aboutLanguage">
                 <span><fmt:message key="lang.change">change language</fmt:message></span>:

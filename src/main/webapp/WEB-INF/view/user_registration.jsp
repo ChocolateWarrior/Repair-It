@@ -21,6 +21,8 @@
     <title>Registration</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/style.css" >
 </head>
 <body>
 
@@ -47,10 +49,6 @@
                            placeholder="<fmt:message key="reg.enter.first_name">login</fmt:message>"
                            required>
                 </div>
-
-                <c:if test="${requestScope.error != null}">
-                    <p class="text-danger"><c:out value="${requestScope.error}"/></p>
-                </c:if>
 
                 <div class="form-group">
                     <label id="lastNameLabel" for="lastName" >
@@ -94,6 +92,10 @@
                            placeholder="<fmt:message key="reg.enter.password">password</fmt:message>"
                            required>
                 </div>
+
+                <c:if test="${requestScope.error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.error}"/></p>
+                </c:if>
 
                 <div class="form-group">
 

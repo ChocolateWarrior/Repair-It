@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/WEB-INF/css/style.css" >
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/style.css" >
 </head>
 
 <body>
@@ -53,6 +53,10 @@
                            name="description"
                            placeholder=<fmt:message key="req.enter.desc"/>>
                 </div>
+
+                <c:if test="${requestScope.error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.error}"/></p>
+                </c:if>
 
                 <button type="submit" class="btn btn-success" style="margin-top:30px">
                     <fmt:message key="req.send">send</fmt:message>

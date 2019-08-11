@@ -20,7 +20,8 @@
     <title>Repair It</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/style.css" >
 </head>
 
 <body>
@@ -175,67 +176,6 @@
                                             <fmt:message key="index.description"/>
                                             <c:out value="${master_request.description}"/>
                                         </span>
-                                        <form action="${pageContext.request.contextPath}/app/index/edit" method="post"
-                                              style="margin-top: 30px">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label>
-                                                        <input name="master_request_id" value="${master_request.id}" hidden/>
-                                                    </label>
-                                                    <span class="form-heading">
-                                                        <fmt:message key="req.display.price">
-                                                            price
-                                                        </fmt:message>
-                                                    </span>
-                                                    <div class="form-group">
-                                                        <label id="priceLabel" for="priceElement"></label>
-                                                        <input type="number"
-                                                               min="0"
-                                                               class="form-control"
-                                                               id="priceElement"
-                                                               name="master_request_price"
-                                                               placeholder=<fmt:message key="req.display.price"/>>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <span class="form-heading" >
-                                                        <fmt:message key="index.select_state">
-                                                            Select state
-                                                        </fmt:message>
-                                                    </span>
-                                                    <div class="form-group">
-                                                        <label id="SecondTypeLabel" for="state" class="col-form-label"></label>
-                                                        <select class="form-control" id="state" name="master_request_state" required>
-                                                            <option value="ACCEPTED">
-                                                                <fmt:message key="state.accepted">
-                                                                    Accepted
-                                                                </fmt:message>
-                                                            </option>
-                                                            <option value="COMPLETED">
-                                                                <fmt:message key="state.completed">
-                                                                    Completed
-                                                                </fmt:message>
-                                                            </option>
-                                                            <option value="REJECTED" >
-                                                                <fmt:message key="state.rejected">
-                                                                    Rejected
-                                                                </fmt:message>
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <button type="submit" class="btn btn-success">
-                                                        <fmt:message key="global.submit">
-                                                            Submit
-                                                        </fmt:message>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        </form>
 
                                         <form action="${pageContext.request.contextPath}/app/index/complete}" method="post">
 <%--                                            <c:if test="${master_request.getState()=='COMPLETED'}">--%>
@@ -252,8 +192,6 @@
                                                 </button>
                                             </div>
 <%--                                            </c:if>--%>
-
-
                                         </form>
 
                                     </li>

@@ -1,5 +1,8 @@
 package com.helvetica.controller.command;
 
+import com.helvetica.controller.validators.NotBlankValidator;
+import com.helvetica.controller.validators.RangeLengthValidator;
+import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
@@ -21,6 +24,9 @@ public class RequestCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(8, 80);
+        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator);
+
         HttpSession session = request.getSession();
 
         String specification = request.getParameter("specification");
@@ -30,6 +36,14 @@ public class RequestCommand implements Command {
         if (!(Objects.nonNull(specification) &&
                 Objects.nonNull(description) &&
                 Objects.nonNull(user))) {
+            return "/WEB-INF/view/request.jsp";
+        }
+
+        Result result = notBlankValidator.validate(description);
+        if(!result.isOk()){
+            request.setAttribute("error", result.getMessage());
+            request.setAttribute("specification", specification);
+            request.setAttribute("description", description);
             return "/WEB-INF/view/request.jsp";
         }
 

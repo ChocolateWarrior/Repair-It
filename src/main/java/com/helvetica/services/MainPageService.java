@@ -4,9 +4,7 @@ import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.RepairRequest;
-import com.helvetica.model.entity.RequestState;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -35,10 +33,6 @@ public class MainPageService {
 
     public void completeRequest(int id){
         requestDao.completeRequest(id);
-    }
-
-    public void updateMasterRequest(int id, String state, BigDecimal price){
-        requestDao.updateStateAndPrice(id, RequestState.valueOf(state), price);
     }
 
     public void payForRequest(int user_id, int request_id, BigDecimal price){
