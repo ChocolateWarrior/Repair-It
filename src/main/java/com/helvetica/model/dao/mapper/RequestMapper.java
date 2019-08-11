@@ -20,10 +20,8 @@ import static java.lang.Integer.parseInt;
 public class RequestMapper implements ObjectMapper<RepairRequest> {
 
     private JDBCUserDao jdbcUserDao;
-    private Connection connection;
 
     public RequestMapper(Connection connection) {
-        this.connection = connection;
         this.jdbcUserDao = new JDBCUserDao(connection);
     }
 
@@ -32,21 +30,24 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
 
         RepairRequest result = new RepairRequest();
 
-        result.setId(rs.getInt("id"));
-        result.setSpecification(Specification.valueOf(rs.getString("specification")));
-        result.setDescription(rs.getString("description"));
-        result.setUser(getUser(parseInt(rs.getString("user_id"))).get());
-        result.setRequestTime(convertTime(rs.getDate("request_time")));
-        if(Objects.nonNull(rs.getString("state")))
-            result.setState(RequestState.valueOf(rs.getString("state")));
-        if(Objects.nonNull(rs.getDate("finish_time")))
-            result.setFinishTime(convertTime(rs.getDate("finish_time")));
-        if(Objects.nonNull(rs.getBigDecimal("price")))
-            result.setPrice(rs.getBigDecimal("price"));
-        if(Objects.nonNull(rs.getString("rejection_message")))
-            result.setRejectionMessage(rs.getString("rejection_message"));
-        if(Objects.nonNull(rs.getString("comment")))
-            result.setComment(rs.getString("comment"));
+        result.setId(rs.getInt("requests.id"));
+        result.setSpecification(Specification.valueOf(rs.getString("requests.specification")));
+        result.setDescription(rs.getString("requests.description"));
+//        result.setUser(getUser(parseInt(rs.getString("requests.user_id"))).get());
+        result.setRequestTime(convertTime(rs.getDate("requests.request_time")));
+        if(Objects.nonNull(rs.getString("requests.state")))
+            result.setState(RequestState.valueOf(rs.getString("requests.state")));
+        if(Objects.nonNull(rs.getDate("requests.finish_time")))
+            result.setFinishTime(convertTime(rs.getDate("requests.finish_time")));
+        if(Objects.nonNull(rs.getBigDecimal("requests.price")))
+            result.setPrice(rs.getBigDecimal("requests.price"));
+        if(Objects.nonNull(rs.getString("requests.rejection_message")))
+            result.setRejectionMessage(rs.getString("requests.rejection_message"));
+        if(Objects.nonNull(rs.getString("requests.comment")))
+            result.setComment(rs.getString("requests.comment"));
+
+//        System.out.println(jdbcUserDao.findMastersByRequest(rs.getInt("id")));
+//        result.setMasters(jdbcUserDao.findMastersByRequest(rs.getInt("id")));
 
         return result;
     }
@@ -62,8 +63,7 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
     }
 
     private LocalDateTime convertTime(Date dateToConvert) {
-        return new java.sql.Timestamp(
-                dateToConvert.getTime()).toLocalDateTime();
+        return new java.sql.Timestamp(dateToConvert.getTime()).toLocalDateTime();
     }
 
 

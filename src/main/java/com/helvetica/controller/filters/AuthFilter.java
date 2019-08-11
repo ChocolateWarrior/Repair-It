@@ -54,21 +54,15 @@ public class AuthFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession();
-
         String uri = request.getRequestURI().replaceFirst(request.getContextPath() + "/app", "");
-
         User user = (User) session.getAttribute("user");
-        System.out.println("HERE: authfilter 6 user:" + user);
-
 
         if (Objects.isNull(user)) {
             if (unauthorizedPaths.contains(uri)) {
-                System.out.println("HERE: authfilter chain");
                 filterChain.doFilter(request, response);
                 return;
             } else {
@@ -79,16 +73,10 @@ public class AuthFilter implements Filter {
             }
         }
 
-        System.out.println("HERE: authfilter 1");
-
-
         List<String> paths = user.getAuthorities().stream()
                 .flatMap(authority -> allowedPathPatterns.get(authority).stream())
                 .distinct()
                 .collect(Collectors.toList());
-
-        System.out.println("HERE: authfilter 2");
-
 
         if (paths.contains(uri)) {
             filterChain.doFilter(request, response);

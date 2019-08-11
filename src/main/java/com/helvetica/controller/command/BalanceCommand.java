@@ -33,7 +33,6 @@ public class BalanceCommand implements Command {
 
         request.setAttribute("user", userToEdit);
         request.setAttribute("balance", userToEdit.getBalance());
-//        request.setAttribute("replenish_message_sc", "Balance successfully replenished!");
 
         Optional<String> sumOpt = Optional.ofNullable(request.getParameter("sum"));
 

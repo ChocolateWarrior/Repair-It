@@ -14,12 +14,12 @@ public class MasterMapper implements ObjectMapper<User> {
 
         User result = new User();
 
-        result.setId(rs.getInt("id"));
-        result.setFirstName(rs.getString("first_name"));
-        result.setLastName(rs.getString("last_name"));
-        result.setUsername(rs.getString("username"));
-        result.setPassword(rs.getString("password"));
-        result.setBalance(rs.getBigDecimal("balance"));
+        result.setId(rs.getInt("users.id"));
+        result.setFirstName(rs.getString("users.first_name"));
+        result.setLastName(rs.getString("users.last_name"));
+        result.setUsername(rs.getString("users.username"));
+        result.setPassword(rs.getString("users.password"));
+        result.setBalance(rs.getBigDecimal("users.balance"));
         if(!result.hasAuthority(Role.USER))
             result.addAuthority(Role.USER);
 

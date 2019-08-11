@@ -58,11 +58,13 @@ public class RepairRequest {
 
     @Override
     public String toString() {
+
         return "RepairRequest{" +
                 "user=" + user +
                 ", description='" + description + '\'' +
                 ", requestTime=" + requestTime +
                 ", specification=" + specification +
+                ", masters= " + masters +
                 '}';
     }
 

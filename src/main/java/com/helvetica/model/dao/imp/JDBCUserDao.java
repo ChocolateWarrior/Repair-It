@@ -31,7 +31,15 @@ public class JDBCUserDao implements UserDao {
     @Override
     public Optional<User> findById(int id) {
 
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE id = ?")){
+        try (PreparedStatement ps = connection.prepareStatement("SELECT" +
+                " users.id AS \"users.id\"," +
+                " users.first_name AS \"users.first_name\"," +
+                " users.last_name AS \"users.last_name\"," +
+                " users.password AS \"users.password\"," +
+                " users.balance AS \"users.balance\"," +
+                " users.username AS \"users.username\"" +
+                " FROM users\n" +
+                " WHERE users.id = ?")){
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
@@ -47,7 +55,14 @@ public class JDBCUserDao implements UserDao {
     public HashSet<User> findAll() {
         HashSet<User> result;
 
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM users;")){
+        try (PreparedStatement ps = connection.prepareStatement("SELECT" +
+                " users.id AS \"users.id\"," +
+                " users.first_name AS \"users.first_name\"," +
+                " users.last_name AS \"users.last_name\"," +
+                " users.balance AS \"users.balance\"," +
+                " users.password AS \"users.password\"," +
+                " users.username AS \"users.username\"" +
+                " FROM users")){
 
             ResultSet rs = ps.executeQuery();
             Map<Integer, User> users = extractFromResultSet(rs);
@@ -63,7 +78,14 @@ public class JDBCUserDao implements UserDao {
     public Optional<User> findByUsernameAndPassword(String username, String password){
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM users WHERE username =? AND password=?")){
+                "SELECT" +
+                        " users.id AS \"users.id\"," +
+                        " users.first_name AS \"users.first_name\"," +
+                        " users.last_name AS \"users.last_name\"," +
+                        " users.password AS \"users.password\"," +
+                        " users.balance AS \"users.balance\"," +
+                        " users.username AS \"users.username\"" +
+                        " FROM users WHERE username=? AND password=?")){
             ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
@@ -78,7 +100,14 @@ public class JDBCUserDao implements UserDao {
 
     public Optional<User> findByUsername(String username){
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM users WHERE username =?")){
+                "SELECT" +
+                        " users.id AS \"users.id\"," +
+                        " users.first_name AS \"users.first_name\"," +
+                        " users.last_name AS \"users.last_name\"," +
+                        " users.password AS \"users.password\"," +
+                        " users.balance AS \"users.balance\"," +
+                        " users.username AS \"users.username\"" +
+                        " FROM users WHERE username =?")){
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -94,7 +123,16 @@ public class JDBCUserDao implements UserDao {
     public HashSet<User> findMastersBySpecification(Specification specification){
         HashSet<User> result;
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM users LEFT JOIN master_specifications ON users.id=master_specifications.user_id WHERE specifications=?")){
+                "SELECT " +
+                        " users.id AS \"users.id\"," +
+                        " users.first_name AS \"users.first_name\"," +
+                        " users.last_name AS \"users.last_name\"," +
+                        " users.password AS \"users.password\"," +
+                        " users.balance AS \"users.balance\"," +
+                        " users.username AS \"users.username\"," +
+                        " master_specifications.specifications AS \"master_specifications.specifications\"" +
+                        " master_specifications.user_id AS \"master_specifications.user_id\"" +
+                        " FROM users LEFT JOIN master_specifications ON users.id=master_specifications.user_id WHERE specifications=?")){
 
             ps.setString(1, specification.name());
             ResultSet rs = ps.executeQuery();
@@ -102,6 +140,38 @@ public class JDBCUserDao implements UserDao {
             result = new HashSet<>(users.values());
 
             return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public Set<User> findMastersByRequest(int id) {
+
+        log.info("trying to find by request with id: " + id);
+        HashSet<User> resultSet;
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT " +
+                        " users.id AS \"users.id\"," +
+                        " users.first_name AS \"users.first_name\"," +
+                        " users.last_name AS \"users.last_name\"," +
+                        " users.balance AS \"users.balance\"," +
+                        " users.password AS \"users.password\"," +
+                        " users.username AS \"users.username\"," +
+                        " masters_requests.master_id AS \"masters_requests.master_id\"," +
+                        " masters_requests.request_id AS \"masters_requests.request_id\"," +
+                        " FROM users LEFT JOIN masters_requests ON" +
+                        " users.id = masters_requests.master_id" +
+                        " WHERE master_id=?"
+        )){
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            Map<Integer, User> users = extractFromResultSet(rs);
+            resultSet = new HashSet<>(users.values());
+
+            return resultSet;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -255,86 +325,6 @@ public class JDBCUserDao implements UserDao {
 
     }
 
-    private void joinAuthorities(User entity){
-
-        try(PreparedStatement ps = connection.prepareStatement(
-                "SELECT" +
-                        " users.id AS \"users.id\"," +
-                        " user_authorities.user_id AS \"user_authorities.user_id\"," +
-                        " user_authorities.authorities AS \"user_authorities.authorities\"" +
-                        " FROM users LEFT JOIN user_authorities" +
-                        " ON users.id=user_authorities.user_id" +
-                        " WHERE users.id=?"
-        )) {
-
-            ps.setInt(1, entity.getId());
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-                String authority = rs.getString("user_authorities.authorities");
-                entity.addAuthority(Role.valueOf(authority));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void joinUserRequests(User entity, RequestMapper requestMapper, Map<Integer, RepairRequest> requests){
-
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT" +
-                        " users.id AS \"users.id\"," +
-                        " requests.user_id AS \"requests.user_id\"," +
-                        " requests.id AS \"requests.id\"," +
-                        " requests.specification AS \"requests.specification\"," +
-                        " requests.description AS \"requests.description\"," +
-                        " requests.request_time AS \"requests.request_time\"," +
-                        " requests.finish_time AS \"requests.finish_time\"," +
-                        " requests.comment AS \"requests.comment\"," +
-                        " requests.rejection_message AS \"requests.rejection_message\"," +
-                        " requests.price AS \"requests.price\"," +
-                        " requests.state AS \"requests.state\"" +
-                        " FROM users" +
-                        " LEFT JOIN requests ON requests.user_id = users.id" +
-                        " WHERE users.id = ?")) {
-            ps.setInt(1, entity.getId());
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                RepairRequest request = requestMapper.extractFromResultSet(rs);
-                request = requestMapper.makeUnique(requests, request);
-
-                if (Objects.nonNull(request) && !entity.getUserRequests().contains(request)) {
-                    entity.addUserRequest(request);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Map<Integer, User> extractFromResultSet(ResultSet rs) throws SQLException {
-
-        MasterMapper userMapper = new MasterMapper();
-        RequestMapper requestMapper = new RequestMapper(connection);
-
-        Map<Integer, User> users = new HashMap<>();
-        Map<Integer, RepairRequest> requests = new HashMap<>();
-
-        while (rs.next()) {
-            User user = userMapper.extractFromResultSet(rs);
-            user = userMapper.makeUnique(users, user);
-        }
-
-        users.values().forEach( e -> {
-            joinAuthorities(e);
-//            joinUserRequests(e, requestMapper, requests);
-        });
-
-        return users;
-    }
-
     private void createMasterSpecifications(User entity, int id){
 
         entity.getSpecifications().forEach(element -> {
@@ -351,5 +341,78 @@ public class JDBCUserDao implements UserDao {
                 }
         );
     }
+
+    private Map<Integer, User> extractFromResultSet(ResultSet rss) throws SQLException {
+
+        MasterMapper userMapper = new MasterMapper();
+        RequestMapper requestMapper = new RequestMapper(connection);
+
+        Map<Integer, User> users = new HashMap<>();
+        Map<Integer, RepairRequest> requests = new HashMap<>();
+
+        while (rss.next()) {
+            User user = userMapper.extractFromResultSet(rss);
+            userMapper.makeUnique(users, user);
+        }
+
+        for(User e : users.values()){
+
+            try(PreparedStatement ps = connection.prepareStatement(
+                    "SELECT" +
+                            " users.id AS \"users.id\"," +
+                            " user_authorities.user_id AS \"user_authorities.user_id\"," +
+                            " user_authorities.authorities AS \"user_authorities.authorities\"" +
+                            " FROM users LEFT JOIN user_authorities" +
+                            " ON users.id=user_authorities.user_id" +
+                            " WHERE users.id=?"
+            )) {
+
+                ps.setInt(1, e.getId());
+                ResultSet rsa = ps.executeQuery();
+
+                while(rsa.next()){
+                    String authority = rsa.getString("user_authorities.authorities");
+                    e.addAuthority(Role.valueOf(authority));
+                }
+
+            }
+
+            try (PreparedStatement pss = connection.prepareStatement(
+                    "SELECT" +
+                            " users.id AS \"users.id\"," +
+                            " masters_requests.master_id AS \"masters_requests.master_id\"," +
+                            " masters_requests.request_id AS \"masters_requests.request_id\"," +
+                            " requests.user_id AS \"requests.user_id\"," +
+                            " requests.id AS \"requests.id\"," +
+                            " requests.specification AS \"requests.specification\"," +
+                            " requests.description AS \"requests.description\"," +
+                            " requests.request_time AS \"requests.request_time\"," +
+                            " requests.finish_time AS \"requests.finish_time\"," +
+                            " requests.comment AS \"requests.comment\"," +
+                            " requests.rejection_message AS \"requests.rejection_message\"," +
+                            " requests.price AS \"requests.price\"," +
+                            " requests.state AS \"requests.state\"" +
+                            " FROM users" +
+                            " LEFT JOIN masters_requests ON users.id = masters_requests.master_id" +
+                            " LEFT JOIN requests ON requests.user_id = users.id" +
+                            " WHERE users.id = ?")) {
+                pss.setInt(1, e.getId());
+                ResultSet rs = pss.executeQuery();
+
+                while (rs.next()) {
+                    RepairRequest request = requestMapper.extractFromResultSet(rs);
+                    request = requestMapper.makeUnique(requests, request);
+
+                    if (Objects.nonNull(request) && !e.getUserRequests().contains(request)) {
+                        e.addUserRequest(request);
+                    }
+                }
+            }
+        }
+
+        return users;
+    }
+
+
 
 }

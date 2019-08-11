@@ -15,6 +15,10 @@ public class RequestDisplayCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         request.setAttribute("requests", requestDisplayService.displayRequests());
+
+        requestDisplayService.displayRequests().forEach(e-> {
+            e.getMasters().forEach(System.out::println);
+        });
         return "/WEB-INF/view/request_display.jsp";
     }
 }

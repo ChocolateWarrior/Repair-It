@@ -31,6 +31,10 @@
 
             <form action="${pageContext.request.contextPath}/app/login" method="post">
 
+                <c:if test="${requestScope.message_er != null}">
+                    <p class="text-danger"><c:out value="${requestScope.message_er}"/></p>
+                </c:if>
+
                 <div class="form-group">
                     <label id="usernameLabel" for="username" ><fmt:message key="login.login">login</fmt:message></label>
                     <input type="text"

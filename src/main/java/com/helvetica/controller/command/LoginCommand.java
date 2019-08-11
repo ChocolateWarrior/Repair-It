@@ -1,5 +1,8 @@
 package com.helvetica.controller.command;
 
+import com.helvetica.controller.validators.NotBlankValidator;
+import com.helvetica.controller.validators.RangeLengthValidator;
+import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserDisplayService;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +30,17 @@ public class LoginCommand implements Command {
             return "/WEB-INF/view/login.jsp";
         }
 
-        User user = userDisplayService.getByUsernameAndPassword(username, password);
+        User user;
+
+        try {
+            user = userDisplayService.getByUsernameAndPassword(username, password);
+        }catch (Exception e){
+            System.out.println("HERE IS THE ERROR");
+            e.printStackTrace();
+            request.setAttribute("message_er", "Wrong credentials!");
+            return "/WEB-INF/view/login.jsp";
+        }
+
         if (Objects.isNull(user)) {
             log.warn("No such user " + username + " in database");
             return "/WEB-INF/view/login.jsp";

@@ -23,7 +23,6 @@ public class MainServlet extends HttpServlet {
 
         commands.put("/logout", new LogoutCommand());
         commands.put("/login", new LoginCommand());
-        commands.put("/exception" , new ExceptionCommand());
         commands.put("/request", new RequestCommand());
         commands.put("/registration" , new RegistrationCommand());
         commands.put("/display", new UserDisplayCommand());
