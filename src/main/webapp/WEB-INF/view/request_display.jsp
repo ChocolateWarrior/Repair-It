@@ -92,8 +92,7 @@
                                         </span>
                                         <span>
                                             <c:forEach items="${request.masters}" var="master">
-                                                <p><c:out value="${master.username}" /></p>
-                                                <br>
+                                                <span>[<c:out value="${master.username}" />]</span>
                                             </c:forEach>
                                         </span>
                                         <br>

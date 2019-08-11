@@ -9,10 +9,12 @@ import com.helvetica.services.UserDisplayService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class UserEditCommand implements Command{
 
     private UserDisplayService userDisplayService;
+    ResourceBundle resourceBundle;
 
     public UserEditCommand() {
         this.userDisplayService = new UserDisplayService();
@@ -21,7 +23,10 @@ public class UserEditCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
 
-        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30);
+        resourceBundle = ResourceBundle.getBundle("property/messages", CommandUtility.getSessionLocale(request));
+
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30,
+                resourceBundle.getString("valid.in_range"));
 
         int id = Integer.parseInt(request.getParameter("id"));
 

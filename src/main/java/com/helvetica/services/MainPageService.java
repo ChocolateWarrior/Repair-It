@@ -1,53 +1,56 @@
 package com.helvetica.services;
 
+import com.helvetica.model.dao.RequestDao;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
+import com.helvetica.model.dao.imp.TransactionalFactory;
 import com.helvetica.model.entity.RepairRequest;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Set;
 
 public class MainPageService {
 
-    private JDBCRequestDao requestDao;
-    private JDBCUserDao userDao;
+    private TransactionalFactory jdbcDaoFactory;
 
     public MainPageService() {
-        JDBCDaoFactory jdbcDaoFactory = new JDBCDaoFactory();
-        this.requestDao = jdbcDaoFactory.createRequestDao();
-        this.userDao = jdbcDaoFactory.createUserDao();
+        this.jdbcDaoFactory = new TransactionalFactory();
 
     }
 
     public Set<RepairRequest> findByUser(int id){
+        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
         return requestDao.findByUser(id);
     }
 
     public Set<RepairRequest> findByMaster(int id){
+        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
         return requestDao.findByMaster(id);
     }
 
 
     public void completeRequest(int id){
+        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
         requestDao.completeRequest(id);
     }
 
     public void payForRequest(int user_id, int request_id, BigDecimal price){
 
-        Connection connection = userDao.getConnection();
+        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
+        JDBCUserDao userDao = jdbcDaoFactory.createUserDao();
+
         try {
-            connection.setAutoCommit(false);
+            jdbcDaoFactory.begin();
 
             requestDao.updatePayment(request_id);
             userDao.subtractBalance(user_id, price);
 
-            connection.commit();
+            jdbcDaoFactory.commit();
         } catch (SQLException e) {
             try {
-                connection.rollback();
+                jdbcDaoFactory.rollback();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -55,7 +58,7 @@ public class MainPageService {
         }
         finally {
             try {
-                connection.setAutoCommit(true);
+                jdbcDaoFactory.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -63,6 +66,7 @@ public class MainPageService {
     }
 
     public void leaveComment(int id, String comment){
+        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
         requestDao.setRequestComment(id, comment);
     }
 

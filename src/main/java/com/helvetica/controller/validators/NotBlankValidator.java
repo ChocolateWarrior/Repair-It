@@ -6,21 +6,14 @@ import java.util.ResourceBundle;
 public class NotBlankValidator extends Validator<String> {
 
     private final SimpleResult FAILED;
-//    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
-    public NotBlankValidator() {
-        FAILED = new SimpleResult(
-//                resourceBundle.getString("valid.non_blank"),
-                "NO",
-                false);
+    public NotBlankValidator(String message) {
+        FAILED = new SimpleResult(message, false);
     }
 
-    public NotBlankValidator(Validator<String> next) {
+    public NotBlankValidator(Validator<String> next, String message) {
         super(next);
-        FAILED = new SimpleResult(
-//                resourceBundle.getString("valid.non_blank"),
-                "NO",
-                false);
+        FAILED = new SimpleResult(message, false);
     }
 
     @Override

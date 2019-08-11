@@ -20,7 +20,7 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCRequestDao(getConnection());
     }
 
-    public Connection getConnection(){
+    private Connection getConnection(){
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {

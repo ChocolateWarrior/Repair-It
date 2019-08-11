@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class RequestEditCommand implements Command {
 
     private RequestDisplayService requestDisplayService;
+    private ResourceBundle resourceBundle;
 
     public RequestEditCommand() {
         this.requestDisplayService = new RequestDisplayService();
@@ -24,8 +26,12 @@ public class RequestEditCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        PositiveValidator positiveValidator = new PositiveValidator(new BigDecimal(0), new BigDecimal(50000));
-        NotBlankValidator notBlankValidator = new NotBlankValidator(positiveValidator);
+        resourceBundle = ResourceBundle.getBundle("property/messages", CommandUtility.getSessionLocale(request));
+
+        PositiveValidator positiveValidator = new PositiveValidator(new BigDecimal(0),
+                new BigDecimal(50000), resourceBundle.getString("valid.positive"));
+        NotBlankValidator notBlankValidator = new NotBlankValidator(positiveValidator,
+                resourceBundle.getString("valid.non_blank"));
 
         int id = Integer.parseInt(request.getParameter("id"));
         RepairRequest requestToEdit = requestDisplayService.findById(id);

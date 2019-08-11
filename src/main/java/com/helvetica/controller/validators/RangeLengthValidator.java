@@ -5,32 +5,22 @@ import java.util.ResourceBundle;
 
 public class RangeLengthValidator  extends Validator<String>{
     private final SimpleResult FAILED;
-//    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
     private Integer minLength;
     private Integer maxLength;
 
-    public RangeLengthValidator(Validator<String> next) {
-        super(next);
-        this.minLength=8;
-        this.maxLength=50;
-        FAILED= new SimpleResult("non valid range", false);
-    }
-
-    public RangeLengthValidator(Integer min, Integer max) {
+    public RangeLengthValidator(Integer min, Integer max, String message) {
         this.minLength = min;
         this.maxLength = max;
-        FAILED = new SimpleResult(
-//                resourceBundle.getString("valid.in_range") +
+        FAILED = new SimpleResult(message +
                 " [" + minLength + ";" + maxLength + "]!",false);
     }
 
-    public RangeLengthValidator(Integer min, Integer max, Validator<String> next) {
+    public RangeLengthValidator(Integer min, Integer max, Validator<String> next, String message) {
         super(next);
         this.minLength = min;
         this.maxLength = max;
-        FAILED = new SimpleResult(
-//                resourceBundle.getString("valid.in_range") +
+        FAILED = new SimpleResult(message +
                 " [" + minLength + ";" + maxLength + "]!",false);
     }
 

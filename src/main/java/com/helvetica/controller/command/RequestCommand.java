@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class RequestCommand implements Command {
 
     private RequestService requestService;
+    private ResourceBundle resourceBundle;
 
     public RequestCommand() {
         this.requestService = new RequestService();
@@ -24,8 +26,12 @@ public class RequestCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(8, 80);
-        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator);
+        resourceBundle = ResourceBundle.getBundle("property/messages", CommandUtility.getSessionLocale(request));
+
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(8, 80,
+                resourceBundle.getString("valid.in_range"));
+        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator,
+                resourceBundle.getString("valid.non_blank"));
 
         HttpSession session = request.getSession();
 

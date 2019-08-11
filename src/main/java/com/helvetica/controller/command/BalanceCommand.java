@@ -9,13 +9,14 @@ import com.helvetica.services.BalanceService;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class BalanceCommand implements Command {
 
     private BalanceService balanceService;
-//    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", );
+    private  ResourceBundle resourceBundle;
 
 
     public BalanceCommand() {
@@ -25,8 +26,12 @@ public class BalanceCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        PositiveValidator positiveValidator = new PositiveValidator(new BigDecimal(10), new BigDecimal(100000));
-        NotBlankValidator notBlankValidator = new NotBlankValidator(positiveValidator);
+        resourceBundle = ResourceBundle.getBundle("property/messages", CommandUtility.getSessionLocale(request));
+
+        PositiveValidator positiveValidator = new PositiveValidator(new BigDecimal(10),
+                new BigDecimal(100000), resourceBundle.getString("valid.positive"));
+        NotBlankValidator notBlankValidator = new NotBlankValidator(positiveValidator,
+                resourceBundle.getString("valid.non_blank"));
 
         int id = Integer.parseInt(request.getParameter("id"));
         User userToEdit = balanceService.findById(id);

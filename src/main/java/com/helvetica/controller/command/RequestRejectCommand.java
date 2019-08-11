@@ -6,10 +6,12 @@ import com.helvetica.controller.validators.Result;
 import com.helvetica.services.RequestDisplayService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ResourceBundle;
 
 public class RequestRejectCommand implements Command {
 
     private RequestDisplayService requestDisplayService;
+    private ResourceBundle resourceBundle;
 
     public RequestRejectCommand() {
         this.requestDisplayService = new RequestDisplayService();
@@ -18,8 +20,12 @@ public class RequestRejectCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(8, 80);
-        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator);
+        resourceBundle = ResourceBundle.getBundle("property/messages", CommandUtility.getSessionLocale(request));
+
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(8, 80,
+                resourceBundle.getString("valid.in_range"));
+        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator,
+                resourceBundle.getString("valid.non_blank"));
 
         int id = Integer.parseInt(request.getParameter("rejection_id"));
         String message = request.getParameter("rejection_message");

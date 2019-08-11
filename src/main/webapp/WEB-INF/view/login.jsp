@@ -56,7 +56,7 @@
                 <button type="submit" class="btn btn-primary" ><fmt:message key="login.sign_in">sign in</fmt:message></button>
             </form>
             <div class="aboutLanguage">
-                <span><fmt:message key="lang.change">change language</fmt:message></span>:
+                <span id="transparent-text"><fmt:message key="lang.change">change language</fmt:message></span>:
                 <a href="?lang=en"><fmt:message key="lang.en">english</fmt:message></a>
                 /
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>

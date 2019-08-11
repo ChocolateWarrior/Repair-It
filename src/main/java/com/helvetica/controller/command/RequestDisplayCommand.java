@@ -18,6 +18,8 @@ public class RequestDisplayCommand implements Command {
 
         requestDisplayService.displayRequests().forEach(e-> {
             e.getMasters().forEach(System.out::println);
+            System.out.println(e.getUser());
+
         });
         return "/WEB-INF/view/request_display.jsp";
     }

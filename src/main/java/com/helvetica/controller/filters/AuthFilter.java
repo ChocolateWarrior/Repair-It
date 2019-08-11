@@ -39,7 +39,10 @@ public class AuthFilter implements Filter {
             "/request");
     private final List<String> unauthorizedPaths = Arrays.asList(
             "/login",
-            "/registration");
+            "/registration",
+            "/display-request",
+            "/display-request/reject",
+            "/display-request/edit");
     private Map<Role, List<String>> allowedPathPatterns = new HashMap<>();
 
     @Override

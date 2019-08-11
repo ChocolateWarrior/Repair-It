@@ -26,6 +26,10 @@ public class JDBCRequestDao implements RequestDao{
         this.connection = connection;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     @Override
     public Optional<RepairRequest> findById(int id) {
         try (PreparedStatement ps = connection.prepareStatement(
@@ -278,7 +282,9 @@ public class JDBCRequestDao implements RequestDao{
 
         }
 
-        requests.values().forEach(e -> {try (PreparedStatement ps = connection.prepareStatement(
+        for(RepairRequest e : requests.values()){
+
+            try (PreparedStatement ps = connection.prepareStatement(
                     "SELECT" +
                             " requests.id AS \"requests.id\"," +
                             " masters_requests.master_id AS \"masters_requests.master_id\"," +
@@ -313,11 +319,13 @@ public class JDBCRequestDao implements RequestDao{
                         e.addMaster(user);
                     }
                 }
-            } catch (SQLException ex) {
-                System.out.println("extract req dao");
-                ex.printStackTrace();
             }
-        });
+
+        }
+
+
+        System.out.println("ACTIVITY DAO");
+        requests.values().forEach(System.out::println);
 
         return requests;
     }

@@ -49,6 +49,9 @@
                            placeholder="<fmt:message key="reg.enter.first_name">login</fmt:message>"
                            required>
                 </div>
+                <c:if test="${requestScope.error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.first_name_error}"/></p>
+                </c:if>
 
                 <div class="form-group">
                     <label id="lastNameLabel" for="lastName" >
@@ -64,6 +67,11 @@
                            placeholder="<fmt:message key="reg.enter.last_name">last name</fmt:message>"
                            required>
                 </div>
+
+                <c:if test="${requestScope.error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.last_name_error}"/></p>
+                </c:if>
+
                 <div class="form-group">
                     <label id="usernameLabel" for="username">
                         <fmt:message key="reg.login">
@@ -78,6 +86,11 @@
                            placeholder="<fmt:message key="reg.enter.login">login</fmt:message>"
                            required>
                 </div>
+
+                <c:if test="${requestScope.error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.username_error}"/></p>
+                </c:if>
+
                 <div class="form-group">
                     <label id="passwordLabel" for="password">
                         <fmt:message key="reg.password">
@@ -94,7 +107,7 @@
                 </div>
 
                 <c:if test="${requestScope.error != null}">
-                    <p class="text-danger"><c:out value="${requestScope.error}"/></p>
+                    <p class="text-danger"><c:out value="${requestScope.password_error}"/></p>
                 </c:if>
 
                 <div class="form-group">

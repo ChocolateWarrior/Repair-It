@@ -168,6 +168,8 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", balance='" + balance + '\'' +
+                ", user requests='" + userRequests + '\'' +
+                ", master requests='" + masterRequests + '\'' +
                 ", authorities=" + authorities +
                 '}';
     }

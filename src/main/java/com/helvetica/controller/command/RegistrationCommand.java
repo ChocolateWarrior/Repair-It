@@ -10,15 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RegistrationCommand implements Command {
 
     private UserRegistrationService userRegistrationService;
+    private ResourceBundle resourceBundle;
     public static final Logger log = LogManager.getLogger();
 
     public RegistrationCommand() {
@@ -28,8 +26,14 @@ public class RegistrationCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30);
-        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator);
+        System.out.println(CommandUtility.getSessionLocale(request));
+        resourceBundle = ResourceBundle.getBundle("property/messages",
+                CommandUtility.getSessionLocale(request));
+
+        RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30,
+                resourceBundle.getString("valid.in_range"));
+        NotBlankValidator notBlankValidator = new NotBlankValidator(rangeLengthValidator,
+                resourceBundle.getString("valid.non_blank"));
 
         request.setAttribute("all_specifications", Specification.values());
 
@@ -45,41 +49,45 @@ public class RegistrationCommand implements Command {
             return "/WEB-INF/view/user_registration.jsp";
         }
 
-//        String[] specifications = request.getParameterValues("specifications");
-//
-//        List<String> userSpec = new ArrayList<>();
-//        if(Objects.nonNull(specifications)) {
-//            log.info("found specifications");
-//            userSpec = List.of(specifications);
-//            userSpec.forEach(e -> specList.add(Specification.valueOf(e)));
-//        }
+        List<Specification> specList = new ArrayList<>();
+        System.out.println("HERE");
 
-        List<Specification> specList = Arrays
-                .stream(request.getParameterValues("specifications"))
-                .map(Specification::valueOf)
-                .collect(Collectors.toList());
+        if(Objects.nonNull(request.getParameterValues("specifications"))) {
+            specList = Arrays
+                    .stream(request.getParameterValues("specifications"))
+                    .map(Specification::valueOf)
+                    .collect(Collectors.toList());
+        }
+
+        System.out.println(specList);
 
 
         Result result = notBlankValidator.validate(firstName);
 
         if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName, username, password);
+            return handleValidationError(request, result, firstName, lastName,
+                    username, password, "first_name_error");
 
         result = notBlankValidator.validate(lastName);
 
         if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName, username, password);
+            return handleValidationError(request, result, firstName, lastName,
+                    username, password, "last_name_error");
 
         result = notBlankValidator.validate(username);
 
         if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName, username, password);
+            return handleValidationError(request, result, firstName, lastName,
+                    username, password, "username_error");
 
-        notBlankValidator = new NotBlankValidator(new RangeLengthValidator(8, 50));
+        notBlankValidator = new NotBlankValidator(
+                new RangeLengthValidator(8, 50,resourceBundle.getString("valid.in_range"))
+                , resourceBundle.getString("valid.non_blank") );
         result = notBlankValidator.validate(password);
 
         if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName, username, password);
+            return handleValidationError(request, result, firstName, lastName,
+                    username, password, "password_error");
 
         if(!specList.isEmpty()){
             User user = new User(firstName, lastName, username, password, specList);
@@ -96,8 +104,8 @@ public class RegistrationCommand implements Command {
 
     private String handleValidationError(HttpServletRequest request, Result result,
                                          String firstName, String lastName,
-                                         String username, String password){
-        request.setAttribute("error", result.getMessage());
+                                         String username, String password, String errorName){
+        request.setAttribute(errorName, result.getMessage());
         request.setAttribute("first_name", firstName);
         request.setAttribute("last_name", lastName);
         request.setAttribute("username", username);

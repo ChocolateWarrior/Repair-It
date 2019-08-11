@@ -2,37 +2,27 @@ package com.helvetica.controller.validators;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class PositiveValidator extends Validator<String> {
 
     private final SimpleResult FAILED;
-//    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
     private BigDecimal minValue;
     private BigDecimal maxValue;
 
-    public PositiveValidator(Validator<String> next) {
-        super(next);
-        this.minValue=new BigDecimal(0);
-        this.maxValue=new BigDecimal(100000);
-        FAILED= new SimpleResult("non valid value", false);
-    }
-
-    public PositiveValidator(BigDecimal min, BigDecimal max) {
+    public PositiveValidator(BigDecimal min, BigDecimal max, String message) {
         this.minValue = min;
         this.maxValue = max;
-        FAILED = new SimpleResult(
-//                resourceBundle.getString("valid.positive_range") +
+        FAILED = new SimpleResult(message +
                 " [" + minValue + ";" + maxValue + "]!",false);
     }
 
-    public PositiveValidator(BigDecimal min, BigDecimal max, Validator<String> next) {
+    public PositiveValidator(BigDecimal min, BigDecimal max, Validator<String> next, String message) {
         super(next);
         this.minValue = min;
         this.maxValue = max;
-        FAILED = new SimpleResult(
-                "The number must be in range: [" + minValue + ";" + maxValue + "]!",false);
+        FAILED = new SimpleResult(message +
+                " [" + minValue + ";" + maxValue + "]!",false);
     }
 
     @Override
