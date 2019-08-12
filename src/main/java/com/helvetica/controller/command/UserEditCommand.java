@@ -33,59 +33,74 @@ public class UserEditCommand implements Command{
         User userToEdit = userDisplayService.findById(id);
         request.setAttribute("user", userToEdit);
 
-        Optional<String> firstName = Optional.ofNullable(request.getParameter("firstNameEdit"));
-        Optional<String> lastName = Optional.ofNullable(request.getParameter("lastNameEdit"));
-        Optional<String> username = Optional.ofNullable(request.getParameter("loginEdit"));
-        Optional<String> password = Optional.ofNullable(request.getParameter("passwordEdit"));
+        Optional<String> firstName = Optional.ofNullable(request.getParameter("first_name"));
+        Optional<String> lastName = Optional.ofNullable(request.getParameter("last_name"));
+        Optional<String> username = Optional.ofNullable(request.getParameter("username"));
 
         Result result;
 
-        if(firstName.isPresent()){
-            result = rangeLengthValidator.validate(firstName.get());
-            if (!result.isOk())
-                return handleValidationError(request, result, firstName.get(),
-                        lastName.get(), username.get(), password.get());
+
+        String str="";
+        if (firstName.isPresent()){
+            if (!firstName.get().isEmpty())
+                str = firstName.get();
         }
 
-        if(lastName.isPresent()) {
+        if(!str.isEmpty()){
+            result = rangeLengthValidator.validate(firstName.get());
+            if (!result.isOk()) {
+                request.setAttribute("first_name_error", result.getMessage());
+                return handleValidationError(request, firstName.get(),
+                        lastName.get(), username.get());
+            }
+            str = "";
+        }
+
+        if (lastName.isPresent()){
+            if (!lastName.get().isEmpty())
+                str = lastName.get();
+        }
+
+        if(!str.isEmpty()) {
             result = rangeLengthValidator.validate(lastName.get());
-            if (!result.isOk())
-                return handleValidationError(request, result, firstName.get(),
-                        lastName.get(), username.get(), password.get());
+            if (!result.isOk()) {
+                request.setAttribute("last_name_error", result.getMessage());
+                return handleValidationError(request, firstName.get(),
+                        lastName.get(), username.get());
+            }
+            str = "";
         }
 
-        if(username.isPresent()) {
+        if (username.isPresent()){
+            if (!username.get().isEmpty())
+                str = username.get();
+        }
+
+        if(!str.isEmpty()) {
             result = rangeLengthValidator.validate(username.get());
-            if (!result.isOk())
-                return handleValidationError(request, result, firstName.get(),
-                        lastName.get(), username.get(), password.get());
-        }
-
-        if(password.isPresent()){
-            result = rangeLengthValidator.validate(firstName.get());
-            if(!result.isOk())
-                return handleValidationError(request, result, firstName.get(),
-                        lastName.get(), username.get(), password.get());
+            if (!result.isOk()) {
+                request.setAttribute("username_error", result.getMessage());
+                return handleValidationError(request, firstName.get(),
+                        lastName.get(), username.get());
+            }
         }
 
         firstName.ifPresent(s -> userToEdit.setFirstName(s.isEmpty() ? userToEdit.getFirstName() : s));
         lastName.ifPresent(s -> userToEdit.setLastName(s.isEmpty() ? userToEdit.getLastName() : s));
         username.ifPresent(s -> userToEdit.setUsername(s.isEmpty() ? userToEdit.getUsername() : s));
-        password.ifPresent(s -> userToEdit.setPassword(s.isEmpty() ? userToEdit.getPassword() : s));
+
 
         userDisplayService.editUser(userToEdit);
+        request.setAttribute("message_sc", resourceBundle.getString("global.success"));
         return "/WEB-INF/view/user_edit.jsp";
     }
-
-    private String handleValidationError(HttpServletRequest request, Result result,
-                                         String firstName, String lastName,
-                                         String username, String password){
-        request.setAttribute("error", result.getMessage());
-        request.setAttribute("firstNameEdit", firstName);
-        request.setAttribute("lastNameEdit", lastName);
-        request.setAttribute("loginEdit", username);
-        request.setAttribute("passwordEdit", password);
-        return "/WEB-INF/view/user_registration.jsp";
+    private String handleValidationError(HttpServletRequest request,
+                                           String firstName, String lastName,
+                                           String username){
+        request.setAttribute("first_name", firstName);
+        request.setAttribute("last_name", lastName);
+        request.setAttribute("username", username);
+        return "/WEB-INF/view/user_edit.jsp";
     }
 
 }

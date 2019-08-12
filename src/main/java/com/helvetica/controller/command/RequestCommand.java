@@ -59,6 +59,7 @@ public class RequestCommand implements Command {
                 Specification.valueOf(specification.toUpperCase()));
 
         requestService.addRequest(repairRequest);
+        request.setAttribute("message_sc", resourceBundle.getString("global.success"));
         return "/WEB-INF/view/request.jsp";
 
     }

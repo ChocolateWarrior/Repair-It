@@ -19,10 +19,8 @@ import static java.lang.Integer.parseInt;
 
 public class RequestMapper implements ObjectMapper<RepairRequest> {
 
-    private JDBCUserDao jdbcUserDao;
 
-    public RequestMapper(Connection connection) {
-        this.jdbcUserDao = new JDBCUserDao(connection);
+    public RequestMapper() {
     }
 
     @Override
@@ -30,16 +28,10 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
 
         RepairRequest result = new RepairRequest();
 
-        System.out.println("Here, r-mapper 1");
 
         result.setId(rs.getInt("requests.id"));
-        System.out.println("Here, r-mapper 2: " + rs.getInt("requests.id"));
-
         result.setSpecification(Specification.valueOf(rs.getString("requests.specification")));
-        System.out.println("Here, r-mapper 2: " + rs.getString("requests.specification"));
-
         result.setDescription(rs.getString("requests.description"));
-//        result.setUser(getUser(parseInt(rs.getString("requests.user_id"))).get());
         result.setRequestTime(convertTime(rs.getDate("requests.request_time")));
         if(Objects.nonNull(rs.getString("requests.state")))
             result.setState(RequestState.valueOf(rs.getString("requests.state")));
@@ -51,7 +43,6 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
             result.setRejectionMessage(rs.getString("requests.rejection_message"));
         if(Objects.nonNull(rs.getString("requests.comment")))
             result.setComment(rs.getString("requests.comment"));
-        System.out.println(result);
 
         return result;
     }
@@ -60,10 +51,6 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
     public RepairRequest makeUnique(Map<Integer, RepairRequest> cache, RepairRequest entity) {
         cache.putIfAbsent(entity.getId(), entity);
         return cache.get(entity.getId());
-    }
-
-    private Optional<User> getUser(int id){
-        return jdbcUserDao.findById(id);
     }
 
     private LocalDateTime convertTime(Date dateToConvert) {

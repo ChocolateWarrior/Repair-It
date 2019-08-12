@@ -36,7 +36,9 @@
                 </c:if>
 
                 <div class="form-group">
-                    <label id="usernameLabel" for="username" ><fmt:message key="login.login">login</fmt:message></label>
+                    <label id="usernameLabel" for="username" style="color: #292929">
+                        <fmt:message key="login.login">login</fmt:message>
+                    </label>
                     <input type="text"
                            id="username"
                            name="username"
@@ -45,7 +47,10 @@
                            class="form-control">
                 </div>
                 <div class="form-group">
-                    <label id="passwordLabel" for="password" ><fmt:message key="login.password">password</fmt:message></label>
+                    <label id="passwordLabel" for="password"
+                           style="color: #292929">
+                        <fmt:message key="login.password">password</fmt:message>
+                    </label>
                     <input type="password"
                            id="password"
                            name="password"
@@ -56,15 +61,15 @@
                 <button type="submit" class="btn btn-primary" ><fmt:message key="login.sign_in">sign in</fmt:message></button>
             </form>
             <div class="aboutLanguage">
-                <span id="transparent-text"><fmt:message key="lang.change">change language</fmt:message></span>:
+                <span style="color: #292929"><fmt:message key="lang.change">change language</fmt:message></span>:
                 <a href="?lang=en"><fmt:message key="lang.en">english</fmt:message></a>
-                /
+                <span style="color: #292929">/</span>
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
             </div>
 
         </div>
     </div>
-    <div class = "navigation">
+    <div class = "navigation" style="margin-top: 15px">
         <ul class="nav nav-tabs nav-fill bg-light">
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/registration"><fmt:message key="login.reg_here">register here</fmt:message></a>

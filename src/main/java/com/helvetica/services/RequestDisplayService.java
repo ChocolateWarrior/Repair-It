@@ -1,5 +1,6 @@
 package com.helvetica.services;
 
+import com.helvetica.Exceptions.DeleteDependentException;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
@@ -30,6 +31,15 @@ public class RequestDisplayService {
 
     public Set<RepairRequest> displayRequests(){
         return requestDao.findAll();
+    }
+
+    public void deleteRequest(int id) {
+        try {
+            requestDao.delete(id);
+        } catch (DeleteDependentException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     public RepairRequest findById(int id){

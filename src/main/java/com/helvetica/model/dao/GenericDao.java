@@ -1,5 +1,7 @@
 package com.helvetica.model.dao;
 
+import com.helvetica.Exceptions.DeleteDependentException;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,5 +11,5 @@ public interface GenericDao<T> extends AutoCloseable {
     Optional<T> findById(int id);
     Set<T> findAll();
     void update(T entity);
-    void delete(int id);
+    void delete(int id) throws DeleteDependentException;
 }

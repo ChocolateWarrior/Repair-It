@@ -1,7 +1,5 @@
 package com.helvetica.services;
 
-import com.helvetica.model.dao.RequestDao;
-import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.dao.imp.TransactionalFactory;
@@ -25,18 +23,12 @@ public class MainPageService {
         return requestDao.findByUser(id);
     }
 
-    public Set<RepairRequest> findByMaster(int id){
-        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
-        return requestDao.findByMaster(id);
-    }
-
-
     public void completeRequest(int id){
         JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
         requestDao.completeRequest(id);
     }
 
-    public void payForRequest(int user_id, int request_id, BigDecimal price){
+    public void payForRequest(int user_id, int request_id, BigDecimal price) {
 
         JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
         JDBCUserDao userDao = jdbcDaoFactory.createUserDao();
@@ -57,11 +49,13 @@ public class MainPageService {
             e.printStackTrace();
         }
         finally {
+
             try {
                 jdbcDaoFactory.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
     }
 

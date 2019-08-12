@@ -1,5 +1,6 @@
 package com.helvetica.model.dao.imp;
 
+import com.helvetica.Exceptions.DeleteDependentException;
 import com.helvetica.model.dao.UserDao;
 import com.helvetica.model.dao.mapper.MasterMapper;
 import com.helvetica.model.dao.mapper.RequestMapper;
@@ -351,13 +352,14 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws DeleteDependentException {
         try (PreparedStatement ps = connection.prepareStatement
                 (DELETE_QUERY)){
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new DeleteDependentException();
         }
     }
 
@@ -385,7 +387,7 @@ public class JDBCUserDao implements UserDao {
     private Map<Integer, User> extractFromResultSet(ResultSet rss) throws SQLException {
 
         MasterMapper userMapper = new MasterMapper();
-        RequestMapper requestMapper = new RequestMapper(connection);
+        RequestMapper requestMapper = new RequestMapper();
 
         Map<Integer, User> users = new HashMap<>();
         Map<Integer, RepairRequest> requests = new HashMap<>();

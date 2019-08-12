@@ -1,5 +1,6 @@
 package com.helvetica.controller.command;
 
+import com.helvetica.model.entity.RequestState;
 import com.helvetica.services.RequestDisplayService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,9 @@ public class RequestDisplayCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         request.setAttribute("requests", requestDisplayService.displayRequests());
+        request.setAttribute("rejected", RequestState.REJECTED);
 
         requestDisplayService.displayRequests().forEach(e-> {
-            e.getMasters().forEach(System.out::println);
-            System.out.println(e.getUser());
 
         });
         return "/WEB-INF/view/request_display.jsp";

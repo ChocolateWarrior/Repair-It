@@ -17,6 +17,6 @@ public class IndexCompleteCommand implements Command{
         int id = Integer.parseInt(request.getParameter("master_request_id"));
         request.setAttribute("completed", true);
         mainPageService.completeRequest(id);
-        return "/WEB-INF/view/index.jsp";
+        return "redirect:/index";
     }
 }

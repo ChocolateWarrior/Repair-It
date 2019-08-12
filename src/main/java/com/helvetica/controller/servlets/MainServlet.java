@@ -36,6 +36,7 @@ public class MainServlet extends HttpServlet {
         commands.put("/display-request/reject", new RequestRejectCommand());
         commands.put("/display-request/edit", new RequestEditCommand());
         commands.put("/index/complete", new IndexCompleteCommand());
+        commands.put("/display-request/delete", new RequestDeleteCommand());
 
     }
 

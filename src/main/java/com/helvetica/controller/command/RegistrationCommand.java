@@ -102,11 +102,9 @@ public class RegistrationCommand implements Command {
 
         if(!specList.isEmpty()){
             User user = new User(firstName, lastName, username, password, specList);
-            log.info("executing master registration...");
             userRegistrationService.registerMaster(user);
         }else {
             User user = new User(firstName, lastName, username, password);
-            log.info("executing user registration...");
             userRegistrationService.registerUser(user);
         }
 

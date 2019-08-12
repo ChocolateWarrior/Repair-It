@@ -102,30 +102,32 @@
 
                             <form action="${pageContext.request.contextPath}/app/index" method="get">
                                 <div class="UserRequestsInfo">
-
                                     <div>
                                         <span><fmt:message key="index.type"/><c:out value="${request.specification}" /></span>
                                         <br>
                                         <span><fmt:message key="index.description"/><c:out value="${request.description}" /></span>
                                         <br>
-                                        <span><fmt:message key="index.price"/><c:out value="${request.price}" /></span>
-                                        <br>
-                                        <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
-                                        <br>
-                                        <span>
-                                            <fmt:message key="index.masters"/>
-                                            <c:forEach items="${request.masters}" var="master">
-                                                <span>[<c:out value="${master.username}" />]</span>
-                                            </c:forEach>
-                                        </span>
-
+                                        <c:if test="${request.price != null}">
+                                            <span><fmt:message key="index.price"/><c:out value="${request.price}" /></span>
+                                            <br>
+                                        </c:if>
+                                        <c:if test="${request.state != null}">
+                                            <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
+                                            <br>
+                                        </c:if>
+                                        <c:if test="${!request.masters.isEmpty()}">
+                                            <span>
+                                                <fmt:message key="index.masters"/>
+                                                <c:forEach items="${request.masters}" var="master">
+                                                    <span>[<c:out value="${master.username}" />]</span>
+                                                </c:forEach>
+                                            </span>
+                                        </c:if>
                                     </div>
-
-
                                 </div>
 
                             </form>
-                            <c:if test="${request.state == requestScope.completed && !request.comment == null}">
+                            <c:if test="${request.state == requestScope.completed && request.comment == null}">
                                 <form action="${pageContext.request.contextPath}/app/index/comment" method="post">
 
                                     <div style="margin-top: 30px">
@@ -195,7 +197,7 @@
 
 
                                                 <c:if test="${master_request.state == requestScope.paid}">
-                                                    <form action="${pageContext.request.contextPath}/app/index/complete}" method="post">
+                                                    <form action="${pageContext.request.contextPath}/app/index/complete" method="post">
                                                         <label>
                                                             <input name="master_request_id" value="${master_request.id}" hidden/>
                                                         </label>

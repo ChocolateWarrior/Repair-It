@@ -50,16 +50,16 @@ public class BalanceCommand implements Command {
 
                 return "/WEB-INF/view/balance.jsp";
             }
-            else
+            else {
                 request.setAttribute("replenish_message_sc",
-//                        resourceBundle.getString("balance.replenished_sc")
-                        "NO"
-                        );
+                        resourceBundle.getString("balance.replenished_sc"));
+            }
         }
 
         BigDecimal sum = sumOpt.isEmpty() ? new BigDecimal(0) : new BigDecimal(sumOpt.get());
 
         balanceService.replenishBalance(id, sum);
+        request.setAttribute("balance", userToEdit.getBalance());
         return "/WEB-INF/view/balance.jsp";
     }
 }

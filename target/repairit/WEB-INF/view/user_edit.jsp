@@ -27,11 +27,18 @@
 
 <div class="container" style="margin-top: 60px">
 
+
+
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <h2 class="page-header"><fmt:message key="user.edit">User Edit</fmt:message></h2>
 
             <form action="${pageContext.request.contextPath}/app/display/edit?id=${user.id}" method="post">
+
+                <c:if test="${requestScope.message_sc != null}">
+                    <p style="color: lightgreen"><c:out value="${requestScope.message_sc}"/></p>
+                </c:if>
+
                 <div class="form-group">
                     <label id="firstNameLabel" for="firstNameElement">
                         <fmt:message key="reg.first_name">
@@ -41,9 +48,13 @@
                     <input type="text"
                            class="form-control"
                            id="firstNameElement"
-                           name="firstNameEdit"
+                           name="first_name"
+                           value="${requestScope.first_name}"
                            placeholder=<fmt:message key="reg.enter.first_name"/>>
                 </div>
+                <c:if test="${requestScope.first_name_error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.first_name_error}"/></p>
+                </c:if>
 
                 <div class="form-group">
                     <label id="lastNameLabel" for="lastNameElement">
@@ -54,22 +65,13 @@
                     <input type="text"
                            class="form-control"
                            id="lastNameElement"
-                           name="lastNameEdit"
+                           name="last_name"
+                           value="${requestScope.last_name}"
                            placeholder=<fmt:message key="reg.enter.last_name"/>>
                 </div>
-
-                <div class="form-group">
-                    <label id="passwordLabel" for="passwordElement">
-                        <fmt:message key="reg.password">
-                            Password
-                        </fmt:message>
-                    </label>
-                    <input type="text"
-                           class="form-control"
-                           id="passwordElement"
-                           name="passwordEdit"
-                           placeholder=<fmt:message key="reg.enter.password"/>>
-                </div>
+                <c:if test="${requestScope.last_name_error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.last_name_error}"/></p>
+                </c:if>
 
                 <div class="form-group">
                     <label id="loginLabel" for="loginElement">
@@ -80,12 +82,12 @@
                     <input type="text"
                            class="form-control"
                            id="loginElement"
-                           name="loginEdit"
+                           name="username"
+                           value="${requestScope.username}"
                            placeholder=<fmt:message key="reg.enter.login"/>>
                 </div>
-
-                <c:if test="${requestScope.error != null}">
-                    <p class="text-danger"><c:out value="${requestScope.error}"/></p>
+                <c:if test="${requestScope.username_error != null}">
+                    <p class="text-danger"><c:out value="${requestScope.username_error}"/></p>
                 </c:if>
 
                 <button type="submit" class="btn btn-success">

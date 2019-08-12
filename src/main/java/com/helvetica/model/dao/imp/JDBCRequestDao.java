@@ -1,5 +1,6 @@
 package com.helvetica.model.dao.imp;
 
+import com.helvetica.Exceptions.DeleteDependentException;
 import com.helvetica.model.dao.RequestDao;
 import com.helvetica.model.dao.mapper.MasterMapper;
 import com.helvetica.model.dao.mapper.RequestMapper;
@@ -75,7 +76,7 @@ public class JDBCRequestDao implements RequestDao{
             " WHERE request_id=?";
 
     private static final String CREATE_QUERY = "INSERT INTO requests (specification, description," +
-            " user_id, request_time VALUES (? ,?, ?, ?)";
+            " user_id, request_time) VALUES (? ,?, ?, ?)";
 
     private static final String REJECT_REQUEST_QUERY = "UPDATE requests SET state = ?," +
             " rejection_message = ? WHERE id = ?";
@@ -94,6 +95,8 @@ public class JDBCRequestDao implements RequestDao{
 
     private static final String PAYMENT_QUERY = "UPDATE requests SET state = ?" +
             " WHERE id = ?";
+
+    private static final String DELETE_QUERY = "DELETE FROM requests WHERE id = ?";
 
     private static final String EXTRACT_USER_QUERY = "SELECT" +
             " requests.id AS \"requests.id\"," +
@@ -290,11 +293,19 @@ public class JDBCRequestDao implements RequestDao{
     }
 
     @Override
-    public void update(RepairRequest entity) {
+    public void delete(int id) throws DeleteDependentException {
+        try (PreparedStatement ps = connection.prepareStatement
+                (DELETE_QUERY)){
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DeleteDependentException();
+        }
     }
 
     @Override
-    public void delete(int id) {
+    public void update(RepairRequest entity) {
     }
 
     @Override
@@ -310,7 +321,7 @@ public class JDBCRequestDao implements RequestDao{
         Map<Integer, User> users = new HashMap<>();
 
         MasterMapper userMapper = new MasterMapper();
-        RequestMapper requestMapper = new RequestMapper(connection);
+        RequestMapper requestMapper = new RequestMapper();
 
         while (rss.next()) {
             RepairRequest request = requestMapper.extractFromResultSet(rss);

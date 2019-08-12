@@ -6,37 +6,37 @@ import java.util.Objects;
 
 public class TransactionalFactory extends JDBCDaoFactory {
 
-    private Connection connection;
+    private Connection transactionalConnection;
 
-    private Connection getConnection(){
-        if(Objects.isNull(connection)) {
+    public Connection getTrancationalConnection(){
+        if(Objects.isNull(transactionalConnection)) {
             try {
-                connection = JDBCConnectionManager.getDataSource().getConnection();
+                transactionalConnection = JDBCConnectionManager.getDataSource().getConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }
 
-        return connection;
+        return transactionalConnection;
     }
 
     public void begin() throws SQLException {
-        connection.setAutoCommit(false);
+        transactionalConnection.setAutoCommit(false);
     }
 
     public void commit() throws SQLException {
-        connection.commit();
-        connection.setAutoCommit(true);
+        transactionalConnection.commit();
+        transactionalConnection.setAutoCommit(true);
     }
 
     public void rollback() throws SQLException {
-        connection.rollback();
-        connection.setAutoCommit(true);
+        transactionalConnection.rollback();
+        transactionalConnection.setAutoCommit(true);
     }
 
     public void close() throws SQLException {
-        connection.close();
+        transactionalConnection.close();
     }
 
 }

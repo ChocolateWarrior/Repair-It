@@ -1,8 +1,5 @@
 package com.helvetica.controller.command;
 
-import com.helvetica.controller.validators.NotBlankValidator;
-import com.helvetica.controller.validators.RangeLengthValidator;
-import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserDisplayService;
 import lombok.extern.log4j.Log4j2;
@@ -29,20 +26,18 @@ public class LoginCommand implements Command {
         if(Objects.isNull(username) || Objects.isNull(password)){
             return "/WEB-INF/view/login.jsp";
         }
-
         User user;
 
         try {
             user = userDisplayService.getByUsername(username);
         }catch (Exception e){
-            System.out.println("HERE IS THE ERROR");
             e.printStackTrace();
             request.setAttribute("message_er", "Wrong credentials!");
             return "/WEB-INF/view/login.jsp";
         }
 
         if (Objects.isNull(user)) {
-            log.warn("No such user " + username + " in database");
+            request.setAttribute("message_er", "Wrong credentials!");
             return "/WEB-INF/view/login.jsp";
         }
 
@@ -53,10 +48,8 @@ public class LoginCommand implements Command {
             session.setAttribute("password", user.getPassword());
             session.setAttribute("balance", user.getBalance());
             session.setAttribute("roles", user.getAuthorities());
-            log.info("User " + username + " successfully logged in");
             return "redirect:/index";
         } else {
-            log.warn("Invalid credentials for user " + username);
             return "/WEB-INF/view/login.jsp";
         }
 

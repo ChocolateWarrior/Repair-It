@@ -32,6 +32,7 @@ public class AuthFilter implements Filter {
             "/display-request",
             "/display-request/reject",
             "/display-request/edit",
+            "/display-request/delete",
             "/registration",
             "/login",
             "/display/delete",

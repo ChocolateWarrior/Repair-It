@@ -32,70 +32,82 @@
             <div class = "panel panel-default">
                 <div class = "panel-heading"><fmt:message key="display.users">Users</fmt:message></div>
                 <div class = "panel-body">
-                    <form action="#" method="get">
-                        <table class = "table table-striped table-sm" >
-                            <thead class ="thead-dark">
-                            <tr>
-                                <th ><fmt:message key="display.id">id</fmt:message></th>
-                                <th><fmt:message key="display.first_name">first name</fmt:message></th>
-                                <th ><fmt:message key="display.last_name">last name</fmt:message></th>
-                                <th ><fmt:message key="display.login">username</fmt:message></th>
-                                <th ><fmt:message key="display.password">password</fmt:message></th>
-                                <th ><fmt:message key="display.authorities">authorities</fmt:message></th>
-                                <th ><fmt:message key="display.specifications">specifications</fmt:message></th>
-                                <th ><fmt:message key="display.user_requests">user requests</fmt:message></th>
-                                <th ><fmt:message key="display.master_requests">master requests</fmt:message></th>
-                                <th ><fmt:message key="display.edit">edit</fmt:message></th>
-                                <th ><fmt:message key="display.remove">remove</fmt:message></th>
+                    <ul class="list-group">
+                        <c:forEach items="${requestScope.users}" var="user">
 
-                            </tr>
-                            </thead>
-                            <tbody >
+                            <li class="list-group-item ">
 
-                                    <c:forEach items="${requestScope.users}" var="user">
-                                        <tr>
-                                            <td><c:out value="${user.id}" /></td>
-                                            <td><c:out value="${user.firstName}" /></td>
-                                            <td><c:out value="${user.lastName}" /></td>
-                                            <td><c:out value="${user.username}" /></td>
-                                            <td><c:out value="${user.password}" /></td>
-                                            <td>
-                                                <c:forEach items="${user.authorities}" var="auth">
-                                                    <span>[<c:out value="${auth}" />]</span>
-                                                </c:forEach>
-                                            </td>
-                                            <td>
-                                                <c:forEach items="${user.specifications}" var="spec">
-                                                <span>[<c:out value="${spec}" />]</span>
-                                            </c:forEach>
-                                            </td>
-                                            <td>
-                                                <c:forEach items="${user.userRequests}" var="req">
-                                                    <span>[<c:out value="${req.id}" />]</span>
-                                                </c:forEach>
-                                            </td>
-                                            <td>
-                                                <c:forEach items="${user.masterRequests}" var="req">
-                                                    <span>[<c:out value="${req.id}" />]</span>
-                                                </c:forEach>
-                                            </td>
-                                            <td>
-                                                <a href="${pageContext.request.contextPath}/app/display/edit?id=${user.id}" class="btn btn-primary">
-                                                    <span><fmt:message key="display.edit"/></span>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="${pageContext.request.contextPath}/app/display/delete?id=${user.id}" class="btn btn-primary">
-                                                    <span><fmt:message key="display.remove"/></span>
-                                                </a>
-                                            </td>
 
-                                        </tr>
+                                <span ><fmt:message key="display.id">id</fmt:message></span>
+                                <span><c:out value="${user.id}" /></span>
+                                <br>
+
+                                <span><fmt:message key="display.first_name">first name</fmt:message></span>
+                                <span><c:out value="${user.firstName}" /></span>
+                                <br>
+
+                                <span ><fmt:message key="display.last_name">last name</fmt:message></span>
+                                <span><c:out value="${user.lastName}" /></span>
+                                <br>
+
+                                <span ><fmt:message key="display.login">username</fmt:message></span>
+                                <span><c:out value="${user.username}" /></span>
+                                <br>
+
+                                <span ><fmt:message key="display.password">password</fmt:message></span>
+                                <span><c:out value="${user.password}" /></span>
+                                <br>
+
+                                <span ><fmt:message key="display.authorities">authorities</fmt:message></span>
+                                <span>
+                                    <c:forEach items="${user.authorities}" var="auth">
+                                        <span>[<c:out value="${auth}" />]</span>
                                     </c:forEach>
+                                </span>
+                                <br>
 
-                            </tbody>
-                        </table>
-                    </form>
+                                <span ><fmt:message key="display.specifications">specifications</fmt:message></span>
+                                <span>
+                                    <c:forEach items="${user.specifications}" var="spec">
+                                        <span>[<c:out value="${spec}" />]</span>
+                                    </c:forEach>
+                                </span>
+                                <br>
+
+                                <span ><fmt:message key="display.user_requests">user requests</fmt:message></span>
+                                <span>
+                                    <c:forEach items="${user.userRequests}" var="req">
+                                        <span>[<c:out value="${req.id}" />]</span>
+                                    </c:forEach>
+                                </span>
+                                <br>
+
+                                <span ><fmt:message key="display.master_requests">master requests</fmt:message></span>
+                                <span>
+                                    <c:forEach items="${user.masterRequests}" var="req">
+                                        <span>[<c:out value="${req.id}" />]</span>
+                                    </c:forEach>
+                                </span>
+                                <br>
+
+                                <span>
+                                    <a href="${pageContext.request.contextPath}/app/display/edit?id=${user.id}"
+                                       class="btn btn-primary">
+                                        <span><fmt:message key="display.edit"/></span>
+                                    </a>
+                                </span>|
+
+                                <span>
+                                    <a href="${pageContext.request.contextPath}/app/display/delete?id=${user.id}"
+                                       class="btn btn-primary">
+                                        <span><fmt:message key="display.remove"/></span>
+                                    </a>
+                                </span>
+                                <hr>
+                            </li>
+                        </c:forEach>
+                    </ul>
+
                 </div>
             </div>
         </div>

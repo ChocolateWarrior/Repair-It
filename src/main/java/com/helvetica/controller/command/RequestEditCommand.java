@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RequestEditCommand implements Command {
@@ -38,18 +39,24 @@ public class RequestEditCommand implements Command {
         request.setAttribute("all_masters", masters);
         String masterUsername = request.getParameter("masters");
 
+        Optional<String> priceOptional = Optional.ofNullable(request.getParameter("master_request_price"));
 
-        if(Objects.nonNull(request.getParameter("master_request_price"))) {
+        String priceStr="";
+        if (priceOptional.isPresent()){
+            if (!priceOptional.get().isEmpty())
+                priceStr = priceOptional.get();
+        }
 
+        if(!priceStr.isEmpty()) {
             Result result = positiveValidator.validate(request.getParameter("master_request_price"));
-
-            if (!result.isOk()){
+            if (!result.isOk()) {
                 request.setAttribute("price_message_er", result.getMessage());
                 return "/WEB-INF/view/request_edit.jsp";
             }
 
             BigDecimal price = new BigDecimal(request.getParameter("master_request_price"));
             requestDisplayService.updateMasterRequest(id, RequestState.ACCEPTED.name(), price);
+
         }
 
         requestDisplayService.editRequest(masterUsername, requestToEdit);

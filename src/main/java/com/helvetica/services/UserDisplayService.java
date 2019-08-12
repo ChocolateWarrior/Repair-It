@@ -1,5 +1,6 @@
 package com.helvetica.services;
 
+import com.helvetica.Exceptions.DeleteDependentException;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.User;
@@ -27,8 +28,14 @@ public class UserDisplayService {
         return userDao.findByUsername(username).get();
     }
 
-    public void deleteUser(int id) {
-        userDao.delete(id);
+    public void deleteUser(int id){
+        try {
+            userDao.delete(id);
+        } catch (DeleteDependentException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+
+        }
     }
 
     public void editUser(User userToEdit){

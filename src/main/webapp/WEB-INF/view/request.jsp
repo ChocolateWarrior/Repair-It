@@ -56,6 +56,9 @@
                 <c:if test="${requestScope.error != null}">
                     <p class="text-danger"><c:out value="${requestScope.error}"/></p>
                 </c:if>
+                <c:if test="${requestScope.message_sc != null}">
+                    <p class="text-danger"><c:out value="${requestScope.message_sc}"/></p>
+                </c:if>
 
                 <button type="submit" class="btn btn-success" style="margin-top:30px">
                     <fmt:message key="req.send">send</fmt:message>
