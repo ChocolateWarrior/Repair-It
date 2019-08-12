@@ -7,23 +7,47 @@ import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserRegistrationService;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * A class to manage user registration, works with it`s appropriate service
+ * @author helvetica
+ * @version 1.0
+ */
+
+
 public class RegistrationCommand implements Command {
 
-    public static final Logger log = LogManager.getLogger();
+    /** field of UserRegistrationService type
+     * @see UserRegistrationService
+     */
     private UserRegistrationService userRegistrationService;
+
+    /** field of appropriate resource bundle */
     private ResourceBundle resourceBundle;
 
+    /**
+     * Constructor - (default) creation of new object with new UserRegistrationService
+     */
     public RegistrationCommand() {
         this.userRegistrationService = new UserRegistrationService();
     }
 
+    /**
+     * Typical execute method (Command pattern)
+     * contains validators for proper registration management
+     * @see NotBlankValidator
+     * @see RangeLengthValidator
+     * gets parameters, assures they are not null, validates,
+     * if everithing is fine - calls service`s registration method with encrypted password &
+     * returns redirect to login.
+     * in case of failure - returns registration .jsp, with a hint of whic parameter is incorrect.
+     * @param request - current request
+     * @return path to appropriate .jsp
+     */
     @Override
     public String execute(HttpServletRequest request) {
 
@@ -114,6 +138,15 @@ public class RegistrationCommand implements Command {
         return "redirect:/login";
     }
 
+    /**
+     * Private method for managing possible failure
+     * @param request - current request
+     * @param firstName - first name attribute
+     * @param lastName - last name attribute
+     * @param username - username attribute
+     * @param password - password attribute
+     * @return path back to registration
+     */
     private String handleRegistrationError(HttpServletRequest request,
                                          String firstName, String lastName,
                                          String username, String password){
