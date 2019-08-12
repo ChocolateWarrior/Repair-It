@@ -22,4 +22,8 @@ public class UserRegistrationService {
         userDao.createMaster(user);
     }
 
+    public boolean isDuplicateUsername (String username){
+        return userDao.isDuplicateUsername(username);
+    }
+
 }

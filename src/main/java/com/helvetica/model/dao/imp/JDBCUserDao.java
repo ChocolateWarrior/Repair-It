@@ -24,10 +24,6 @@ public class JDBCUserDao implements UserDao {
         this.connection = connection;
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
     @Override
     public Optional<User> findById(int id) {
 
@@ -138,8 +134,6 @@ public class JDBCUserDao implements UserDao {
             ps.setString(1, specification.name());
             ResultSet rs = ps.executeQuery();
 
-            System.out.println("HERE find master by specs");
-
             Map<Integer, User> users = extractFromResultSet(rs);
             result = new HashSet<>(users.values());
 
@@ -153,7 +147,6 @@ public class JDBCUserDao implements UserDao {
 
     public Set<User> findMastersByRequest(int id) {
 
-        log.info("trying to find by request with id: " + id);
         HashSet<User> resultSet;
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT " +
@@ -176,6 +169,31 @@ public class JDBCUserDao implements UserDao {
             resultSet = new HashSet<>(users.values());
 
             return resultSet;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public boolean isDuplicateUsername(String username){
+
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT" +
+                        " users.id AS \"users.id\"," +
+                        " users.first_name AS \"users.first_name\"," +
+                        " users.last_name AS \"users.last_name\"," +
+                        " users.password AS \"users.password\"," +
+                        " users.balance AS \"users.balance\"," +
+                        " users.username AS \"users.username\"" +
+                        " FROM users WHERE username =?")){
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            Map<Integer, User> users = extractFromResultSet(rs);
+            Optional<User> user = users.values().stream().findFirst();
+
+            return user.isPresent();
 
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -34,6 +34,10 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="page-header" ><fmt:message key="reg.header">Registration Form</fmt:message></h2>
 
+            <c:if test="${requestScope.error_message != null}">
+                <p class="text-danger"><c:out value="${requestScope.error_message}"/></p>
+            </c:if>
+
             <form style="margin-bottom: 30px" name="form" autocomplete="off">
                 <div class="form-group">
                     <label id="firsNameLabel" for="firstName">
@@ -49,7 +53,7 @@
                            placeholder="<fmt:message key="reg.enter.first_name">login</fmt:message>"
                            required>
                 </div>
-                <c:if test="${requestScope.error != null}">
+                <c:if test="${requestScope.first_name_error != null}">
                     <p class="text-danger"><c:out value="${requestScope.first_name_error}"/></p>
                 </c:if>
 
@@ -68,7 +72,7 @@
                            required>
                 </div>
 
-                <c:if test="${requestScope.error != null}">
+                <c:if test="${requestScope.last_name_error != null}">
                     <p class="text-danger"><c:out value="${requestScope.last_name_error}"/></p>
                 </c:if>
 
@@ -87,7 +91,7 @@
                            required>
                 </div>
 
-                <c:if test="${requestScope.error != null}">
+                <c:if test="${requestScope.username_error != null}">
                     <p class="text-danger"><c:out value="${requestScope.username_error}"/></p>
                 </c:if>
 
@@ -106,7 +110,7 @@
                            required>
                 </div>
 
-                <c:if test="${requestScope.error != null}">
+                <c:if test="${requestScope.password_error != null}">
                     <p class="text-danger"><c:out value="${requestScope.password_error}"/></p>
                 </c:if>
 

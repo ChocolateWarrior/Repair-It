@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 public class RegistrationCommand implements Command {
 
+    public static final Logger log = LogManager.getLogger();
     private UserRegistrationService userRegistrationService;
     private ResourceBundle resourceBundle;
-    public static final Logger log = LogManager.getLogger();
 
     public RegistrationCommand() {
         this.userRegistrationService = new UserRegistrationService();
@@ -26,9 +26,10 @@ public class RegistrationCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-        System.out.println(CommandUtility.getSessionLocale(request));
         resourceBundle = ResourceBundle.getBundle("property/messages",
                 CommandUtility.getSessionLocale(request));
+
+        final String notUniqueMessage = resourceBundle.getString("reg.not_unique");
 
         RangeLengthValidator rangeLengthValidator = new RangeLengthValidator(2, 30,
                 resourceBundle.getString("valid.in_range"));
@@ -42,6 +43,11 @@ public class RegistrationCommand implements Command {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        if(userRegistrationService.isDuplicateUsername(username)){
+            request.setAttribute("error_message", notUniqueMessage);
+            return handleRegistrationError(request, firstName, lastName, username, password);
+        }
+
         if (!(Objects.nonNull(firstName) &&
                 Objects.nonNull(lastName) &&
                 Objects.nonNull(username) &&
@@ -50,7 +56,6 @@ public class RegistrationCommand implements Command {
         }
 
         List<Specification> specList = new ArrayList<>();
-        System.out.println("HERE");
 
         if(Objects.nonNull(request.getParameterValues("specifications"))) {
             specList = Arrays
@@ -59,35 +64,41 @@ public class RegistrationCommand implements Command {
                     .collect(Collectors.toList());
         }
 
-        System.out.println(specList);
-
 
         Result result = notBlankValidator.validate(firstName);
 
-        if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName,
-                    username, password, "first_name_error");
+        if(!result.isOk()) {
+            request.setAttribute("first_name_error", result.getMessage());
+            return handleRegistrationError(request, firstName, lastName,
+                    username, password);
+        }
 
         result = notBlankValidator.validate(lastName);
 
-        if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName,
-                    username, password, "last_name_error");
+        if(!result.isOk()) {
+            request.setAttribute("last_name_error", result.getMessage());
+            return handleRegistrationError(request, firstName, lastName,
+                    username, password);
+        }
 
         result = notBlankValidator.validate(username);
 
-        if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName,
-                    username, password, "username_error");
+        if(!result.isOk()) {
+            request.setAttribute("username_error", result.getMessage());
+            return handleRegistrationError(request, firstName, lastName,
+                    username, password);
+        }
 
         notBlankValidator = new NotBlankValidator(
                 new RangeLengthValidator(8, 50,resourceBundle.getString("valid.in_range"))
                 , resourceBundle.getString("valid.non_blank") );
         result = notBlankValidator.validate(password);
 
-        if(!result.isOk())
-            return handleValidationError(request, result, firstName, lastName,
-                    username, password, "password_error");
+        if(!result.isOk()) {
+            request.setAttribute("password_error", result.getMessage());
+            return handleRegistrationError(request, firstName, lastName,
+                    username, password);
+        }
 
         if(!specList.isEmpty()){
             User user = new User(firstName, lastName, username, password, specList);
@@ -102,10 +113,9 @@ public class RegistrationCommand implements Command {
         return "redirect:/login";
     }
 
-    private String handleValidationError(HttpServletRequest request, Result result,
+    private String handleRegistrationError(HttpServletRequest request,
                                          String firstName, String lastName,
-                                         String username, String password, String errorName){
-        request.setAttribute(errorName, result.getMessage());
+                                         String username, String password){
         request.setAttribute("first_name", firstName);
         request.setAttribute("last_name", lastName);
         request.setAttribute("username", username);
