@@ -30,8 +30,6 @@ public class RequestEditCommand implements Command {
 
         PositiveValidator positiveValidator = new PositiveValidator(new BigDecimal(0),
                 new BigDecimal(50000), resourceBundle.getString("valid.positive"));
-        NotBlankValidator notBlankValidator = new NotBlankValidator(positiveValidator,
-                resourceBundle.getString("valid.non_blank"));
 
         int id = Integer.parseInt(request.getParameter("id"));
         RepairRequest requestToEdit = requestDisplayService.findById(id);
@@ -43,7 +41,7 @@ public class RequestEditCommand implements Command {
 
         if(Objects.nonNull(request.getParameter("master_request_price"))) {
 
-            Result result = notBlankValidator.validate(request.getParameter("master_request_price"));
+            Result result = positiveValidator.validate(request.getParameter("master_request_price"));
 
             if (!result.isOk()){
                 request.setAttribute("price_message_er", result.getMessage());

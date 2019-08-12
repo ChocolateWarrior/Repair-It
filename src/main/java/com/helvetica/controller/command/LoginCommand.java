@@ -33,7 +33,7 @@ public class LoginCommand implements Command {
         User user;
 
         try {
-            user = userDisplayService.getByUsernameAndPassword(username, password);
+            user = userDisplayService.getByUsername(username);
         }catch (Exception e){
             System.out.println("HERE IS THE ERROR");
             e.printStackTrace();

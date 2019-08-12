@@ -17,8 +17,6 @@ import java.util.*;
 public class JDBCUserDao implements UserDao {
 
     private Connection connection;
-    private static final Logger log = LogManager.getLogger();
-    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 
     public JDBCUserDao(Connection connection) {
         this.connection = connection;
@@ -145,37 +143,6 @@ public class JDBCUserDao implements UserDao {
 
     }
 
-    public Set<User> findMastersByRequest(int id) {
-
-        HashSet<User> resultSet;
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT " +
-                        " users.id AS \"users.id\"," +
-                        " users.first_name AS \"users.first_name\"," +
-                        " users.last_name AS \"users.last_name\"," +
-                        " users.balance AS \"users.balance\"," +
-                        " users.password AS \"users.password\"," +
-                        " users.username AS \"users.username\"," +
-                        " masters_requests.master_id AS \"masters_requests.master_id\"," +
-                        " masters_requests.request_id AS \"masters_requests.request_id\"" +
-                        " FROM users LEFT JOIN masters_requests ON" +
-                        " users.id = masters_requests.master_id" +
-                        " WHERE master_id=?"
-        )){
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            Map<Integer, User> users = extractFromResultSet(rs);
-            resultSet = new HashSet<>(users.values());
-
-            return resultSet;
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
     public boolean isDuplicateUsername(String username){
 
         try (PreparedStatement ps = connection.prepareStatement(
@@ -203,8 +170,6 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void create(User entity) {
-
-        log.info("executing user creation...");
 
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password)" +
@@ -236,7 +201,6 @@ public class JDBCUserDao implements UserDao {
 
     public void createMaster(User entity) {
 
-        log.info("executing master creation...");
 
         try(PreparedStatement ps = connection.prepareStatement
                 ("INSERT INTO users (first_name, last_name, username, password)" +
@@ -370,15 +334,11 @@ public class JDBCUserDao implements UserDao {
         MasterMapper userMapper = new MasterMapper();
         RequestMapper requestMapper = new RequestMapper(connection);
 
-        System.out.println("HERE extr 1");
-
-
         Map<Integer, User> users = new HashMap<>();
         Map<Integer, RepairRequest> requests = new HashMap<>();
 
         while (rss.next()) {
             User user = userMapper.extractFromResultSet(rss);
-            System.out.println(user);
             userMapper.makeUnique(users, user);
         }
 
@@ -404,9 +364,26 @@ public class JDBCUserDao implements UserDao {
 
             }
 
-            users.values().forEach(System.out::println);
+            try(PreparedStatement ps = connection.prepareStatement(
+                    "SELECT" +
+                            " users.id AS \"users.id\"," +
+                            " master_specifications.user_id AS \"master_specifications.user_id\"," +
+                            " master_specifications.specifications AS \"master_specifications.specifications\"" +
+                            " FROM users LEFT JOIN master_specifications" +
+                            " ON users.id=master_specifications.user_id" +
+                            " WHERE users.id=?"
+            )) {
 
-            System.out.println("HERE extr 2");
+                ps.setInt(1, e.getId());
+                ResultSet rs = ps.executeQuery();
+
+                while(rs.next()){
+                    String specification = rs.getString("master_specifications.specifications");
+                    if(Objects.nonNull(specification))
+                        e.addSpecification(Specification.valueOf(specification));
+                }
+
+            }
 
             try (PreparedStatement pss = connection.prepareStatement(
                     "SELECT" +
@@ -438,23 +415,12 @@ public class JDBCUserDao implements UserDao {
                           RepairRequest request = requestMapper.extractFromResultSet(rs);
                           request = requestMapper.makeUnique(requests, request);
 
-                          System.out.println(request);
-
                           if (Objects.nonNull(request) && !e.getUserRequests().contains(request)) {
                               e.addUserRequest(request);
                           }
                       }
-//                    RepairRequest request = requestMapper.extractFromResultSet(rs);
-//                    request = requestMapper.makeUnique(requests, request);
-//
-//                    System.out.println(request);
-//
-//                    if (Objects.nonNull(request) && !e.getUserRequests().contains(request)) {
-//                        e.addUserRequest(request);
-//                    }
                 }
 
-                users.values().forEach(System.out::println);
 
             }
 
@@ -487,14 +453,11 @@ public class JDBCUserDao implements UserDao {
 
                         if (Objects.nonNull(request) && !e.getMasterRequests().contains(request)) {
                             e.addMasterRequest(request);
-//                        request.addMaster(e);
                         }
                     }
                 }
             }
         }
-
-        users.values().forEach(System.out::println);
 
         return users;
     }

@@ -26,7 +26,7 @@ hr{
 }
 
 .master_request_heading{
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .container {
@@ -75,7 +75,7 @@ hr{
     color: #292929;
 }
 
-.error-body. {
+.error-body {
     color: indianred;
 }
 

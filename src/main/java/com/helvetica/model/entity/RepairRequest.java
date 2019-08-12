@@ -25,6 +25,9 @@ public class RepairRequest {
         masters.add(master);
     }
 
+    public RepairRequest() {
+    }
+
     public RepairRequest(int id,
                          User user,
                          Set<User> masters,
@@ -68,9 +71,6 @@ public class RepairRequest {
                 '}';
     }
 
-    public RepairRequest() {
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,6 +92,10 @@ public class RepairRequest {
     @Override
     public int hashCode() {
         return Objects.hash(id, user, masters, description, rejectionMessage, comment, requestTime, finishTime, price, specification, state);
+    }
+
+    public boolean hasState(RequestState stateToCheck){
+        return state.equals(stateToCheck);
     }
 
     public int getId() {

@@ -23,8 +23,8 @@ public class UserDisplayService {
         return userDao.findById(id).get();
     }
 
-    public User getByUsernameAndPassword(String username, String password){
-        return userDao.findByUsernameAndPassword(username, password).get();
+    public User getByUsername(String username){
+        return userDao.findByUsername(username).get();
     }
 
     public void deleteUser(int id) {

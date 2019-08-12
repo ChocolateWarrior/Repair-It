@@ -30,7 +30,6 @@
         <div class="col-md-8 col-md-offset-2">
             <h2 class="page-header"><fmt:message key="req.header">Reg Form</fmt:message></h2>
 
-<%--            <h5 class="text-success" th:text="${message}"></h5>--%>
             <form style="margin-bottom: 30px" name="form" autocomplete="off" action="${pageContext.request.contextPath}/app/request" method="post">
                 <div class="form-group">
                     <label id="TypeLabel" for="TypeElement"><fmt:message key="req.select.type">select type</fmt:message></label>
@@ -72,8 +71,6 @@
             </div>
             <div class="footer_bar">
                 <a href="${pageContext.request.contextPath}/app/index"><fmt:message key="main.return">main</fmt:message></a>
-                <%--                <span> OR </span>--%>
-                <%--                <a href="${pageContext.request.jsp.contextPath}/master-registration"><fmt:message key="reg.option.master">register as master</fmt:message></a>--%>
             </div>
 
         </div>

@@ -19,15 +19,9 @@ import java.util.*;
 public class JDBCRequestDao implements RequestDao{
 
     private Connection connection;
-    private static final Logger log = LogManager.getLogger();
-    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 
     JDBCRequestDao(Connection connection) {
         this.connection = connection;
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 
     @Override
@@ -84,7 +78,6 @@ public class JDBCRequestDao implements RequestDao{
 
     public Set<RepairRequest> findByUser(int id) {
 
-        log.info("trying to find by user with id: " + id);
         HashSet<RepairRequest> resultSet;
         try (PreparedStatement ps = connection.prepareStatement("SELECT " +
                 " requests.id AS \"requests.id\"," +
@@ -114,7 +107,6 @@ public class JDBCRequestDao implements RequestDao{
 
     public Set<RepairRequest> findByMaster(int id) {
 
-        log.info("trying to find by master with id: " + id);
         HashSet<RepairRequest> resultSet;
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT" +
@@ -143,6 +135,7 @@ public class JDBCRequestDao implements RequestDao{
             return resultSet;
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -252,17 +245,14 @@ public class JDBCRequestDao implements RequestDao{
 
     @Override
     public void update(RepairRequest entity) {
-
     }
 
     @Override
     public void delete(int id) {
-
     }
 
     @Override
     public void close() throws Exception {
-
     }
 
     private Timestamp convertToTimestamp(LocalDateTime time){
@@ -279,7 +269,6 @@ public class JDBCRequestDao implements RequestDao{
         while (rss.next()) {
             RepairRequest request = requestMapper.extractFromResultSet(rss);
             requestMapper.makeUnique(requests, request);
-
         }
 
         for(RepairRequest e : requests.values()){
@@ -309,7 +298,7 @@ public class JDBCRequestDao implements RequestDao{
                     User user = userMapper.extractFromResultSet(rs);
                     user = userMapper.makeUnique(users, user);
 
-                    if (rs.getString("user_authorities.authorities") != null) {
+                    if (Objects.nonNull(rs.getString("user_authorities.authorities"))) {
                         Role authority = Role
                                 .valueOf(rs.getString("user_authorities.authorities"));
                         user.getAuthorities().add(authority);
@@ -321,11 +310,38 @@ public class JDBCRequestDao implements RequestDao{
                 }
             }
 
+            try (PreparedStatement pss = connection.prepareStatement(
+                    "SELECT" +
+                            " requests.id AS \"requests.id\"," +
+                            " requests.user_id AS \"requests.user_id\"," +
+                            " masters_requests.master_id AS \"masters_requests.master_id\"," +
+                            " masters_requests.request_id AS \"masters_requests.request_id\"," +
+                            " users.id AS \"users.id\"," +
+                            " users.first_name AS \"users.first_name\"," +
+                            " users.last_name AS \"users.last_name\"," +
+                            " users.password AS \"users.password\"," +
+                            " users.username AS \"users.username\"," +
+                            " users.balance AS \"users.balance\"" +
+                            " FROM requests" +
+                            " LEFT JOIN masters_requests ON requests.id = masters_requests.request_id" +
+                            " LEFT JOIN users ON users.id = requests.user_id" +
+                            " WHERE requests.id = ?")) {
+                pss.setInt(1, e.getId());
+                ResultSet rs = pss.executeQuery();
+
+                while (rs.next()) {
+                    if (rs.getInt("requests.id") != 0) {
+                        User user = userMapper.extractFromResultSet(rs);
+                        user = userMapper.makeUnique(users, user);
+
+                        if (Objects.isNull(e.getUser())) {
+                            e.setUser(user);
+                        }
+                    }
+                }
+            }
+
         }
-
-
-        System.out.println("ACTIVITY DAO");
-        requests.values().forEach(System.out::println);
 
         return requests;
     }

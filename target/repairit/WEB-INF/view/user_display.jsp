@@ -33,7 +33,7 @@
                 <div class = "panel-heading"><fmt:message key="display.users">Users</fmt:message></div>
                 <div class = "panel-body">
                     <form action="#" method="get">
-                        <table class = "table table-striped" >
+                        <table class = "table table-striped table-sm" >
                             <thead class ="thead-dark">
                             <tr>
                                 <th ><fmt:message key="display.id">id</fmt:message></th>
@@ -41,6 +41,10 @@
                                 <th ><fmt:message key="display.last_name">last name</fmt:message></th>
                                 <th ><fmt:message key="display.login">username</fmt:message></th>
                                 <th ><fmt:message key="display.password">password</fmt:message></th>
+                                <th ><fmt:message key="display.authorities">authorities</fmt:message></th>
+                                <th ><fmt:message key="display.specifications">specifications</fmt:message></th>
+                                <th ><fmt:message key="display.user_requests">user requests</fmt:message></th>
+                                <th ><fmt:message key="display.master_requests">master requests</fmt:message></th>
                                 <th ><fmt:message key="display.edit">edit</fmt:message></th>
                                 <th ><fmt:message key="display.remove">remove</fmt:message></th>
 
@@ -55,6 +59,26 @@
                                             <td><c:out value="${user.lastName}" /></td>
                                             <td><c:out value="${user.username}" /></td>
                                             <td><c:out value="${user.password}" /></td>
+                                            <td>
+                                                <c:forEach items="${user.authorities}" var="auth">
+                                                    <span>[<c:out value="${auth}" />]</span>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <c:forEach items="${user.specifications}" var="spec">
+                                                <span>[<c:out value="${spec}" />]</span>
+                                            </c:forEach>
+                                            </td>
+                                            <td>
+                                                <c:forEach items="${user.userRequests}" var="req">
+                                                    <span>[<c:out value="${req.id}" />]</span>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <c:forEach items="${user.masterRequests}" var="req">
+                                                    <span>[<c:out value="${req.id}" />]</span>
+                                                </c:forEach>
+                                            </td>
                                             <td>
                                                 <a href="${pageContext.request.contextPath}/app/display/edit?id=${user.id}" class="btn btn-primary">
                                                     <span><fmt:message key="display.edit"/></span>

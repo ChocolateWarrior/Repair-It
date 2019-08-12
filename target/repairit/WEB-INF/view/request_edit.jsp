@@ -65,7 +65,7 @@
                                        id="priceElement"
                                        name="master_request_price"
                                        value="${requestScope.master_request_price}"
-                                       placeholder=<fmt:message key="req.display.price"/>/>
+                                       placeholder=<fmt:message key="req.display.price"/>>
                                 <c:if test="${requestScope.price_message_er != null}">
                                     <p class="text-danger"><c:out value="${requestScope.price_message_er}"/></p>
                                 </c:if>

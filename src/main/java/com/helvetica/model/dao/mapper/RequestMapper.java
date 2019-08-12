@@ -30,8 +30,14 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
 
         RepairRequest result = new RepairRequest();
 
+        System.out.println("Here, r-mapper 1");
+
         result.setId(rs.getInt("requests.id"));
+        System.out.println("Here, r-mapper 2: " + rs.getInt("requests.id"));
+
         result.setSpecification(Specification.valueOf(rs.getString("requests.specification")));
+        System.out.println("Here, r-mapper 2: " + rs.getString("requests.specification"));
+
         result.setDescription(rs.getString("requests.description"));
 //        result.setUser(getUser(parseInt(rs.getString("requests.user_id"))).get());
         result.setRequestTime(convertTime(rs.getDate("requests.request_time")));
@@ -45,9 +51,7 @@ public class RequestMapper implements ObjectMapper<RepairRequest> {
             result.setRejectionMessage(rs.getString("requests.rejection_message"));
         if(Objects.nonNull(rs.getString("requests.comment")))
             result.setComment(rs.getString("requests.comment"));
-
-//        System.out.println(jdbcUserDao.findMastersByRequest(rs.getInt("id")));
-//        result.setMasters(jdbcUserDao.findMastersByRequest(rs.getInt("id")));
+        System.out.println(result);
 
         return result;
     }
