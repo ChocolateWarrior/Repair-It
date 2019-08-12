@@ -3,6 +3,7 @@ package com.helvetica.controller.command;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserDisplayService;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,11 +42,10 @@ public class LoginCommand implements Command {
             return "/WEB-INF/view/login.jsp";
         }
 
-        if (user.getPassword().equals(password)) {
+        if (user.getPassword().equals(DigestUtils.md5Hex(password).toUpperCase())) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("password", user.getPassword());
             session.setAttribute("balance", user.getBalance());
             session.setAttribute("roles", user.getAuthorities());
             return "redirect:/index";

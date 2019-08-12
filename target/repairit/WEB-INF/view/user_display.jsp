@@ -30,7 +30,9 @@
     <div class = "row">
         <div class = "col-md-12">
             <div class = "panel panel-default">
-                <div class = "panel-heading"><fmt:message key="display.users">Users</fmt:message></div>
+                <div class = "panel-heading" style="color: aliceblue">
+                    <fmt:message key="display.users">Users</fmt:message>
+                </div>
                 <div class = "panel-body">
                     <ul class="list-group">
                         <c:forEach items="${requestScope.users}" var="user">

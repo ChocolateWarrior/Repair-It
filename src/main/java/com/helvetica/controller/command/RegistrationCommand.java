@@ -6,6 +6,7 @@ import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserRegistrationService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -100,11 +101,13 @@ public class RegistrationCommand implements Command {
                     username, password);
         }
 
+        String hashedPassword = DigestUtils.md5Hex(password).toUpperCase();
+
         if(!specList.isEmpty()){
-            User user = new User(firstName, lastName, username, password, specList);
+            User user = new User(firstName, lastName, username, hashedPassword, specList);
             userRegistrationService.registerMaster(user);
         }else {
-            User user = new User(firstName, lastName, username, password);
+            User user = new User(firstName, lastName, username, hashedPassword);
             userRegistrationService.registerUser(user);
         }
 

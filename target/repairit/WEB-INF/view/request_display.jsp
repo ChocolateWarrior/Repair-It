@@ -29,7 +29,9 @@
         <div class = "row">
             <div class = "col-md-12">
                 <div class = "panel panel-default">
-                    <div class = "panel-heading"><fmt:message key="req.display.heading">requests</fmt:message></div>
+                    <div class = "panel-heading" style="color: aliceblue">
+                        <fmt:message key="req.display.heading">requests</fmt:message>
+                    </div>
                     <div class = "panel-body">
                         <ul class="list-group">
                             <c:forEach items="${requestScope.requests}" var="request">
@@ -103,6 +105,22 @@
                                             </fmt:message>
                                         </span>
                                         <span><c:out value="${request.finishTime}" /></span>
+                                        <br>
+
+                                        <span>
+                                            <fmt:message key="req.display.comment">
+                                                comment
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.comment}" /></span>
+                                        <br>
+
+                                        <span>
+                                            <fmt:message key="req.display.rejection_message">
+                                                rejection
+                                            </fmt:message>
+                                        </span>
+                                        <span><c:out value="${request.rejectionMessage}" /></span>
                                         <br>
 
                                         <span>
