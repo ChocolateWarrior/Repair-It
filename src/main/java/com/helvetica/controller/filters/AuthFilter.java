@@ -2,7 +2,6 @@ package com.helvetica.controller.filters;
 
 import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
-import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -13,15 +12,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Log4j2
 @WebFilter(filterName = "AuthFilter")
 public class AuthFilter implements Filter {
 
-    private final List<String> adminPaths = Arrays.asList("/index",
-            "/logout",
-            "/display",
-            "/display/delete");
-    private final List<String> authorizedPaths = Arrays.asList("/index",
+    private final List<String> adminPaths = Arrays.asList(
+            "/index",
             "/index/edit",
             "/index/payment",
             "/balance",
@@ -33,17 +28,22 @@ public class AuthFilter implements Filter {
             "/display-request/reject",
             "/display-request/edit",
             "/display-request/delete",
-            "/registration",
-            "/login",
+            "/request",
+            "/display",
             "/display/delete",
-            "/display/edit",
+            "/display/edit");
+    private final List<String> authorizedPaths = Arrays.asList(
+            "/index",
+            "/index/edit",
+            "/index/payment",
+            "/balance",
+            "/logout",
+            "/index/comment",
+            "/index/complete",
             "/request");
     private final List<String> unauthorizedPaths = Arrays.asList(
             "/login",
-            "/registration",
-            "/display-request",
-            "/display-request/reject",
-            "/display-request/edit");
+            "/registration");
     private Map<Role, List<String>> allowedPathPatterns = new HashMap<>();
 
     @Override

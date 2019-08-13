@@ -148,8 +148,8 @@ public class RegistrationCommand implements Command {
      * @return path back to registration
      */
     private String handleRegistrationError(HttpServletRequest request,
-                                         String firstName, String lastName,
-                                         String username, String password){
+                                           String firstName, String lastName,
+                                           String username, String password){
         request.setAttribute("first_name", firstName);
         request.setAttribute("last_name", lastName);
         request.setAttribute("username", username);

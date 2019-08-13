@@ -20,17 +20,6 @@ public class User {
     private Set<RepairRequest> userRequests = new HashSet<>();
     private Set<RepairRequest> masterRequests = new HashSet<>();
 
-    public void addMasterRequest(RepairRequest request){
-        masterRequests.add(request);
-    }
-    public void addUserRequest(RepairRequest request) {userRequests.add(request);}
-    public void addSpecification(Specification specification){
-        specifications.add(specification);
-    }
-    public void addAuthority(Role authority){
-        authorities.add(authority);
-    }
-
     public User() {
     }
 
@@ -51,6 +40,17 @@ public class User {
         this.username = username;
         this.password = password;
         this.specifications = new HashSet<>(specifications);
+    }
+
+    public void addMasterRequest(RepairRequest request){
+        masterRequests.add(request);
+    }
+    public void addUserRequest(RepairRequest request) {userRequests.add(request);}
+    public void addSpecification(Specification specification){
+        specifications.add(specification);
+    }
+    public void addAuthority(Role authority){
+        authorities.add(authority);
     }
 
     public int getId() {

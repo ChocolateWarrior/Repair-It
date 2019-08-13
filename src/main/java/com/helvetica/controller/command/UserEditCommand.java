@@ -1,9 +1,7 @@
 package com.helvetica.controller.command;
 
-import com.helvetica.controller.validators.NotBlankValidator;
 import com.helvetica.controller.validators.RangeLengthValidator;
 import com.helvetica.controller.validators.Result;
-import com.helvetica.controller.validators.SimpleResult;
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserDisplayService;
 
@@ -95,8 +93,8 @@ public class UserEditCommand implements Command{
         return "/WEB-INF/view/user_edit.jsp";
     }
     private String handleValidationError(HttpServletRequest request,
-                                           String firstName, String lastName,
-                                           String username){
+                                         String firstName, String lastName,
+                                         String username){
         request.setAttribute("first_name", firstName);
         request.setAttribute("last_name", lastName);
         request.setAttribute("username", username);

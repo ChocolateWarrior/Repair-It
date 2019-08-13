@@ -2,14 +2,12 @@ package com.helvetica.controller.command;
 
 import com.helvetica.model.entity.User;
 import com.helvetica.services.UserDisplayService;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
-@Log4j2
 public class LoginCommand implements Command {
 
     private UserDisplayService userDisplayService;

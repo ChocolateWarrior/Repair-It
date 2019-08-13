@@ -8,13 +8,10 @@ import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.Role;
 import com.helvetica.model.entity.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.lang.Integer;
 import java.util.*;
 
 public class JDBCRequestDao implements RequestDao{
@@ -58,22 +55,6 @@ public class JDBCRequestDao implements RequestDao{
             " requests.comment AS \"requests.comment\"" +
             " FROM requests WHERE user_id =?";
 
-    private static final String FIND_BY_MASTER = "SELECT" +
-            " requests.id AS \"requests.id\"," +
-            " requests.user_id AS \"requests.user_id\"," +
-            " requests.request_time AS \"requests.request_time\"," +
-            " requests.state AS \"requests.state\"," +
-            " requests.rejection_message AS \"requests.rejection_message\"," +
-            " requests.description AS \"requests.description\"," +
-            " requests.specification AS \"requests.specification\"," +
-            " requests.finish_time AS \"requests.finish_time\"," +
-            " requests.price AS \"requests.price\"," +
-            " requests.comment AS \"requests.comment\"," +
-            " masters_requests.master_id AS \"masters_requests.master_id\"," +
-            " masters_requests.request_id AS \"masters_requests.request_id\"" +
-            " FROM requests LEFT JOIN masters_requests ON" +
-            " requests.id = masters_requests.request_id" +
-            " WHERE request_id=?";
 
     private static final String CREATE_QUERY = "INSERT INTO requests (specification, description," +
             " user_id, request_time) VALUES (? ,?, ?, ?)";
@@ -179,27 +160,6 @@ public class JDBCRequestDao implements RequestDao{
             return resultSet;
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public Set<RepairRequest> findByMaster(int id) {
-
-        HashSet<RepairRequest> resultSet;
-        try (PreparedStatement ps = connection.prepareStatement(
-                FIND_BY_MASTER
-        )){
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            Map<Integer, RepairRequest> requests = extractFromResultSet(rs);
-            resultSet = new HashSet<>(requests.values());
-
-            return resultSet;
-
-        } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
 

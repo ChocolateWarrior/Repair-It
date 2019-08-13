@@ -8,8 +8,6 @@ import com.helvetica.services.BalanceService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 

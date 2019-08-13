@@ -1,24 +1,17 @@
 package com.helvetica.model.dao.mapper;
 
-import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.Specification;
-import com.helvetica.model.entity.User;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-
-import static java.lang.Integer.parseInt;
 
 public class RequestMapper implements ObjectMapper<RepairRequest> {
-
 
     public RequestMapper() {
     }

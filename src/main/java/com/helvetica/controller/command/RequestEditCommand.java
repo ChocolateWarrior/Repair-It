@@ -1,6 +1,5 @@
 package com.helvetica.controller.command;
 
-import com.helvetica.controller.validators.NotBlankValidator;
 import com.helvetica.controller.validators.PositiveValidator;
 import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.RepairRequest;
@@ -11,7 +10,6 @@ import com.helvetica.services.RequestDisplayService;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 

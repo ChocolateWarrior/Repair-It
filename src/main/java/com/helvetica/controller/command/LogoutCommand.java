@@ -1,7 +1,5 @@
 package com.helvetica.controller.command;
 
-import com.helvetica.model.entity.Role;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 

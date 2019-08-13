@@ -10,9 +10,7 @@ public class RepairRequest {
 
     private int id;
     private User user;
-
     private Set<User> masters = new HashSet<>();
-
     private String description;
     private String rejectionMessage;
     private String comment;
@@ -21,9 +19,6 @@ public class RepairRequest {
     private BigDecimal price;
     private Specification specification;
     private RequestState state;
-    public void addMaster(User master){
-        masters.add(master);
-    }
 
     public RepairRequest() {
     }
@@ -59,39 +54,8 @@ public class RepairRequest {
         this.specification = specification;
     }
 
-    @Override
-    public String toString() {
-
-        return "RepairRequest{" +
-                "user=" + user +
-                ", description='" + description + '\'' +
-                ", requestTime=" + requestTime +
-                ", specification=" + specification +
-                ", masters= " + masters +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RepairRequest request = (RepairRequest) o;
-        return id == request.id &&
-                user.equals(request.user) &&
-                Objects.equals(masters, request.masters) &&
-                description.equals(request.description) &&
-                Objects.equals(rejectionMessage, request.rejectionMessage) &&
-                Objects.equals(comment, request.comment) &&
-                requestTime.equals(request.requestTime) &&
-                Objects.equals(finishTime, request.finishTime) &&
-                Objects.equals(price, request.price) &&
-                specification == request.specification &&
-                state == request.state;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, masters, description, rejectionMessage, comment, requestTime, finishTime, price, specification, state);
+    public void addMaster(User master){
+        masters.add(master);
     }
 
     public boolean hasState(RequestState stateToCheck){
@@ -185,4 +149,40 @@ public class RepairRequest {
     public void setState(RequestState state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+
+        return "RepairRequest{" +
+                "user=" + user +
+                ", description='" + description + '\'' +
+                ", requestTime=" + requestTime +
+                ", specification=" + specification +
+                ", masters= " + masters +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RepairRequest request = (RepairRequest) o;
+        return id == request.id &&
+                user.equals(request.user) &&
+                Objects.equals(masters, request.masters) &&
+                description.equals(request.description) &&
+                Objects.equals(rejectionMessage, request.rejectionMessage) &&
+                Objects.equals(comment, request.comment) &&
+                requestTime.equals(request.requestTime) &&
+                Objects.equals(finishTime, request.finishTime) &&
+                Objects.equals(price, request.price) &&
+                specification == request.specification &&
+                state == request.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, masters, description, rejectionMessage, comment, requestTime, finishTime, price, specification, state);
+    }
+
 }

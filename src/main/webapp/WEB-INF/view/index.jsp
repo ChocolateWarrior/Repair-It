@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: helvetica
-  Date: 21.07.19
-  Time: 18:02
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -35,30 +29,23 @@
                 <a class="nav-link disabled" href="${pageContext.request.contextPath}/app/index"><fmt:message key="index.nav_bar.main">main</fmt:message></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/registration"><fmt:message key="index.nav_bar.registration">sign up</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/login" ><fmt:message key="index.nav_bar.log_in">sign in</fmt:message></a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/logout"><fmt:message key="index.nav_bar.log_out">sign out</fmt:message></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/app/request"><fmt:message key="index.nav_bar.request">leave request</fmt:message></a>
             </li>
-            <%--                <c:if test="${requestScope.user.hasAuthority('ADMIN')}">--%>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
-            </li>
-            <%--                </c:if>--%>
+            <c:if test="${requestScope.user.hasAuthority('ADMIN')}">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/display"><fmt:message key="index.nav_bar.display">display</fmt:message></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/app/display-request"><fmt:message key="index.nav_bar.request_display">display requests</fmt:message></a>
+                </li>
+            </c:if>
         </ul>
     </div>
 
     <div class="jumbotron">
-        <%--        <h3><fmt:message key="index.my_requests"/></h3>--%>
 
         <div class="user_balance">
 

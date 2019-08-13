@@ -10,7 +10,10 @@ import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class JDBCUserDao implements UserDao {
@@ -154,7 +157,7 @@ public class JDBCUserDao implements UserDao {
 
     private Connection connection;
 
-    public JDBCUserDao(Connection connection) {
+    JDBCUserDao(Connection connection) {
         this.connection = connection;
     }
 

@@ -1,7 +1,6 @@
 package com.helvetica.controller.validators;
 
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class NotBlankValidator extends Validator<String> {
 

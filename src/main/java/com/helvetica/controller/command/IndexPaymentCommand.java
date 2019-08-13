@@ -7,7 +7,6 @@ import com.helvetica.services.MainPageService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 public class IndexPaymentCommand implements Command{
 

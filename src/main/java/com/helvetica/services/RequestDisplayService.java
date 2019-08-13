@@ -15,12 +15,10 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class RequestDisplayService {
 
     private JDBCRequestDao requestDao;
     private JDBCUserDao userDao;
-    public static final Logger log = LogManager.getLogger();
 
 
     public RequestDisplayService() {
@@ -56,9 +54,8 @@ public class RequestDisplayService {
 
     public void editRequest(String masterUsername, RepairRequest requestToEdit){
 
-        log.info("Masters username: " + masterUsername);
         userDao.findByUsername(masterUsername).ifPresent(e ->
-            requestDao.addRequestMaster(requestToEdit, e));
+                requestDao.addRequestMaster(requestToEdit, e));
 
     }
 
