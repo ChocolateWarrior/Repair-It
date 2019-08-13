@@ -25,7 +25,7 @@
 
             <form action="${pageContext.request.contextPath}/app/login" method="post">
 
-                <c:if test="${requestScope.message_er != null}">
+                <c:if test="${requestScope.message_er!=null}">
                     <p class="text-danger"><c:out value="${requestScope.message_er}"/></p>
                 </c:if>
 

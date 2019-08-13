@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: helvetica
-  Date: 22.07.19
-  Time: 15:28
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -54,10 +48,6 @@
 
                                 <span ><fmt:message key="display.login">username</fmt:message></span>
                                 <span><c:out value="${user.username}" /></span>
-                                <br>
-
-                                <span ><fmt:message key="display.password">password</fmt:message></span>
-                                <span><c:out value="${user.password}" /></span>
                                 <br>
 
                                 <span ><fmt:message key="display.authorities">authorities</fmt:message></span>

@@ -17,20 +17,20 @@
 </head>
 
 <body>
-        <div class="container" style="margin-top: 50px;">
-            <div class="error-body">
-                <h1>Something went wrong! </h1>
-                <h2>
-                    Error Page<br/>
-                    <i>Error <%= exception %></i>
-                </h2>
-                <br>
-                <a href="${pageContext.request.contextPath}/WEB-INF/view/index.jsp">
-                    <fmt:message key="global.return_home"/>
-                </a>
-                <h2>Our Engineers are working on it</h2>
-            </div>
-        </div>
+<div class="container" style="margin-top: 50px;">
+    <div class="error-body">
+        <h1>Something went wrong! </h1>
+        <h2>Our Engineers are working on it</h2>
+        <%--        <h2>--%>
+<%--            Error Page<br/>--%>
+<%--            <i>Error <%= exception %></i>--%>
+<%--        </h2>--%>
+        <br>
+        <a href="${pageContext.request.contextPath}/WEB-INF/view/index.jsp">
+            <fmt:message key="global.return_home"/>
+        </a>
+    </div>
+</div>
 
 
 

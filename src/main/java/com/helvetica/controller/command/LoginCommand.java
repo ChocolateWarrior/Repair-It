@@ -7,10 +7,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class LoginCommand implements Command {
 
     private UserDisplayService userDisplayService;
+    private ResourceBundle resourceBundle;
 
     public LoginCommand() {
         this.userDisplayService = new UserDisplayService();
@@ -18,6 +20,8 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+
+        resourceBundle = ResourceBundle.getBundle("property/messages", CommandUtility.getSessionLocale(request));
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -31,12 +35,12 @@ public class LoginCommand implements Command {
             user = userDisplayService.getByUsername(username);
         }catch (Exception e){
             e.printStackTrace();
-            request.setAttribute("message_er", "Wrong credentials!");
+            request.setAttribute("message_er", resourceBundle.getString("login.invalid"));
             return "/WEB-INF/view/login.jsp";
         }
 
         if (Objects.isNull(user)) {
-            request.setAttribute("message_er", "Wrong credentials!");
+            request.setAttribute("message_er", resourceBundle.getString("login.invalid"));
             return "/WEB-INF/view/login.jsp";
         }
 
@@ -48,6 +52,7 @@ public class LoginCommand implements Command {
             session.setAttribute("roles", user.getAuthorities());
             return "redirect:/index";
         } else {
+            request.setAttribute("message_er", resourceBundle.getString("login.invalid"));
             return "/WEB-INF/view/login.jsp";
         }
 

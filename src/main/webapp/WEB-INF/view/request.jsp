@@ -51,7 +51,7 @@
                     <p class="text-danger"><c:out value="${requestScope.error}"/></p>
                 </c:if>
                 <c:if test="${requestScope.message_sc != null}">
-                    <p class="text-danger"><c:out value="${requestScope.message_sc}"/></p>
+                    <p class="text-success"><c:out value="${requestScope.message_sc}"/></p>
                 </c:if>
 
                 <button type="submit" class="btn btn-success" style="margin-top:30px">

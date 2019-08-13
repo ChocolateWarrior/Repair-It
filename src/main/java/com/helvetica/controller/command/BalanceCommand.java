@@ -57,7 +57,7 @@ public class BalanceCommand implements Command {
         BigDecimal sum = sumOpt.isEmpty() ? new BigDecimal(0) : new BigDecimal(sumOpt.get());
 
         balanceService.replenishBalance(id, sum);
-        request.setAttribute("balance", userToEdit.getBalance());
+        request.setAttribute("balance", userToEdit.getBalance().add(sum));
         return "/WEB-INF/view/balance.jsp";
     }
 }

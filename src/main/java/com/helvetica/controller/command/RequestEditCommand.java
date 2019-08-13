@@ -58,6 +58,7 @@ public class RequestEditCommand implements Command {
         }
 
         requestDisplayService.editRequest(masterUsername, requestToEdit);
+        request.setAttribute("message_sc", resourceBundle.getString("global.success"));
         return "/WEB-INF/view/request_edit.jsp";
     }
 }

@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: helvetica
-  Date: 02.08.19
-  Time: 15:01
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -33,11 +27,14 @@
 
             <form action="${pageContext.request.contextPath}/app/display-request/edit?id=${request.id}" method="post">
 
+                <c:if test="${requestScope.message_sc != null}">
+                    <p class="text-danger"><c:out value="${requestScope.message_sc}"/></p>
+                </c:if>
+                <c:if test="${!requestScope.all_masters.isEmpty()}">
                 <div class="form-group">
                     <label for="masterSelect">
-                        <fmt:message key="req.edit.master">Master</fmt:message>
+                        <fmt:message key="req.edit.set.master">Master</fmt:message>
                     </label>
-                    <span>placeholder=<fmt:message key="req.edit.set.master"/></span>
                     <select multiple class="form-control" id="masterSelect" name="masters">
                         <c:forEach items="${requestScope.all_masters}" var="master">
                             <option value=<c:out value="${master.username}"/>>
@@ -77,9 +74,18 @@
 
                 </div>
 
-                <button type="submit" class="btn btn-success" style="margin-top:30px">
-                    <fmt:message key="req.send">send</fmt:message>
-                </button>
+                    <button type="submit" class="btn btn-success" style="margin-top:30px">
+                        <fmt:message key="req.send">send</fmt:message>
+                    </button>
+
+                </c:if>
+
+                <c:if test="${requestScope.all_masters.isEmpty()}">
+                    <span class="text-danger">
+                        <fmt:message key="req.edit.no_master_available"/>
+                    </span>
+                </c:if>
+
             </form>
 
             <div class="aboutLanguage">

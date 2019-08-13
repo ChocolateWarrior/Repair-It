@@ -50,10 +50,6 @@
                                 <span><c:out value="${user.username}" /></span>
                                 <br>
 
-                                <span ><fmt:message key="display.password">password</fmt:message></span>
-                                <span><c:out value="${user.password}" /></span>
-                                <br>
-
                                 <span ><fmt:message key="display.authorities">authorities</fmt:message></span>
                                 <span>
                                     <c:forEach items="${user.authorities}" var="auth">

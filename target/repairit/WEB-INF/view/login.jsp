@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: helvetica
-  Date: 21.07.19
-  Time: 18:30
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -31,7 +25,7 @@
 
             <form action="${pageContext.request.contextPath}/app/login" method="post">
 
-                <c:if test="${requestScope.message_er != null}">
+                <c:if test="${requestScope.message_er!=null}">
                     <p class="text-danger"><c:out value="${requestScope.message_er}"/></p>
                 </c:if>
 
@@ -43,7 +37,7 @@
                            id="username"
                            name="username"
                            placeholder=<fmt:message key="login.enter.login"/>
-                           required
+                                   required
                            class="form-control">
                 </div>
                 <div class="form-group">
@@ -55,7 +49,7 @@
                            id="password"
                            name="password"
                            placeholder=<fmt:message key="login.enter.password"/>
-                           required
+                                   required
                            class="form-control">
                 </div>
                 <button type="submit" class="btn btn-primary" ><fmt:message key="login.sign_in">sign in</fmt:message></button>
