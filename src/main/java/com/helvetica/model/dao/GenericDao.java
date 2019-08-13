@@ -1,6 +1,6 @@
 package com.helvetica.model.dao;
 
-import com.helvetica.Exceptions.DeleteDependentException;
+import com.helvetica.exception.DeleteDependentException;
 
 import java.util.Optional;
 import java.util.Set;

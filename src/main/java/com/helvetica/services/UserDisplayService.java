@@ -1,6 +1,6 @@
 package com.helvetica.services;
 
-import com.helvetica.Exceptions.DeleteDependentException;
+import com.helvetica.exception.DeleteDependentException;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.entity.User;

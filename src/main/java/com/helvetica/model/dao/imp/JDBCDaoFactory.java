@@ -10,6 +10,15 @@ public class JDBCDaoFactory extends DaoFactory {
 
     private DataSource dataSource = JDBCConnectionManager.getDataSource();
 
+    public Connection getConnection(){
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public JDBCUserDao createUserDao() {
         return new JDBCUserDao(getConnection());
@@ -20,12 +29,6 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCRequestDao(getConnection());
     }
 
-    private Connection getConnection(){
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 }

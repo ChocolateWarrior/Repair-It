@@ -1,6 +1,6 @@
 package com.helvetica.services;
 
-import com.helvetica.Exceptions.DeleteDependentException;
+import com.helvetica.exception.DeleteDependentException;
 import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
@@ -8,8 +8,6 @@ import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

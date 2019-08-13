@@ -1,20 +1,23 @@
 package com.helvetica.services;
 
+import com.helvetica.model.dao.DaoFactory;
+import com.helvetica.model.dao.imp.JDBCDaoFactory;
 import com.helvetica.model.dao.imp.JDBCRequestDao;
 import com.helvetica.model.dao.imp.JDBCUserDao;
 import com.helvetica.model.dao.imp.TransactionalFactory;
 import com.helvetica.model.entity.RepairRequest;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Set;
 
 public class MainPageService {
 
-    private TransactionalFactory jdbcDaoFactory;
+    private JDBCDaoFactory jdbcDaoFactory;
 
     public MainPageService() {
-        this.jdbcDaoFactory = new TransactionalFactory();
+        this.jdbcDaoFactory = new JDBCDaoFactory();
 
     }
 
@@ -28,40 +31,35 @@ public class MainPageService {
         requestDao.completeRequest(id);
     }
 
+    public void leaveComment(int id, String comment){
+        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
+        requestDao.setRequestComment(id, comment);
+    }
+
     public void payForRequest(int user_id, int request_id, BigDecimal price) {
 
-        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
-        JDBCUserDao userDao = jdbcDaoFactory.createUserDao();
+        TransactionalFactory transactionalFactory = new TransactionalFactory();
+        JDBCRequestDao requestDao = transactionalFactory.createRequestDao();
+        JDBCUserDao userDao =transactionalFactory.createUserDao();
 
         try {
-            jdbcDaoFactory.begin();
+            transactionalFactory.begin();
 
             requestDao.updatePayment(request_id);
             userDao.subtractBalance(user_id, price);
 
-            jdbcDaoFactory.commit();
+            transactionalFactory.commit();
         } catch (SQLException e) {
             try {
-                jdbcDaoFactory.rollback();
+                transactionalFactory.rollback();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
             e.printStackTrace();
         }
         finally {
-
-            try {
-                jdbcDaoFactory.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
+            transactionalFactory.close();
         }
-    }
-
-    public void leaveComment(int id, String comment){
-        JDBCRequestDao requestDao = jdbcDaoFactory.createRequestDao();
-        requestDao.setRequestComment(id, comment);
     }
 
 }

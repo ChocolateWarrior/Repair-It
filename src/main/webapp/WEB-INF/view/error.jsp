@@ -2,10 +2,12 @@
 
 <%@ page language="java" isErrorPage="true"  contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.text.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
-
-<html>
+<fmt:setBundle basename="property/messages"/>
+<html lang = "en">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,18 +18,18 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/style.css" >
 </head>
 
-<body>
-<div class="container" style="margin-top: 50px;">
+<body style="background-color: lightpink ">
+<div class="container" style="margin-top: 50px" >
     <div class="error-body">
         <h1>Something went wrong! </h1>
         <h2>Our Engineers are working on it</h2>
-        <%--        <h2>--%>
+<%--        <h2>--%>
 <%--            Error Page<br/>--%>
 <%--            <i>Error <%= exception %></i>--%>
 <%--        </h2>--%>
         <br>
         <a href="${pageContext.request.contextPath}/WEB-INF/view/index.jsp">
-            <fmt:message key="global.return_home"/>
+            <fmt:message key="main.return"/>
         </a>
     </div>
 </div>

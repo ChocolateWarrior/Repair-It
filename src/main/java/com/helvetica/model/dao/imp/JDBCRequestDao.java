@@ -1,6 +1,6 @@
 package com.helvetica.model.dao.imp;
 
-import com.helvetica.Exceptions.DeleteDependentException;
+import com.helvetica.exception.DeleteDependentException;
 import com.helvetica.model.dao.RequestDao;
 import com.helvetica.model.dao.mapper.MasterMapper;
 import com.helvetica.model.dao.mapper.RequestMapper;

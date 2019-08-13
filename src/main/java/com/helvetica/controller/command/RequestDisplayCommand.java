@@ -17,10 +17,10 @@ public class RequestDisplayCommand implements Command {
     public String execute(HttpServletRequest request) {
         request.setAttribute("requests", requestDisplayService.displayRequests());
         request.setAttribute("rejected", RequestState.REJECTED);
+        request.setAttribute("completed", RequestState.COMPLETED);
+        request.setAttribute("accepted", RequestState.ACCEPTED);
+        request.setAttribute("paid", RequestState.PAID);
 
-        requestDisplayService.displayRequests().forEach(e-> {
-
-        });
         return "/WEB-INF/view/request_display.jsp";
     }
 }
