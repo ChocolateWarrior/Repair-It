@@ -4,7 +4,7 @@ import com.helvetica.controller.validators.NotBlankValidator;
 import com.helvetica.controller.validators.PositiveValidator;
 import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.BalanceService;
+import com.helvetica.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -13,12 +13,12 @@ import java.util.ResourceBundle;
 
 public class BalanceCommand implements Command {
 
-    private BalanceService balanceService;
+    private UserService userService;
     private  ResourceBundle resourceBundle;
 
 
-    public BalanceCommand() {
-        this.balanceService = new BalanceService();
+    public BalanceCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class BalanceCommand implements Command {
                 resourceBundle.getString("valid.non_blank"));
 
         int id = Integer.parseInt(request.getParameter("id"));
-        User userToEdit = balanceService.findById(id);
+        User userToEdit = userService.findById(id);
 
         request.setAttribute("user", userToEdit);
         request.setAttribute("balance", userToEdit.getBalance());
@@ -56,7 +56,7 @@ public class BalanceCommand implements Command {
 
         BigDecimal sum = sumOpt.isEmpty() ? new BigDecimal(0) : new BigDecimal(sumOpt.get());
 
-        balanceService.replenishBalance(id, sum);
+        userService.replenishBalance(id, sum);
         request.setAttribute("balance", userToEdit.getBalance().add(sum));
         return "/WEB-INF/view/balance.jsp";
     }

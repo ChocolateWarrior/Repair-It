@@ -3,7 +3,7 @@ package com.helvetica.controller.command;
 import com.helvetica.controller.validators.RangeLengthValidator;
 import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.UserDisplayService;
+import com.helvetica.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -11,11 +11,11 @@ import java.util.ResourceBundle;
 
 public class UserEditCommand implements Command{
 
-    private UserDisplayService userDisplayService;
+    private UserService userService;
     ResourceBundle resourceBundle;
 
-    public UserEditCommand() {
-        this.userDisplayService = new UserDisplayService();
+    public UserEditCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class UserEditCommand implements Command{
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        User userToEdit = userDisplayService.findById(id);
+        User userToEdit = userService.findById(id);
         request.setAttribute("user", userToEdit);
 
         Optional<String> firstName = Optional.ofNullable(request.getParameter("first_name"));
@@ -88,7 +88,7 @@ public class UserEditCommand implements Command{
         username.ifPresent(s -> userToEdit.setUsername(s.isEmpty() ? userToEdit.getUsername() : s));
 
 
-        userDisplayService.editUser(userToEdit);
+        userService.editUser(userToEdit);
         request.setAttribute("message_sc", resourceBundle.getString("global.success"));
         return "/WEB-INF/view/user_edit.jsp";
     }

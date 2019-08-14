@@ -2,20 +2,20 @@ package com.helvetica.controller.command;
 
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.MainPageService;
-import com.helvetica.services.UserDisplayService;
+import com.helvetica.services.RequestService;
+import com.helvetica.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class IndexCommand implements Command {
 
-    private MainPageService mainPageService;
-    private UserDisplayService userDisplayService;
+    private UserService userService;
+    private RequestService requestService;
 
-    public IndexCommand() {
-        this.mainPageService = new MainPageService();
-        this.userDisplayService = new UserDisplayService();
+    public IndexCommand(UserService userService, RequestService requestService) {
+        this.userService = userService;
+        this.requestService = requestService;
     }
 
     @Override
@@ -23,9 +23,9 @@ public class IndexCommand implements Command {
 
 
         HttpSession session = request.getSession();
-        User user = userDisplayService.getByUsername((String)session.getAttribute("username"));
+        User user = userService.getByUsername((String)session.getAttribute("username"));
 
-        request.setAttribute("user_requests", mainPageService.findByUser(user.getId()));
+        request.setAttribute("user_requests", requestService.findByUser(user.getId()));
         request.setAttribute("master_requests", user.getMasterRequests());
         request.setAttribute("paid", RequestState.PAID);
         request.setAttribute("accepted", RequestState.ACCEPTED);

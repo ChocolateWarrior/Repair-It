@@ -7,7 +7,7 @@
 
   <servlet>
     <servlet-name>MainServlet</servlet-name>
-    <servlet-class>com.helvetica.controller.servlets.MainServlet</servlet-class>
+    <servlet-class>com.helvetica.controller.MainServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

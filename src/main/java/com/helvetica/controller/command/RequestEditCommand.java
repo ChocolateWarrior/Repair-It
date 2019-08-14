@@ -5,7 +5,8 @@ import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.RepairRequest;
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.RequestDisplayService;
+import com.helvetica.services.RequestService;
+import com.helvetica.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -15,11 +16,13 @@ import java.util.ResourceBundle;
 
 public class RequestEditCommand implements Command {
 
-    private RequestDisplayService requestDisplayService;
+    private RequestService requestService;
+    private UserService userService;
     private ResourceBundle resourceBundle;
 
-    public RequestEditCommand() {
-        this.requestDisplayService = new RequestDisplayService();
+    public RequestEditCommand(RequestService requestService, UserService userService) {
+        this.requestService = requestService;
+        this.userService = userService;
     }
 
     @Override
@@ -31,8 +34,8 @@ public class RequestEditCommand implements Command {
                 new BigDecimal(50000), resourceBundle.getString("valid.positive"));
 
         int id = Integer.parseInt(request.getParameter("id"));
-        RepairRequest requestToEdit = requestDisplayService.findById(id);
-        HashSet<User> masters = requestDisplayService.findMastersBySpecification(requestToEdit.getSpecification());
+        RepairRequest requestToEdit = requestService.findById(id);
+        HashSet<User> masters = userService.findMastersBySpecification(requestToEdit.getSpecification());
         request.setAttribute("request", requestToEdit);
         request.setAttribute("all_masters", masters);
         String masterUsername = request.getParameter("masters");
@@ -53,11 +56,11 @@ public class RequestEditCommand implements Command {
             }
 
             BigDecimal price = new BigDecimal(request.getParameter("master_request_price"));
-            requestDisplayService.updateMasterRequest(id, RequestState.ACCEPTED.name(), price);
+            requestService.updateMasterRequest(id, RequestState.ACCEPTED.name(), price);
 
         }
 
-        requestDisplayService.editRequest(masterUsername, requestToEdit);
+        requestService.editRequest(masterUsername, requestToEdit);
         request.setAttribute("message_sc", resourceBundle.getString("global.success"));
         return "/WEB-INF/view/request_edit.jsp";
     }

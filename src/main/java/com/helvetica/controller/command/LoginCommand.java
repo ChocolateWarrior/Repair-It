@@ -1,7 +1,7 @@
 package com.helvetica.controller.command;
 
 import com.helvetica.model.entity.User;
-import com.helvetica.services.UserDisplayService;
+import com.helvetica.services.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,11 +11,11 @@ import java.util.ResourceBundle;
 
 public class LoginCommand implements Command {
 
-    private UserDisplayService userDisplayService;
+    private UserService userService;
     private ResourceBundle resourceBundle;
 
-    public LoginCommand() {
-        this.userDisplayService = new UserDisplayService();
+    public LoginCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LoginCommand implements Command {
         User user;
 
         try {
-            user = userDisplayService.getByUsername(username);
+            user = userService.getByUsername(username);
         }catch (Exception e){
             e.printStackTrace();
             request.setAttribute("message_er", resourceBundle.getString("login.invalid"));

@@ -3,18 +3,18 @@ package com.helvetica.controller.command;
 import com.helvetica.controller.validators.NotBlankValidator;
 import com.helvetica.controller.validators.RangeLengthValidator;
 import com.helvetica.controller.validators.Result;
-import com.helvetica.services.RequestDisplayService;
+import com.helvetica.services.RequestService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ResourceBundle;
 
 public class RequestRejectCommand implements Command {
 
-    private RequestDisplayService requestDisplayService;
+    private RequestService requestService;
     private ResourceBundle resourceBundle;
 
-    public RequestRejectCommand() {
-        this.requestDisplayService = new RequestDisplayService();
+    public RequestRejectCommand(RequestService requestService) {
+        this.requestService = requestService;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class RequestRejectCommand implements Command {
             return "/WEB-INF/view/request_display.jsp";
         }
 
-        requestDisplayService.rejectRequest(id, message);
+        requestService.rejectRequest(id, message);
         return "/WEB-INF/view/request_display.jsp";
 
     }

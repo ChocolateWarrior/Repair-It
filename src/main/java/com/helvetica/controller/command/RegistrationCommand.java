@@ -5,7 +5,7 @@ import com.helvetica.controller.validators.RangeLengthValidator;
 import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.Specification;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.UserRegistrationService;
+import com.helvetica.services.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,19 +21,19 @@ import java.util.stream.Collectors;
 
 public class RegistrationCommand implements Command {
 
-    /** field of UserRegistrationService type
-     * @see UserRegistrationService
+    /** field of UserService type
+     * @see UserService
      */
-    private UserRegistrationService userRegistrationService;
+    private UserService userService;
 
     /** field of appropriate resource bundle */
     private ResourceBundle resourceBundle;
 
     /**
-     * Constructor - (default) creation of new object with new UserRegistrationService
+     * Constructor -creation of new object with new UserService from argument
      */
-    public RegistrationCommand() {
-        this.userRegistrationService = new UserRegistrationService();
+    public RegistrationCommand(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -68,7 +68,7 @@ public class RegistrationCommand implements Command {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if(userRegistrationService.isDuplicateUsername(username)){
+        if(userService.isDuplicateUsername(username)){
             request.setAttribute("error_message", notUniqueMessage);
             return handleRegistrationError(request, firstName, lastName, username, password);
         }
@@ -129,10 +129,10 @@ public class RegistrationCommand implements Command {
 
         if(!specList.isEmpty()){
             User user = new User(firstName, lastName, username, hashedPassword, specList);
-            userRegistrationService.registerMaster(user);
+            userService.registerMaster(user);
         }else {
             User user = new User(firstName, lastName, username, hashedPassword);
-            userRegistrationService.registerUser(user);
+            userService.registerUser(user);
         }
 
         return "redirect:/login";

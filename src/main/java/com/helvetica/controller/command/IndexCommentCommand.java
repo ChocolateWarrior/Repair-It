@@ -4,7 +4,7 @@ import com.helvetica.controller.validators.NotBlankValidator;
 import com.helvetica.controller.validators.RangeLengthValidator;
 import com.helvetica.controller.validators.Result;
 import com.helvetica.model.entity.RequestState;
-import com.helvetica.services.MainPageService;
+import com.helvetica.services.RequestService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -12,12 +12,12 @@ import java.util.ResourceBundle;
 
 public class IndexCommentCommand implements Command {
 
-    private MainPageService mainPageService;
+    private RequestService requestService;
     private ResourceBundle resourceBundle;
 
 
-    public IndexCommentCommand() {
-        this.mainPageService = new MainPageService();
+    public IndexCommentCommand(RequestService requestService) {
+        this.requestService = requestService;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class IndexCommentCommand implements Command {
             }
         }
 
-        mainPageService.leaveComment(id, comment);
+        requestService.leaveComment(id, comment);
         return "redirect:/index";
     }
 }

@@ -2,7 +2,7 @@ package com.helvetica.controller.command;
 
 import com.helvetica.model.entity.RequestState;
 import com.helvetica.model.entity.User;
-import com.helvetica.services.MainPageService;
+import com.helvetica.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 
 public class IndexPaymentCommand implements Command{
 
-    private MainPageService mainPageService;
+    private UserService userService;
 
-    public IndexPaymentCommand() {
-        this.mainPageService = new MainPageService();
+    public IndexPaymentCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class IndexPaymentCommand implements Command{
         int request_id = Integer.parseInt(request.getParameter("request_payment_id"));
         BigDecimal price = new BigDecimal(request.getParameter("request_payment_price"));
 
-        mainPageService.payForRequest(user_id, request_id, price);
+        userService.payForRequest(user_id, request_id, price);
         return "redirect:/index";
     }
 }
