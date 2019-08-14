@@ -93,7 +93,8 @@
             <div class="footer_bar">
                 <a href="${pageContext.request.contextPath}/app/display-request">
                     <fmt:message key="display.return">main</fmt:message>
-                </a>/
+                </a>
+                <span style="color: aliceblue;">/</span>
                 <a href="${pageContext.request.contextPath}/app/index">
                     <fmt:message key="main.return">main</fmt:message>
                 </a>

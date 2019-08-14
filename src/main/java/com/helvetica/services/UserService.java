@@ -25,7 +25,7 @@ public class UserService {
 
     }
 
-    public HashSet<User> findAll(){
+    public Set<User> findAll(){
         JDBCUserDao userDao = jdbcDaoFactory.createUserDao();
         return userDao.findAll();
     }
@@ -38,17 +38,6 @@ public class UserService {
     public User getByUsername(String username){
         JDBCUserDao userDao = jdbcDaoFactory.createUserDao();
         return userDao.findByUsername(username).get();
-    }
-
-    public void deleteUser(int id){
-        JDBCUserDao userDao = jdbcDaoFactory.createUserDao();
-        try {
-            userDao.delete(id);
-        } catch (DeleteDependentException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-
-        }
     }
 
     public void editUser(User userToEdit){

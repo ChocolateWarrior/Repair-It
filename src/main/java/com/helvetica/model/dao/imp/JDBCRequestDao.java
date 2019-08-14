@@ -40,7 +40,8 @@ public class JDBCRequestDao implements RequestDao{
             " requests.rejection_message AS \"requests.rejection_message\"," +
             " requests.price AS \"requests.price\"," +
             " requests.state AS \"requests.state\"" +
-            " FROM requests;";
+            " FROM requests" +
+            " ORDER BY requests.id";
 
     private static final String FIND_BY_USER = "SELECT " +
             " requests.id AS \"requests.id\"," +
@@ -76,8 +77,6 @@ public class JDBCRequestDao implements RequestDao{
 
     private static final String PAYMENT_QUERY = "UPDATE requests SET state = ?" +
             " WHERE id = ?";
-
-    private static final String DELETE_QUERY = "DELETE FROM requests WHERE id = ?";
 
     private static final String EXTRACT_USER_QUERY = "SELECT" +
             " requests.id AS \"requests.id\"," +
@@ -133,15 +132,15 @@ public class JDBCRequestDao implements RequestDao{
 
     @Override
     public Set<RepairRequest> findAll() {
-        HashSet<RepairRequest> resultSet;
-        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_QUERY)){
-            ResultSet rs = ps.executeQuery();
+        LinkedHashSet<RepairRequest> resultSet;
 
-            Map<Integer, RepairRequest> requests = extractFromResultSet(rs);
-            resultSet = new HashSet<>(requests.values());
+        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_QUERY)){
+
+            ResultSet rs = ps.executeQuery();
+            LinkedHashMap<Integer, RepairRequest> requests = extractFromResultSet(rs);
+            resultSet = new LinkedHashSet<>(requests.values());
 
             return resultSet;
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -254,14 +253,6 @@ public class JDBCRequestDao implements RequestDao{
 
     @Override
     public void delete(int id) throws DeleteDependentException {
-        try (PreparedStatement ps = connection.prepareStatement
-                (DELETE_QUERY)){
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DeleteDependentException();
-        }
     }
 
     @Override
@@ -276,8 +267,8 @@ public class JDBCRequestDao implements RequestDao{
         return Timestamp.valueOf(time);
     }
 
-    private Map<Integer, RepairRequest> extractFromResultSet(ResultSet rss) throws SQLException {
-        Map<Integer, RepairRequest> requests = new HashMap<>();
+    private LinkedHashMap<Integer, RepairRequest> extractFromResultSet(ResultSet rss) throws SQLException {
+        LinkedHashMap<Integer, RepairRequest> requests = new LinkedHashMap<>();
         Map<Integer, User> users = new HashMap<>();
 
         MasterMapper userMapper = new MasterMapper();

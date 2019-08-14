@@ -21,7 +21,6 @@ public class IndexCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
-
         HttpSession session = request.getSession();
         User user = userService.getByUsername((String)session.getAttribute("username"));
 

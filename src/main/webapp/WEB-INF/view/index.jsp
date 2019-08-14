@@ -125,7 +125,7 @@
                                         </h5>
                                         <label>
                                             <input name="comment"
-                                                   minlength="8"
+                                                   minlength="1"
                                                    placeholder=<fmt:message key="index.leave.comment"/>>
                                             <input name="request_comment_id" value="${request.id}" hidden/>
                                         </label>
@@ -138,9 +138,7 @@
                                     </div>
                                 </form>
                             </c:if>
-                            <c:if test="${requestScope.comment_message_error != null}">
-                                <p class="text-danger"><c:out value="${requestScope.comment_message_error}"/></p>
-                            </c:if>
+
 
                             <c:if test="${requestScope.user.balance > request.price && request.state == requestScope.accepted}">
                                 <form action="${pageContext.request.contextPath}/app/index/payment" method="post">
@@ -159,6 +157,9 @@
                             </c:if>
                         </li>
                     </c:forEach>
+                    <c:if test="${requestScope.comment_message_error != null}">
+                        <p class="text-danger"><c:out value="${requestScope.comment_message_error}"/></p>
+                    </c:if>
 
                 </ul>
 

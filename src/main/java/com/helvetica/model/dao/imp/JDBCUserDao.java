@@ -35,7 +35,8 @@ public class JDBCUserDao implements UserDao {
             " users.balance AS \"users.balance\"," +
             " users.password AS \"users.password\"," +
             " users.username AS \"users.username\"" +
-            " FROM users";
+            " FROM users" +
+            " ORDER BY users.id";
 
     private static final String FIND_BY_USERNAME_QUERY = "SELECT" +
             " users.id AS \"users.id\"," +
@@ -91,8 +92,6 @@ public class JDBCUserDao implements UserDao {
 
     private static final String SUBTRACT_BALANCE_QUERY = "UPDATE users SET" +
             " balance = balance - ? WHERE id = ?";
-
-    private static final String DELETE_QUERY = "DELETE FROM users WHERE id = ?";
 
     private static final String CREATE_SPECIFICATION_QUERY = "INSERT INTO master_specifications" +
             " (user_id, specifications) VALUES(?, ?)";
@@ -177,14 +176,14 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public HashSet<User> findAll() {
-        HashSet<User> result;
+    public Set<User> findAll() {
+        LinkedHashSet<User> result;
 
         try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_QUERY)){
 
             ResultSet rs = ps.executeQuery();
-            Map<Integer, User> users = extractFromResultSet(rs);
-            result = new HashSet<>(users.values());
+            LinkedHashMap<Integer, User> users = extractFromResultSet(rs);
+            result = new LinkedHashSet<>(users.values());
 
             return result;
         } catch (Exception e) {
@@ -356,14 +355,6 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void delete(int id) throws DeleteDependentException {
-        try (PreparedStatement ps = connection.prepareStatement
-                (DELETE_QUERY)){
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DeleteDependentException();
-        }
     }
 
     @Override
@@ -387,12 +378,12 @@ public class JDBCUserDao implements UserDao {
         );
     }
 
-    private Map<Integer, User> extractFromResultSet(ResultSet rss) throws SQLException {
+    private LinkedHashMap<Integer, User> extractFromResultSet(ResultSet rss) throws SQLException {
 
         MasterMapper userMapper = new MasterMapper();
         RequestMapper requestMapper = new RequestMapper();
 
-        Map<Integer, User> users = new HashMap<>();
+        LinkedHashMap<Integer, User> users = new LinkedHashMap<>();
         Map<Integer, RepairRequest> requests = new HashMap<>();
 
         while (rss.next()) {

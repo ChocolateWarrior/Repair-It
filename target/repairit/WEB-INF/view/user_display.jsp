@@ -87,13 +87,6 @@
                                        class="btn btn-primary">
                                         <span><fmt:message key="display.edit"/></span>
                                     </a>
-                                </span>|
-
-                                <span>
-                                    <a href="${pageContext.request.contextPath}/app/display/delete?id=${user.id}"
-                                       class="btn btn-primary">
-                                        <span><fmt:message key="display.remove"/></span>
-                                    </a>
                                 </span>
                                 <hr>
                             </li>

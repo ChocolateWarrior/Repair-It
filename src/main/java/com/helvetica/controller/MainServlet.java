@@ -32,16 +32,14 @@ public class MainServlet extends HttpServlet {
         commands.put("/registration" , new RegistrationCommand(userService));
         commands.put("/display", new UserDisplayCommand(userService));
         commands.put("/index", new IndexCommand(userService, requestService));
-        commands.put("/index/comment", new IndexCommentCommand(requestService));
+        commands.put("/index/comment", new IndexCommentCommand(requestService, userService));
         commands.put("/index/payment", new IndexPaymentCommand(userService));
         commands.put("/balance", new BalanceCommand(userService));
-        commands.put("/display/delete", new UserDeleteCommand(userService));
         commands.put("/display/edit", new UserEditCommand(userService));
         commands.put("/display-request", new RequestDisplayCommand(requestService));
         commands.put("/display-request/reject", new RequestRejectCommand(requestService));
         commands.put("/display-request/edit", new RequestEditCommand(requestService, userService));
         commands.put("/index/complete", new IndexCompleteCommand(requestService));
-        commands.put("/display-request/delete", new RequestDeleteCommand(requestService));
 
     }
 

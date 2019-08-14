@@ -126,14 +126,15 @@
                                     <span><c:out value="${request.price}" /></span>
                                     <br>
 
-                                    <span>
-                                        <fmt:message key="req.display.add_master">
-                                            add_master
-                                        </fmt:message>
-                                    </span>
+
                                     <c:if test="${request.state != requestScope.rejected &&
                                      request.state != requestScope.completed &&
                                      request.state != requestScope.paid}">
+                                        <span>
+                                            <fmt:message key="req.display.add_master">
+                                                add_master
+                                            </fmt:message>
+                                        </span>
                                         <span>
                                             <a href="${pageContext.request.contextPath}/app/display-request/edit?id=${request.id}"
                                                class="btn btn-primary">
@@ -170,15 +171,6 @@
                                     </form>
                                 </c:if>
 
-                                <c:if test="${request.state == requestScope.rejected || request.state == requestScope.completed}">
-
-                                    <span>
-                                        <a href="${pageContext.request.contextPath}/app/display-request/delete?id=${request.id}" class="btn btn-primary">
-                                            <span><fmt:message key="display.remove"/></span>
-                                        </a>
-                                    </span>
-
-                                </c:if>
                             </li>
                         </c:forEach>
                     </ul>
