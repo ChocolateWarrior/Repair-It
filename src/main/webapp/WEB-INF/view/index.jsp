@@ -124,12 +124,12 @@
                                             </fmt:message>
                                         </h5>
                                         <label>
-                                            <input name="comment" placeholder=<fmt:message key="index.leave.comment"/>>
+                                            <input name="comment"
+                                                   minlength="8"
+                                                   placeholder=<fmt:message key="index.leave.comment"/>>
                                             <input name="request_comment_id" value="${request.id}" hidden/>
                                         </label>
-                                        <c:if test="${requestScope.comment_message_er!=null}">
-                                            <p class="text-danger"><c:out value="${requestScope.comment_message_er}"/></p>
-                                        </c:if>
+
                                         <button type="submit" class="btn btn-primary">
                                             <fmt:message key="global.submit">
                                                 leave
@@ -137,6 +137,9 @@
                                         </button>
                                     </div>
                                 </form>
+                            </c:if>
+                            <c:if test="${requestScope.comment_message_error != null}">
+                                <p class="text-danger"><c:out value="${requestScope.comment_message_error}"/></p>
                             </c:if>
 
                             <c:if test="${requestScope.user.balance > request.price && request.state == requestScope.accepted}">

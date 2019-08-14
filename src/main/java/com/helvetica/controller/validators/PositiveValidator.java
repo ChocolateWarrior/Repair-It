@@ -17,21 +17,13 @@ public class PositiveValidator extends Validator<String> {
                 " [" + minValue + ";" + maxValue + "]!",false);
     }
 
-    public PositiveValidator(BigDecimal min, BigDecimal max, Validator<String> next, String message) {
-        super(next);
-        this.minValue = min;
-        this.maxValue = max;
-        FAILED = new SimpleResult(message +
-                " [" + minValue + ";" + maxValue + "]!",false);
-    }
-
     @Override
     public Result validate(String in) {
 
         BigDecimal input = new BigDecimal(in);
-        if((input.compareTo(minValue) > 0 && input.compareTo(maxValue) <= 0) && Objects.nonNull(nextValidator))
+        if((input.compareTo(minValue) >= 0 && input.compareTo(maxValue) <= 0) && Objects.nonNull(nextValidator))
             return nextValidator.validate(in);
-        else if((input.compareTo(minValue) > 0 && input.compareTo(maxValue) <= 0))
+        else if((input.compareTo(minValue) >= 0 && input.compareTo(maxValue) <= 0))
             return Validator.OK;
 
         return FAILED;

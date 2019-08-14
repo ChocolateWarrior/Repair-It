@@ -36,7 +36,7 @@ public class IndexCommentCommand implements Command {
         if(Objects.nonNull(comment)) {
             Result result = notBlankValidator.validate(comment);
             if (!result.isOk()){
-                request.setAttribute("comment_message_er", result.getMessage());
+                request.setAttribute("comment_message_error", result.getMessage());
                 return "redirect:/index";
             }
         }

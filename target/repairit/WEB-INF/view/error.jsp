@@ -19,18 +19,12 @@
 </head>
 
 <body style="background-color: lightpink ">
-<div class="container" style="margin-top: 50px" >
+<div class="container" style="margin-top: 50px; font-family: Helvetica; font-size: 60px" >
     <div class="error-body">
         <h1>Something went wrong! </h1>
         <h2>Our Engineers are working on it</h2>
-<%--        <h2>--%>
-<%--            Error Page<br/>--%>
-<%--            <i>Error <%= exception %></i>--%>
-<%--        </h2>--%>
+
         <br>
-        <a href="${pageContext.request.contextPath}/WEB-INF/view/index.jsp">
-            <fmt:message key="main.return"/>
-        </a>
     </div>
 </div>
 

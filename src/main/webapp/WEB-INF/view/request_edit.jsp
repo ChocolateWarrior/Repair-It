@@ -26,10 +26,6 @@
             <h2 class="page-header"><fmt:message key="req.edit">Request Edit</fmt:message></h2>
 
             <form action="${pageContext.request.contextPath}/app/display-request/edit?id=${request.id}" method="post">
-
-                <c:if test="${requestScope.message_sc != null}">
-                    <p class="text-danger"><c:out value="${requestScope.message_sc}"/></p>
-                </c:if>
                 <c:if test="${!requestScope.all_masters.isEmpty()}">
                 <div class="form-group">
                     <label for="masterSelect">
@@ -95,9 +91,14 @@
                 <a href="?lang=uk" ><fmt:message key="lang.uk">ukrainian</fmt:message></a>
             </div>
             <div class="footer_bar">
+                <a href="${pageContext.request.contextPath}/app/display-request">
+                    <fmt:message key="display.return">main</fmt:message>
+                </a>
+                <span style="color: aliceblue;">/</span>
                 <a href="${pageContext.request.contextPath}/app/index">
                     <fmt:message key="main.return">main</fmt:message>
                 </a>
+
             </div>
 
         </div>

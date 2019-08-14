@@ -27,12 +27,12 @@
                 <div class = "panel-heading" style="color: aliceblue">
                     <fmt:message key="display.users">Users</fmt:message>
                 </div>
+                <span class="text-warning"><fmt:message key="display.remove_msg"/></span>
                 <div class = "panel-body">
                     <ul class="list-group">
                         <c:forEach items="${requestScope.users}" var="user">
 
                             <li class="list-group-item ">
-
 
                                 <span ><fmt:message key="display.id">id</fmt:message></span>
                                 <span><c:out value="${user.id}" /></span>
@@ -110,6 +110,12 @@
         <a href="?lang=en" ><fmt:message key="lang.en">english</fmt:message></a>
         /
         <a href="?lang=uk"><fmt:message key="lang.uk">ukrainian</fmt:message></a>
+    </div>
+
+    <div class="footer_bar">
+        <a href="${pageContext.request.contextPath}/app/index">
+            <fmt:message key="main.return">main</fmt:message>
+        </a>
     </div>
 
 </div>

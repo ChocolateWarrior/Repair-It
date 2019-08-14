@@ -26,6 +26,7 @@
                 <div class = "panel-heading" style="color: aliceblue">
                     <fmt:message key="req.display.heading">requests</fmt:message>
                 </div>
+                <span class="text-warning"><fmt:message key="display.remove_msg"/></span>
                 <div class = "panel-body">
                     <ul class="list-group">
                         <c:forEach items="${requestScope.requests}" var="request">
