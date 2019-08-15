@@ -34,11 +34,11 @@ public class RequestRejectCommand implements Command {
         if(!result.isOk()){
             request.setAttribute("message_error", result.getMessage());
             request.setAttribute("rejection_message", message);
-            return "/WEB-INF/view/request_display.jsp";
+            return "/WEB-INF/view/request_edit.jsp";
         }
 
         requestService.rejectRequest(id, message);
-        return "/WEB-INF/view/request_display.jsp";
+        return "redirect:/display-request";
 
     }
 }

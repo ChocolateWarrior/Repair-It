@@ -16,7 +16,6 @@ public class UserDisplayCommand implements Command {
     public String execute(HttpServletRequest request) {
 
         request.setAttribute("users", userService.findAll());
-        request.getRequestDispatcher("/WEB-INF/user_display.jsp");
         return "/WEB-INF/view/user_display.jsp";
     }
 }

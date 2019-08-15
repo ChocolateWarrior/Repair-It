@@ -102,6 +102,10 @@
                                             <span><fmt:message key="index.status"/><c:out value="${request.state}" /></span>
                                             <br>
                                         </c:if>
+                                        <c:if test="${request.rejectionMessage != null}">
+                                            <span><fmt:message key="req.display.rejection_message"/><c:out value="${request.rejectionMessage}" /></span>
+                                            <br>
+                                        </c:if>
                                         <c:if test="${!request.masters.isEmpty()}">
                                             <span>
                                                 <fmt:message key="index.masters"/>
