@@ -84,8 +84,8 @@ public class JDBCUserDao implements UserDao {
     private static final String UPDATE_QUERY = "UPDATE users SET first_name = ?," +
             " last_name = ?, username = ?, password = ? WHERE id = ?";
 
-    private static final String DELETE_AUTHORITY_QUERY = "DELETE FROM user_authorities " +
-            "WHERE user_id = ?";
+    private static final String DELETE_AUTHORITY_QUERY = "DELETE FROM user_authorities" +
+            " WHERE user_id = ?";
 
     private static final String REPLENISH_BALANCE_QUERY = "UPDATE users SET" +
             " balance = balance + ? WHERE id = ?";

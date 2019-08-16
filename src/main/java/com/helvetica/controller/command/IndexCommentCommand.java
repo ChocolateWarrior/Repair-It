@@ -56,6 +56,7 @@ public class IndexCommentCommand implements Command {
         }
 
         requestService.leaveComment(id, comment);
+        request.setAttribute("user_requests", requestService.findByUser(user.getId()));
         return "/WEB-INF/view/index.jsp";
     }
 }
